@@ -14,18 +14,31 @@ const NAVY = [13, 26, 45];
 const YELLOW = [255, 212, 59];
 const YELLOW_SHADE = [224, 168, 0];
 
-// Grasblock 8x8, gleiche Farben wie in index.html
-const PALETTE = { g: [95, 168, 58], G: [124, 194, 78], d: [139, 90, 43], e: [107, 68, 32] };
-const BLOCK = [
-    'gggggGgg',
-    'gGgggggg',
-    'gggggggg',
-    'ggdddgdd',
-    'dddddddd',
-    'dddedddd',
-    'ddddddeD',
-    'dddddddd'
-].map(row => row.replace('D', 'e'));
+// Grasblock 16x16, Pixel aus images/grass-block.png (ein Zeichen = Index in GRASS_COLORS)
+const GRASS_COLORS = ['#74b44a', '#76b64c', '#73b349', '#66a63c', '#6faf45', '#5f9f35', '#6cac42', '#7ebe54', '#6aaa40', '#67a73d', '#69a93f', '#61a137', '#509026', '#6dad43', '#75b54b', '#8ab95a', '#81b051', '#83b253', '#593d29', '#68a83e', '#62a238', '#93c263', '#90bf60', '#6bab41', '#8dbc5d', '#9ccb6c', '#64a43a', '#70b046', '#7fbf55', '#92c162', '#97c667', '#57972d', '#60a036', '#6c6c6c', '#71b147', '#79553a', '#966c4a', '#b9855c', '#878787', '#745844'];
+const GRASS = [
+    '012334567189abcd',
+    'e6fghijk5lm2b69n',
+    'oipqairi0stuivwi',
+    'ixiiyiii5idiziiz',
+    'AzABiAzziiixzAiz',
+    'ziAAzAiiizzizzzB',
+    'BzzzCzzBBzBBzAzA',
+    'zzBBAAzzAiAAzzAA',
+    'AzzAzAzizAAzzziz',
+    'zAizziizzzzzBBzA',
+    'zAzBBzBAiBBiAACz',
+    'AzzAABzAxAAziAzi',
+    'ziAzAABzzzzzzzBB',
+    'zAzzDzAAziBizBAA',
+    'AziBziziBBzAzzAA',
+    'AzBAAzCzAAzzAAzi'
+];
+const KEYS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJ';
+const SIZE = GRASS.length;
+
+const hexToRgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+const grassAt = (col, row) => GRASS_COLORS[KEYS.indexOf(GRASS[row][col])];
 
 // --- PNG ---
 const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
@@ -93,9 +106,9 @@ const colorAt = (x, y, half) => {
     if (insideRoundedSquare(u, v, half, radius)) {
         const g = half * 0.56;
         if (Math.abs(u) < g && Math.abs(v) < g) {
-            const col = Math.min(7, Math.floor((u + g) / (2 * g) * 8));
-            const row = Math.min(7, Math.floor((v + g) / (2 * g) * 8));
-            return PALETTE[BLOCK[row][col]];
+            const col = Math.min(SIZE - 1, Math.floor((u + g) / (2 * g) * SIZE));
+            const row = Math.min(SIZE - 1, Math.floor((v + g) / (2 * g) * SIZE));
+            return hexToRgb(grassAt(col, row));
         }
         return YELLOW;
     }
@@ -142,17 +155,16 @@ for (const [name, size, half] of ICONS) {
 }
 
 // SVG-Variante für Browser-Tabs
-const rects = BLOCK.flatMap((row, y) => [...row].map((ch, x) => {
-    const [r, g, b] = PALETTE[ch];
-    return `<rect x="${x}" y="${y}" width="1.06" height="1.06" fill="rgb(${r},${g},${b})"/>`;
-})).join('');
+const rects = GRASS.flatMap((row, y) => [...row].map((_, x) => (
+    `<rect x="${x}" y="${y}" width="1.06" height="1.06" fill="${grassAt(x, y)}"/>`
+))).join('');
 
 writeFileSync(join(OUT, 'icon.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
 <rect width="64" height="64" rx="14" fill="#0d1a2d"/>
 <g transform="rotate(-4 32 31)">
 <rect x="5" y="7" width="54" height="54" rx="13" fill="#e0a800"/>
 <rect x="5" y="4" width="54" height="54" rx="13" fill="#ffd43b"/>
-<g transform="translate(17 16) scale(3.75)">${rects}</g>
+<g transform="translate(17 16) scale(1.875)">${rects}</g>
 </g>
 </svg>
 `);

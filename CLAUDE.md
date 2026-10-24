@@ -21,7 +21,8 @@ Es gelten zusätzlich die globalen Regeln aus `C:\Source\CLAUDE.md` (Git-Identit
 - `images/` – Vorschaubilder (`image` im Eintrag), `images/icons/` App-Icons, `images/<eintrag>/` Item-Icons für Anleitungen (z.B. `images/mein-pack/` = Essens-Texturen aus dem Pack)
 - **PWA:** `manifest.webmanifest`, `sw.js` (Service Worker, Muster wie im Portfolio: eigene Dateien Netz zuerst mit 4 s, sonst Speicher; Google Fonts aus dem Speicher; `downloads/` wird durchgereicht). Offline-Klick auf Download zeigt „Downloads gehen nur mit Internet“.
 - `tools/build-sw.mjs` – schreibt die Offline-Liste in `sw.js` (zwischen `PRECACHE-START`/`-END`): alle Dateien in `css/`, `javascript/`, `data/`, `images/` plus Startseite und Manifest. **Nach jedem neuen Eintrag oder Bild ausführen:** `node tools/build-sw.mjs`
-- `tools/make-icons.mjs` – erzeugt die App-Icons (gelbe gedrehte Kachel mit Grasblock auf Navy) ohne Zusatzpakete: `node tools/make-icons.mjs`
+- `images/grass-block.png` – Grasblock-Textur von Nicolas (16×16 Pixel, 10-fach vergrössert auf 160 px); verwendet für Sidebar-Kachel, Texturepack-Ersatzbild und App-Icons (2026-10-24, Wunsch von Nicolas). Sonst bleibt der Portfolio-Stil.
+- `tools/make-icons.mjs` – erzeugt die App-Icons (gelbe gedrehte Kachel mit Grasblock auf Navy) ohne Zusatzpakete: `node tools/make-icons.mjs`. Die 16×16 Pixel des Grasblocks stehen als `GRASS`/`GRASS_COLORS` im Skript; bei neuer Textur dort ersetzen.
 
 ## Konventionen
 

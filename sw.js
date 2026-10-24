@@ -13,6 +13,7 @@ const PRECACHE = [
     './manifest.webmanifest',
     './css/styles.css',
     './data/items.js',
+    './images/grass-block.png',
     './images/icons/apple-touch-icon.png',
     './images/icons/icon-192.png',
     './images/icons/icon-32.png',

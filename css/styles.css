@@ -118,11 +118,11 @@ code {
     flex-shrink: 0;
 }
 
-.profile-tile svg {
+.profile-tile img {
     width: 56%;
     height: auto;
     border-radius: 4px;
-    shape-rendering: crispEdges;
+    image-rendering: pixelated;
 }
 
 .profile-name {
@@ -413,6 +413,10 @@ code {
 .download-card:hover .card-art svg,
 .download-card:hover .card-art img {
     transform: scale(1.05) rotate(-1.5deg);
+}
+
+.pixel-image {
+    image-rendering: pixelated;
 }
 
 .art-image {
@@ -863,14 +867,16 @@ code {
 }
 
 .guide-name {
-    padding: 4px 10px 4px 6px;
+    gap: 10px;
+    padding: 6px 12px 6px 8px;
     font-weight: 800;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
 
+/* 16px-Texturen in ganzen Vielfachen, damit die Pixel gleich gross bleiben */
 .guide-name img {
-    width: 28px;
-    height: 28px;
+    width: 48px;
+    height: 48px;
     image-rendering: pixelated;
 }
 
@@ -1137,6 +1143,25 @@ code {
         align-items: baseline;
         gap: 8px;
         padding-top: 0;
+    }
+
+    .guide-chip {
+        width: 100%;
+    }
+
+    .guide-name {
+        flex: 1;
+        min-width: 0;
+        text-align: left;
+    }
+
+    .guide-name img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .guide-group {
+        padding: 12px 10px;
     }
 
     .download-btn,

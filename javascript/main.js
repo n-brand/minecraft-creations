@@ -31,7 +31,7 @@ themeToggle.addEventListener('click', () => {
 });
 
 // --- Pixel Art ---
-// Ersatzbild pro Kategorie, wenn ein Eintrag kein eigenes Bild hat (ein Zeichen pro Pixel, "." = leer)
+// Ersatzbild pro Kategorie, wenn ein Eintrag kein eigenes Bild hat: Bilddatei oder Pixel-Raster (ein Zeichen pro Pixel, "." = leer)
 const ART = {
     mods: {
         colors: { T: '#b07b46', t: '#7a5230', P: '#9c6b3c', D: '#6b4420', w: '#c69a5b', s: '#cfd8dc' },
@@ -50,23 +50,7 @@ const ART = {
             'DDDDDDDDDDDD'
         ]
     },
-    texturepacks: {
-        colors: { g: '#5fa83a', G: '#7cc24e', h: '#3f7a24', d: '#8b5a2b', e: '#6b4420', s: '#a0a0a0' },
-        rows: [
-            'gGgggGgggGgg',
-            'ggghgggGgggh',
-            'gGggggggGggg',
-            'hdgGhdgdggdh',
-            'ddhddgddhgdd',
-            'dddddedddddd',
-            'deddddddedsd',
-            'ddddsddddddd',
-            'dddddddedddd',
-            'dedddddddded',
-            'ddddeddsdddd',
-            'dddddddddddd'
-        ]
-    },
+    texturepacks: { image: 'images/grass-block.png' },
     skins: {
         colors: { h: '#3b2a1a', H: '#2f1f0f', k: '#c39274', K: '#b4836b', w: '#ffffff', p: '#523d89', n: '#94603e', m: '#6a4030' },
         rows: [
@@ -87,6 +71,12 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 // Pixel ueberlappen leicht, damit beim Drehen/Skalieren keine Linien dazwischen entstehen
 const pixelArt = category => {
     const art = ART[category];
+    if (art.image) {
+        const img = el('img', 'pixel-image');
+        img.src = art.image;
+        img.alt = '';
+        return img;
+    }
     const svg = document.createElementNS(SVG_NS, 'svg');
     svg.setAttribute('viewBox', `0 0 ${art.rows[0].length} ${art.rows.length}`);
     svg.setAttribute('aria-hidden', 'true');
