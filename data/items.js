@@ -15,7 +15,7 @@
 //   details     optional: Absätze für die Detailansicht („Mehr lesen“)
 //   features    optional: Liste mit Funktionen für die Detailansicht
 //   credits     optional: Ursprüngliche Packs/Ersteller, wenn etwas übernommen wurde
-//   guide       optional: Umbenennen-Anleitung (steps, hint, iconPath, groups mit
+//   guide       optional: Umbenennen-Anleitung (steps, hint, giveHint = nur am PC, iconPath, groups mit
 //               id = Minecraft-ID, item/itemEn = Itemname, names = [Name, Icon-Datei])
 //   example     true = Platzhalter, zeigt „Bald verfügbar“ statt Download
 
@@ -58,7 +58,8 @@ window.ITEMS = [
         "Oben den Namen genau so eintippen wie unten angegeben – Gross- und Kleinschreibung zählt.",
         "Item rechts herausnehmen. Das Umbenennen kostet 1 Erfahrungslevel."
       ],
-      hint: "Tipp: Auf einen Namen klicken kopiert ihn. Mit „/give“ kopierst du den Befehl für den Chat (Cheats müssen an sein).",
+      hint: "Tipp: Ein Klick auf einen Namen kopiert ihn.",
+      giveHint: "Mit „/give“ kopierst du den Befehl für den Chat (Cheats müssen an sein).",
       iconPath: "images/mein-pack/",
       groups: [
         { id: "apple", item: "Apfel", itemEn: "Apple", names: [["Pear", "pear"]] },

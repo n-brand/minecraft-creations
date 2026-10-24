@@ -1155,6 +1155,12 @@ code {
         text-align: left;
     }
 
+    /* Am Handy nur Namen kopieren, ohne /give-Befehl */
+    .guide-give,
+    .guide-give-hint {
+        display: none;
+    }
+
     .guide-name img {
         width: 32px;
         height: 32px;

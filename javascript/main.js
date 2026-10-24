@@ -237,7 +237,9 @@ const createGuide = guide => {
     const steps = el('ol', 'guide-steps');
     guide.steps.forEach(text => steps.appendChild(el('li', '', text)));
     section.appendChild(steps);
-    section.appendChild(el('p', 'guide-hint', guide.hint));
+    const hint = el('p', 'guide-hint', guide.hint);
+    if (guide.giveHint) hint.appendChild(el('span', 'guide-give-hint', ` ${guide.giveHint}`));
+    section.appendChild(hint);
 
     const filter = el('label', 'search guide-search');
     filter.innerHTML = '<span class="visually-hidden">Item suchen</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>';
