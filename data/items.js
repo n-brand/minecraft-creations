@@ -11,9 +11,43 @@
 //   file        Pfad zur Datei unter downloads/<kategorie>/
 //   image       optional: Vorschaubild unter images/ (sonst Kategorie-Icon)
 //   updated     Datum im Format JJJJ-MM-TT
+//   size        optional: Dateigrösse als Text, z.B. "114 KB"
+//   details     optional: Absätze für die Detailansicht („Mehr lesen“)
+//   features    optional: Liste mit Funktionen für die Detailansicht
+//   credits     optional: Ursprüngliche Packs/Ersteller, wenn etwas übernommen wurde
 //   example     true = Platzhalter, zeigt „Bald verfügbar“ statt Download
 
 window.ITEMS = [
+  {
+    id: "mein-pack",
+    category: "texturepacks",
+    name: "Mein Pack",
+    description: "Goldene Dreizacke, niedrigeres Feuer, freie Sicht mit Kürbis-Kopf und 47 Essens-Texturen zum Umbenennen.",
+    version: "1.21.5+",
+    edition: "Java",
+    file: "downloads/texturepacks/mein-pack.zip",
+    image: "images/mein-pack.png",
+    updated: "2026-09-26",
+    size: "114 KB",
+    details: [
+      "Mein Pack fasst vier Texturepacks zu einem zusammen. Ein Teil der Änderungen ist immer aktiv, die Essens-Texturen erscheinen erst, wenn du ein Item am Amboss umbenennst. Ohne Umbenennen sehen alle Items normal aus.",
+      "Im Zip liegen zwei Anleitungen: In UMBENENNEN.md steht für jedes Item, welche Namen es gibt. BEFEHLE.md enthält fertige /give-Befehle zum Kopieren, falls Cheats an sind. Gross- und Kleinschreibung beim Namen zählt."
+    ],
+    features: [
+      "Immer aktiv: Der Dreizack ist golden.",
+      "Immer aktiv: Das Feuer ist niedriger, wenn du brennst, und verdeckt weniger Sicht.",
+      "Immer aktiv: Ein Kürbis auf dem Kopf verdeckt die Sicht nicht mehr.",
+      "47 Essens- und Getränke-Texturen per Umbenennen, z.B. Big Mac, McFries, Kebab, Ramen, Coca Cola, Fanta, McFlurry, Pancakes und Happy Meal.",
+      "Eigenes Item: Getrockneter Seetang mit dem Namen „Pill“ wird zur Tablette.",
+      "Getrunkene Items wie Honigflasche und Milcheimer werden zu Limonaden, Eistee und Glace."
+    ],
+    credits: [
+      "Golden Tridents! 1.0v – nela1",
+      "LowOnFire – haikis",
+      "No Pumpkin Blur",
+      "McDonald Food V3 – ItzAX0LOTL"
+    ]
+  },
   {
     id: "better-torches",
     category: "mods",

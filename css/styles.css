@@ -415,6 +415,61 @@ code {
     transform: scale(1.05) rotate(-1.5deg);
 }
 
+.art-image {
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.card-title-btn {
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.card-title-btn:hover {
+    color: var(--accent-color);
+}
+
+/* --- Links --- */
+.arrow-link {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--text-color);
+    font: inherit;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 5px;
+    cursor: pointer;
+}
+
+.arrow-link svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.2s ease;
+}
+
+.arrow-link:hover svg {
+    transform: translateX(4px);
+}
+
 .card-content {
     flex: 1;
     display: flex;
@@ -542,6 +597,148 @@ code {
     background-color: var(--surface);
     box-shadow: 0 var(--shade-size) 0 var(--surface-shade);
     color: var(--text-muted);
+}
+
+/* --- Detail Dialog --- */
+.detail-dialog {
+    width: min(760px, calc(100% - 32px));
+    max-height: calc(100vh - 48px);
+    margin: auto;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius);
+    background-color: var(--surface);
+    color: var(--text-color);
+    box-shadow: 0 var(--shade-size) 0 var(--surface-shade);
+}
+
+.detail-dialog::backdrop {
+    background-color: rgba(13, 26, 45, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+#detail-body {
+    padding: 36px 36px 32px;
+}
+
+.dialog-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.dialog-close:hover {
+    border-color: var(--accent-color);
+    transform: rotate(-8deg);
+}
+
+.dialog-close svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+}
+
+.detail-head {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 28px;
+    align-items: center;
+    margin-bottom: 28px;
+    padding-right: 40px;
+}
+
+.detail-art svg,
+.detail-art img {
+    width: 100%;
+    height: auto;
+    transform: rotate(-3deg);
+}
+
+.detail-badge {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 4px 14px;
+    border-radius: 8px;
+    color: #183153;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.detail-intro h2 {
+    line-height: 1.15;
+    margin-bottom: 8px;
+}
+
+.detail-lead {
+    color: var(--text-muted);
+    margin-bottom: 14px;
+}
+
+.detail-text {
+    margin-bottom: 14px;
+    color: var(--text-muted);
+}
+
+.detail-dialog h3 {
+    margin: 26px 0 10px;
+    font-size: 1.2rem;
+}
+
+.detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+}
+
+.detail-list li {
+    position: relative;
+    padding-left: 30px;
+    color: var(--text-muted);
+}
+
+.detail-list li::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 5px;
+    background-color: #a9e34b;
+    box-shadow: 0 3px 0 #74b816;
+}
+
+.detail-credits li::before {
+    background-color: var(--accent-color);
+    box-shadow: 0 3px 0 #1c7ed6;
+}
+
+.detail-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 2px dashed var(--border-color);
 }
 
 /* --- Responsive: Large Screens --- */
@@ -718,6 +915,29 @@ code {
 
     .card-footer {
         padding-top: 14px;
+    }
+
+    .arrow-link {
+        margin-top: 8px;
+        font-size: 0.9rem;
+    }
+
+    #detail-body {
+        padding: 28px 22px 24px;
+    }
+
+    .detail-head {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding-right: 0;
+    }
+
+    .detail-art {
+        width: 120px;
+    }
+
+    .detail-footer .download-btn {
+        width: auto;
     }
 
     .download-btn,

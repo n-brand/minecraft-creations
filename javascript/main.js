@@ -129,50 +129,133 @@ const formatDate = iso => new Date(`${iso}T00:00:00`).toLocaleDateString('de-CH'
     year: 'numeric'
 });
 
+const ARROW_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>';
+
+const hasDetails = item => Boolean(item.details || item.features || item.credits);
+
+const createArt = item => {
+    if (!item.image) return pixelArt(item.category);
+    const img = el('img', 'art-image');
+    img.src = item.image;
+    img.alt = '';
+    img.loading = 'lazy';
+    return img;
+};
+
+const createTags = item => {
+    const tags = el('div', 'card-tags');
+    [item.edition, `MC ${item.version}`, item.loader].filter(Boolean).forEach(tag => {
+        tags.appendChild(el('span', 'tag', tag));
+    });
+    return tags;
+};
+
+const createDownload = item => {
+    if (item.example) return el('span', 'download-btn soon', 'Bald verfügbar');
+    const link = el('a', 'download-btn');
+    link.href = item.file;
+    link.setAttribute('download', '');
+    link.innerHTML = `${DOWNLOAD_ICON}<span>Download</span>`;
+    return link;
+};
+
 const createCard = item => {
     const category = CATEGORIES[item.category];
     const card = el('article', 'download-card');
     card.appendChild(el('span', `card-badge ${category.badgeClass}`, category.badge));
 
     const art = el('div', 'card-art');
-    if (item.image) {
-        const img = el('img');
-        img.src = item.image;
-        img.alt = '';
-        img.loading = 'lazy';
-        art.appendChild(img);
-    } else {
-        art.appendChild(pixelArt(item.category));
-    }
+    art.appendChild(createArt(item));
     card.appendChild(art);
 
     const content = el('div', 'card-content');
-    content.appendChild(el('h3', '', item.name));
+    const title = el('h3');
+    if (hasDetails(item)) {
+        const open = el('button', 'card-title-btn', item.name);
+        open.type = 'button';
+        open.addEventListener('click', () => openDetail(item));
+        title.appendChild(open);
+    } else {
+        title.textContent = item.name;
+    }
+    content.appendChild(title);
 
     const details = el('div', 'card-details');
     details.appendChild(el('p', 'card-desc', item.description));
-    const tags = el('div', 'card-tags');
-    [item.edition, `MC ${item.version}`, item.loader].filter(Boolean).forEach(tag => {
-        tags.appendChild(el('span', 'tag', tag));
-    });
-    details.appendChild(tags);
+    details.appendChild(createTags(item));
     content.appendChild(details);
+
+    if (hasDetails(item)) {
+        const more = el('button', 'arrow-link');
+        more.type = 'button';
+        more.innerHTML = `<span>Mehr lesen</span>${ARROW_ICON}`;
+        more.addEventListener('click', () => openDetail(item));
+        content.appendChild(more);
+    }
 
     const footer = el('div', 'card-footer');
     footer.appendChild(el('span', 'card-date', formatDate(item.updated)));
-    if (item.example) {
-        footer.appendChild(el('span', 'download-btn soon', 'Bald verfügbar'));
-    } else {
-        const link = el('a', 'download-btn');
-        link.href = item.file;
-        link.setAttribute('download', '');
-        link.innerHTML = `${DOWNLOAD_ICON}<span>Download</span>`;
-        footer.appendChild(link);
-    }
+    footer.appendChild(createDownload(item));
     content.appendChild(footer);
     card.appendChild(content);
     return card;
 };
+
+// --- Detail Dialog ---
+const dialog = document.getElementById('detail');
+const dialogBody = document.getElementById('detail-body');
+
+const openDetail = item => {
+    const category = CATEGORIES[item.category];
+    const head = el('div', 'detail-head');
+    const art = el('div', 'detail-art');
+    art.appendChild(createArt(item));
+    head.appendChild(art);
+
+    const intro = el('div', 'detail-intro');
+    intro.appendChild(el('span', `detail-badge ${category.badgeClass}`, category.badge));
+    const heading = el('h2', '', item.name);
+    heading.id = 'detail-title';
+    intro.appendChild(heading);
+    intro.appendChild(el('p', 'detail-lead', item.description));
+    intro.appendChild(createTags(item));
+    head.appendChild(intro);
+
+    const body = [head];
+
+    (item.details || []).forEach(text => body.push(el('p', 'detail-text', text)));
+
+    if (item.features) {
+        body.push(el('h3', '', 'Was drin ist'));
+        const list = el('ul', 'detail-list');
+        item.features.forEach(text => list.appendChild(el('li', '', text)));
+        body.push(list);
+    }
+
+    if (item.credits) {
+        body.push(el('h3', '', 'Enthält Inhalte von'));
+        const list = el('ul', 'detail-list detail-credits');
+        item.credits.forEach(text => list.appendChild(el('li', '', text)));
+        body.push(list);
+    }
+
+    const footer = el('div', 'detail-footer');
+    footer.appendChild(createDownload(item));
+    const meta = [formatDate(item.updated), item.size].filter(Boolean).join(' · ');
+    footer.appendChild(el('span', 'card-date', meta));
+    body.push(footer);
+
+    dialogBody.replaceChildren(...body);
+    dialog.showModal();
+    dialog.scrollTop = 0;
+};
+
+dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
+
+// Klick auf den abgedunkelten Hintergrund schliesst den Dialog
+dialog.addEventListener('click', event => {
+    if (event.target === dialog) dialog.close();
+});
 
 const matches = item => {
     if (state.category !== 'all' && item.category !== state.category) return false;

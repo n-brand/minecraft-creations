@@ -38,9 +38,12 @@ Stand: 2026-10-24
 Erledigt:
 - Grundseite im Portfolio-Stil mit Kategorien, Edition-Filter, Suche, Installationshilfe, Hell/Dunkel-Umschalter und Footer-Credit. Lokal geprüft (Desktop und 375px, keine Konsolenfehler, kein Seitwärts-Scrollen).
 - Sechs Beispiel-Einträge (2 Mods, 2 Texturepacks, 2 Skins) mit `example: true`.
+- Erster echter Eintrag „Mein Pack“ (Texturepack, Java, pack_format 55 → ab 1.21.5): `downloads/texturepacks/mein-pack.zip`, Bild = `pack.png` aus dem Zip (`images/mein-pack.png`). Texte aus `UMBENENNEN.md`, `BEFEHLE.md` und `CREDITS.txt` im Zip.
+- Detailansicht als `<dialog>` („Mehr lesen →“ oder Klick auf den Titel) für Einträge mit `details`, `features` oder `credits`; zeigt auch Dateigrösse (`size`).
 
 Offen:
-- Echte Mods, Texturepacks und Skins von Nicolas hinzufügen, Beispiele entfernen.
+- **Mein Pack enthält fremde Packs** (Golden Tridents – nela1, LowOnFire – haikis, No Pumpkin Blur, McDonald Food V3 – ItzAX0LOTL). Vor dem Veröffentlichen klären, ob deren Lizenzen das Weiterverteilen erlauben; Credits stehen in der Detailansicht.
+- Weitere echte Mods, Texturepacks und Skins von Nicolas hinzufügen, Beispiele entfernen.
 - GitHub Pages in den Repo-Einstellungen aktivieren (Branch `main`, Ordner `/`).
 - Eigene Vorschaubilder pro Eintrag (z.B. Skin-Kopf aus der echten PNG) statt Kategorie-Icon.
 - Eintrag im Portfolio (`C:\Source\portfolio`, Generator `tools/build-pages.js`), falls gewünscht.
