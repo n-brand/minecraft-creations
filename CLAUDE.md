@@ -15,15 +15,18 @@ Es gelten zusätzlich die globalen Regeln aus `C:\Source\CLAUDE.md` (Git-Identit
 
 - `index.html` – einzige Seite: Sidebar (Kategorien) + Downloads-Raster + Installationshilfe
 - `css/styles.css` – alle Styles; Dark ist Standard (`:root`), Light über `:root[data-theme="light"]`
-- `javascript/main.js` – Hell/Dunkel-Umschalter, Karten aus den Daten erzeugen, Filter (Kategorie per Hash `#mods` usw., Edition, Suche), Pixel-Art-Ersatzbilder (`ART`)
+- `javascript/main.js` – Service-Worker-Registrierung, Hell/Dunkel-Umschalter, Karten aus den Daten erzeugen, Filter (Kategorie per Hash `#mods` usw., Edition, Suche), Pixel-Art-Ersatzbilder (`ART`), Detail-Dialog, Umbenennen-Anleitung (`createGuide`), Hinweis-Toast
 - `data/items.js` – **alle Downloads** als `window.ITEMS` (Felder oben in der Datei beschrieben). Neue Einträge nur hier, kein HTML anfassen.
-- `downloads/<kategorie>/` – die Dateien (`.jar`, `.zip`, `.mcpack`, `.png`)
-- `images/` – Favicon und optionale Vorschaubilder (`image` im Eintrag)
+- `downloads/<kategorie>/` – die Dateien (`.jar`, `.zip`, `.mcpack`, `.png`); werden **nie** offline gespeichert
+- `images/` – Vorschaubilder (`image` im Eintrag), `images/icons/` App-Icons, `images/<eintrag>/` Item-Icons für Anleitungen (z.B. `images/mein-pack/` = Essens-Texturen aus dem Pack)
+- **PWA:** `manifest.webmanifest`, `sw.js` (Service Worker, Muster wie im Portfolio: eigene Dateien Netz zuerst mit 4 s, sonst Speicher; Google Fonts aus dem Speicher; `downloads/` wird durchgereicht). Offline-Klick auf Download zeigt „Downloads gehen nur mit Internet“.
+- `tools/build-sw.mjs` – schreibt die Offline-Liste in `sw.js` (zwischen `PRECACHE-START`/`-END`): alle Dateien in `css/`, `javascript/`, `data/`, `images/` plus Startseite und Manifest. **Nach jedem neuen Eintrag oder Bild ausführen:** `node tools/build-sw.mjs`
+- `tools/make-icons.mjs` – erzeugt die App-Icons (gelbe gedrehte Kachel mit Grasblock auf Navy) ohne Zusatzpakete: `node tools/make-icons.mjs`
 
 ## Konventionen
 
 - Design: Portfolio-Stil aus der globalen CLAUDE.md (Navy/Gelb, Nunito, Karten mit Schattenkante, Badge oben mittig, Sidebar am PC, Tab-Leiste unten am Handy ≤900px). Badge-Farben: Mod gelb, Texturepack grün, Skin rosa.
-- Statische Seite ohne Build-Schritt. Alle Pfade relativ (`./…`), da die Seite unter `/minecraft-creations/` läuft.
+- Statische Seite ohne Build-Schritt (nur `tools/build-sw.mjs` für die Offline-Liste). Alle Pfade relativ (`./…`), da die Seite unter `/minecraft-creations/` läuft.
 - Einträge mit `example: true` sind Platzhalter und zeigen „Bald verfügbar“ statt Download. Sobald echte Dateien da sind, Beispiele entfernen.
 - Handy (≤680px): zwei Karten pro Zeile, nur Bild, Badge, Titel und Download-Button.
 - Pixel-Art: Pixel überlappen leicht (1.06), kein `crispEdges`, damit beim Drehen keine Linien entstehen.
@@ -39,7 +42,9 @@ Erledigt:
 - Grundseite im Portfolio-Stil mit Kategorien, Edition-Filter, Suche, Installationshilfe, Hell/Dunkel-Umschalter und Footer-Credit. Lokal geprüft (Desktop und 375px, keine Konsolenfehler, kein Seitwärts-Scrollen).
 - Sechs Beispiel-Einträge (2 Mods, 2 Texturepacks, 2 Skins) mit `example: true`.
 - Erster echter Eintrag „Mein Pack“ (Texturepack, Java, pack_format 55 → ab 1.21.5): `downloads/texturepacks/mein-pack.zip`, Bild = `pack.png` aus dem Zip (`images/mein-pack.png`). Texte aus `UMBENENNEN.md`, `BEFEHLE.md` und `CREDITS.txt` im Zip.
-- Detailansicht als `<dialog>` („Mehr lesen →“ oder Klick auf den Titel) für Einträge mit `details`, `features` oder `credits`; zeigt auch Dateigrösse (`size`).
+- Detailansicht als `<dialog>` („Mehr lesen →“ oder Klick auf den Titel) für Einträge mit `details`, `features`, `credits` oder `guide`; zeigt auch Dateigrösse (`size`).
+- Umbenennen-Anleitung für Mein Pack (Feld `guide`): 5 Schritte, Suche, 22 Grund-Items (deutscher + englischer Name) mit 48 Namen inkl. Textur-Icon. Klick auf Namen kopiert ihn, „/give“ kopiert den Befehl. Namen 1:1 aus den `assets/minecraft/items/*.json` im Pack geprüft. Deutsche Itemnamen aus dem Gedächtnis – bei Gelegenheit im Spiel gegenprüfen.
+- PWA (installierbar, offline lesbar, Downloads nur online). Lokal geprüft: Service Worker aktiv, 61 Dateien gespeichert, Seite inkl. Bilder lädt bei gestopptem Server.
 
 Offen:
 - **Mein Pack enthält fremde Packs** (Golden Tridents – nela1, LowOnFire – haikis, No Pumpkin Blur, McDonald Food V3 – ItzAX0LOTL). Vor dem Veröffentlichen klären, ob deren Lizenzen das Weiterverteilen erlauben; Credits stehen in der Detailansicht.

@@ -1,3 +1,12 @@
+// --- Service Worker (PWA) ---
+const siteRoot = new URL('..', document.currentScript.src);
+
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register(new URL('sw.js', siteRoot), { scope: siteRoot.pathname }).catch(() => {});
+    });
+}
+
 // --- Theme Toggle ---
 const themeToggle = document.querySelector('.theme-toggle');
 
@@ -131,7 +140,7 @@ const formatDate = iso => new Date(`${iso}T00:00:00`).toLocaleDateString('de-CH'
 
 const ARROW_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>';
 
-const hasDetails = item => Boolean(item.details || item.features || item.credits);
+const hasDetails = item => Boolean(item.details || item.features || item.credits || item.guide);
 
 const createArt = item => {
     if (!item.image) return pixelArt(item.category);
@@ -156,6 +165,11 @@ const createDownload = item => {
     link.href = item.file;
     link.setAttribute('download', '');
     link.innerHTML = `${DOWNLOAD_ICON}<span>Download</span>`;
+    link.addEventListener('click', event => {
+        if (navigator.onLine) return;
+        event.preventDefault();
+        showToast('Downloads gehen nur mit Internet');
+    });
     return link;
 };
 
@@ -201,6 +215,105 @@ const createCard = item => {
     return card;
 };
 
+// --- Rename Guide ---
+const COPY_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>';
+
+const toast = el('div', 'toast');
+toast.setAttribute('role', 'status');
+let toastTimer;
+
+// Im offenen Dialog muss der Hinweis im Dialog liegen, sonst ist er verdeckt
+const showToast = text => {
+    (dialog.open ? dialog : document.body).appendChild(toast);
+    toast.textContent = text;
+    toast.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('visible'), 1600);
+};
+
+const copyText = async (text, message) => {
+    try {
+        await navigator.clipboard.writeText(text);
+        showToast(message);
+    } catch (e) {
+        showToast(`Kopieren nicht möglich: ${text}`);
+    }
+};
+
+const createGuide = guide => {
+    const section = el('section', 'guide');
+    section.appendChild(el('h3', '', guide.title));
+
+    const steps = el('ol', 'guide-steps');
+    guide.steps.forEach(text => steps.appendChild(el('li', '', text)));
+    section.appendChild(steps);
+    section.appendChild(el('p', 'guide-hint', guide.hint));
+
+    const filter = el('label', 'search guide-search');
+    filter.innerHTML = '<span class="visually-hidden">Item suchen</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>';
+    const input = el('input');
+    input.type = 'search';
+    input.placeholder = 'Item oder Name suchen …';
+    input.autocomplete = 'off';
+    filter.appendChild(input);
+    section.appendChild(filter);
+
+    const list = el('div', 'guide-groups');
+    const groups = guide.groups.map(group => {
+        const row = el('div', 'guide-group');
+        const base = el('div', 'guide-base');
+        base.appendChild(el('strong', '', group.item));
+        base.appendChild(el('span', '', group.itemEn));
+        row.appendChild(base);
+
+        const names = el('div', 'guide-names');
+        group.names.forEach(([name, icon]) => {
+            const chip = el('div', 'guide-chip');
+            const nameBtn = el('button', 'guide-name');
+            nameBtn.type = 'button';
+            nameBtn.title = 'Namen kopieren';
+            const img = el('img');
+            img.src = `${guide.iconPath}${icon}.png`;
+            img.alt = '';
+            img.loading = 'lazy';
+            nameBtn.appendChild(img);
+            nameBtn.appendChild(el('span', '', name));
+            nameBtn.addEventListener('click', () => copyText(name, `„${name}“ kopiert`));
+            chip.appendChild(nameBtn);
+
+            const giveBtn = el('button', 'guide-give');
+            giveBtn.type = 'button';
+            giveBtn.title = 'Befehl kopieren';
+            giveBtn.innerHTML = `${COPY_ICON}<span>/give</span>`;
+            giveBtn.addEventListener('click', () => {
+                copyText(`/give @s ${group.id}[custom_name="${name}"]`, 'Befehl kopiert');
+            });
+            chip.appendChild(giveBtn);
+            names.appendChild(chip);
+        });
+        row.appendChild(names);
+        list.appendChild(row);
+        return { row, text: [group.item, group.itemEn, ...group.names.map(([name]) => name)].join(' ').toLowerCase() };
+    });
+    section.appendChild(list);
+
+    const none = el('p', 'empty', 'Kein Item gefunden.');
+    none.hidden = true;
+    section.appendChild(none);
+
+    input.addEventListener('input', () => {
+        const query = input.value.trim().toLowerCase();
+        let shown = 0;
+        groups.forEach(({ row, text }) => {
+            row.hidden = query !== '' && !text.includes(query);
+            if (!row.hidden) shown++;
+        });
+        none.hidden = shown > 0;
+    });
+
+    return section;
+};
+
 // --- Detail Dialog ---
 const dialog = document.getElementById('detail');
 const dialogBody = document.getElementById('detail-body');
@@ -231,6 +344,8 @@ const openDetail = item => {
         item.features.forEach(text => list.appendChild(el('li', '', text)));
         body.push(list);
     }
+
+    if (item.guide) body.push(createGuide(item.guide));
 
     if (item.credits) {
         body.push(el('h3', '', 'Enthält Inhalte von'));

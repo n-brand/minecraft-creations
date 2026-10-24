@@ -9,6 +9,9 @@ Meine Mods, Texturepacks und Skins für Minecraft zum Herunterladen.
 1. Datei nach `downloads/<kategorie>/` legen (`mods`, `texturepacks` oder `skins`).
 2. Eintrag in `data/items.js` ergänzen (Felder sind oben in der Datei beschrieben).
 3. Optional ein Vorschaubild unter `images/` ablegen und im Feld `image` angeben.
+4. Offline-Liste aktualisieren: `node tools/build-sw.mjs`
+
+Die Seite ist eine PWA: Sie lässt sich installieren und offline ansehen. Downloads funktionieren nur mit Internet.
 
 ## Lokal testen
 
