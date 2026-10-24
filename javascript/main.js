@@ -175,9 +175,8 @@ const createCard = item => {
     const content = el('div', 'card-content');
     const title = el('h3');
     if (hasDetails(item)) {
-        const open = el('button', 'card-title-btn', item.name);
-        open.type = 'button';
-        open.addEventListener('click', () => openDetail(item));
+        const open = el('a', 'card-title-btn', item.name);
+        open.href = `#${item.id}`;
         title.appendChild(open);
     } else {
         title.textContent = item.name;
@@ -190,10 +189,9 @@ const createCard = item => {
     content.appendChild(details);
 
     if (hasDetails(item)) {
-        const more = el('button', 'arrow-link');
-        more.type = 'button';
+        const more = el('a', 'arrow-link');
+        more.href = `#${item.id}`;
         more.innerHTML = `<span>Mehr lesen</span>${ARROW_ICON}`;
-        more.addEventListener('click', () => openDetail(item));
         content.appendChild(more);
     }
 
@@ -348,16 +346,44 @@ const openDetail = item => {
 
     const footer = el('div', 'detail-footer');
     footer.appendChild(createDownload(item));
+    footer.appendChild(createShare(item));
     const meta = [formatDate(item.updated), item.size].filter(Boolean).join(' · ');
     footer.appendChild(el('span', 'card-date', meta));
     body.push(footer);
 
     dialogBody.replaceChildren(...body);
-    dialog.showModal();
+    if (!dialog.open) dialog.showModal();
     dialog.scrollTop = 0;
 };
 
+const SHARE_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>';
+
+// Teilen-Menü am Handy, sonst Link in die Zwischenablage
+const createShare = item => {
+    const button = el('button', 'share-btn');
+    button.type = 'button';
+    button.innerHTML = `${SHARE_ICON}<span>Link teilen</span>`;
+    button.addEventListener('click', async () => {
+        const url = `${location.origin}${location.pathname}#${item.id}`;
+        if (navigator.share && matchMedia('(pointer: coarse)').matches) {
+            try {
+                await navigator.share({ title: item.name, url });
+            } catch (e) {}
+            return;
+        }
+        copyText(url, 'Link kopiert');
+    });
+    return button;
+};
+
 dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
+
+// Beim Schliessen den Link wieder auf die Kategorie setzen
+dialog.addEventListener('close', () => {
+    const hash = location.hash.slice(1);
+    if (CATEGORIES[hash] || hash === '' || hash === 'install') return;
+    history.replaceState(null, '', state.category === 'all' ? location.pathname : `#${state.category}`);
+});
 
 // Klick auf den abgedunkelten Hintergrund schliesst den Dialog
 dialog.addEventListener('click', event => {
@@ -388,8 +414,15 @@ document.querySelectorAll('[data-count]').forEach(node => {
 });
 
 // --- Filter ---
+// #mods usw. filtert, #<id> eines Eintrags öffnet seine Detailansicht (teilbarer Link)
 const applyHash = () => {
-    const hash = location.hash.slice(1);
+    const hash = decodeURIComponent(location.hash.slice(1));
+    const item = items.find(entry => entry.id === hash && hasDetails(entry));
+    if (item) {
+        openDetail(item);
+        return;
+    }
+    if (dialog.open) dialog.close();
     if (!CATEGORIES[hash] && hash !== '') return;
     state.category = hash || 'all';
     render();

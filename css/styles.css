@@ -426,13 +426,8 @@ code {
 }
 
 .card-title-btn {
-    padding: 0;
-    border: none;
-    background: none;
     color: inherit;
-    font: inherit;
-    text-align: left;
-    cursor: pointer;
+    text-decoration: none;
 }
 
 .card-title-btn:hover {
@@ -560,6 +555,36 @@ code {
     fill: none;
     stroke: currentColor;
     stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border: 2px solid currentColor;
+    border-radius: 999px;
+    background: none;
+    color: var(--text-color);
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.share-btn:hover {
+    color: var(--accent-color);
+}
+
+.share-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
     stroke-linecap: round;
     stroke-linejoin: round;
 }

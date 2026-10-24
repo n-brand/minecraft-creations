@@ -28,6 +28,7 @@ Es gelten zusätzlich die globalen Regeln aus `C:\Source\CLAUDE.md` (Git-Identit
 
 - Design: Portfolio-Stil aus der globalen CLAUDE.md (Navy/Gelb, Nunito, Karten mit Schattenkante, Badge oben mittig, Sidebar am PC, Tab-Leiste unten am Handy ≤900px). Badge-Farben: Mod gelb, Texturepack grün, Skin rosa.
 - Statische Seite ohne Build-Schritt (nur `tools/build-sw.mjs` für die Offline-Liste). Alle Pfade relativ (`./…`), da die Seite unter `/minecraft-creations/` läuft.
+- **Teilbare Links:** `#<id>` öffnet die Detailansicht eines Eintrags direkt (z.B. `…/minecraft-creations/#mein-pack`), „Mehr lesen“ und der Titel sind echte Links darauf. Im Dialog „Link teilen“: am Handy das Teilen-Menü, sonst Link kopieren. Beim Schliessen springt die Adresse zurück auf die Kategorie. Darum darf eine `id` nie `all`, `mods`, `texturepacks`, `skins` oder `install` heissen.
 - Einträge mit `example: true` sind Platzhalter und zeigen „Bald verfügbar“ statt Download. Sobald echte Dateien da sind, Beispiele entfernen.
 - Handy (≤680px): zwei Karten pro Zeile, nur Bild, Badge, Titel und Download-Button.
 - Pixel-Art: Pixel überlappen leicht (1.06), kein `crispEdges`, damit beim Drehen keine Linien entstehen.
