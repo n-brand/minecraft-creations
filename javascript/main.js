@@ -151,6 +151,7 @@ const createTags = item => {
 
 const createDownload = item => {
     if (item.example) return el('span', 'download-btn soon', 'Bald verfügbar');
+    if (item.serverOnly) return el('span', 'download-btn soon', 'Nur auf dem Server');
     const link = el('a', 'download-btn');
     link.href = item.file;
     link.setAttribute('download', '');
@@ -257,7 +258,7 @@ const createGuide = guide => {
         row.appendChild(base);
 
         const names = el('div', 'guide-names');
-        group.names.forEach(([name, icon]) => {
+        group.names.forEach(([name, icon, give]) => {
             const chip = el('div', 'guide-chip');
             const nameBtn = el('button', 'guide-name');
             nameBtn.type = 'button';
@@ -276,7 +277,7 @@ const createGuide = guide => {
             giveBtn.title = 'Befehl kopieren';
             giveBtn.innerHTML = `${COPY_ICON}<span>/give</span>`;
             giveBtn.addEventListener('click', () => {
-                copyText(`/give @s ${group.id}[custom_name="${name}"]`, 'Befehl kopiert');
+                copyText(give || `/give @s ${group.id}[custom_name="${name}"]`, 'Befehl kopiert');
             });
             chip.appendChild(giveBtn);
             names.appendChild(chip);

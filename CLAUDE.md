@@ -38,7 +38,7 @@ Es gelten zusätzlich die globalen Regeln aus `C:\Source\CLAUDE.md` (Git-Identit
 
 ## Aktueller Stand – IMMER AKTUELL HALTEN
 
-Stand: 2026-10-24
+Stand: 2026-10-25
 
 Erledigt:
 - Grundseite im Portfolio-Stil mit Kategorien, Edition-Filter, Suche, Installationshilfe, Hell/Dunkel-Umschalter und Footer-Credit. Lokal geprüft (Desktop und 375px, keine Konsolenfehler, kein Seitwärts-Scrollen).
@@ -46,9 +46,11 @@ Erledigt:
 - Erster echter Eintrag „Mein Pack“ (Texturepack, Java, pack_format 55 → ab 1.21.5): `downloads/texturepacks/mein-pack.zip`, Bild = `pack.png` aus dem Zip (`images/mein-pack.png`). Texte aus `UMBENENNEN.md`, `BEFEHLE.md` und `CREDITS.txt` im Zip.
 - Detailansicht als `<dialog>` („Mehr lesen →“ oder Klick auf den Titel) für Einträge mit `details`, `features`, `credits` oder `guide`; zeigt auch Dateigrösse (`size`).
 - Umbenennen-Anleitung für Mein Pack (Feld `guide`): 5 Schritte, Suche, 22 Grund-Items (deutscher + englischer Name) mit 48 Namen inkl. Textur-Icon. Klick auf Namen kopiert ihn, „/give“ kopiert den Befehl. Namen 1:1 aus den `assets/minecraft/items/*.json` im Pack geprüft. Deutsche Itemnamen aus dem Gedächtnis – bei Gelegenheit im Spiel gegenprüfen.
+- **Server Pack 2026** (Branch `server-pack-2026`, Worktree `C:\Source\minecraft-creations-server-pack`, lokal: Eintrag `minecraft-creations-server-pack` → http://localhost:4185): Eintrag mit `serverOnly: true` (kein Download, „Nur auf dem Server“ – Entscheidung Nicolas wegen Lizenzen der Mods). Anleitung mit 200 Namen in 15 Gruppen (Grund-Item · Mod), Icons in `images/server-pack-2026/` (flach = Mod-Textur, 3D = isometrisch gerendert), eigener /give-Befehl pro Name bei anziehbaren Kostümen (`equippable`). Design: `docs/superpowers/specs/2026-10-25-server-pack-2026-design.md`. Das Pack-Zip liegt nur lokal (`C:\Users\nicol\Downloads\Server Pack 2026.zip`), nie im Repo. Icons auf Wunsch von Nicolas mit veröffentlicht (2026-10-25).
 - PWA (installierbar, offline lesbar, Downloads nur online). Lokal geprüft: Service Worker aktiv, 61 Dateien gespeichert, Seite inkl. Bilder lädt bei gestopptem Server.
 
 Offen:
+- **Server Pack 2026:** Generator (`server-pack/`) ist noch nicht im Repo, nur als Spike in der Brainstorming-Sitzung; In-Game-Test durch Nicolas läuft. Offen: Server-Version (26.2 oder 26.3 → `version`, Pack-Format), ob Kostüme per Datapack im Survival erhältlich sein sollen. Pack-Name im Zip noch „Halloween Test (Spike)“.
 - **Mein Pack enthält fremde Packs** (Golden Tridents – nela1, LowOnFire – haikis, No Pumpkin Blur, McDonald Food V3 – ItzAX0LOTL). Vor dem Veröffentlichen klären, ob deren Lizenzen das Weiterverteilen erlauben; Credits stehen in der Detailansicht.
 - Weitere echte Mods, Texturepacks und Skins von Nicolas hinzufügen, Beispiele entfernen.
 - GitHub Pages in den Repo-Einstellungen aktivieren (Branch `main`, Ordner `/`).
