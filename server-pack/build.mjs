@@ -1,0 +1,63 @@
+// node server-pack/build.mjs – baut Resource Pack, Datapack, Befehle, Icons und den Seiten-Eintrag.
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { readZip, writeZip } from "./lib/zip.mjs";
+import { NAMESPACE, buildItemList, giveCommand } from "./items.mjs";
+import { buildResourcePack, isModel3d } from "./resourcepack.mjs";
+import { checkPack } from "./check.mjs";
+import { buildDatapack } from "./datapack.mjs";
+import { renderIcon } from "./icons.mjs";
+import { entrySource, insertEntry } from "./site-entry.mjs";
+
+const here = path.dirname(fileURLToPath(import.meta.url));
+const repo = path.dirname(here);
+const sources = JSON.parse(fs.readFileSync(path.join(here, "quellen.json"), "utf8"));
+const selection = fs.readFileSync(path.join(here, "auswahl.txt"), "utf8").split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
+
+/* --- Quellen lesen --- */
+const assetsOnly = (n) => n.startsWith("assets/");
+const modFiles = Object.fromEntries(Object.entries(sources.mods).map(([mod, p]) => [mod, readZip(fs.readFileSync(p), assetsOnly)]));
+const hatFiles = readZip(fs.readFileSync(sources.hats));
+const vanillaFiles = readZip(fs.readFileSync(sources.vanillaJar), (n) => n.startsWith("assets/minecraft/items/") || n.startsWith("assets/minecraft/textures/block/"));
+const lang = Object.fromEntries(Object.keys(sources.mods).map((mod) => [mod, JSON.parse(modFiles[mod].get(`assets/${NAMESPACE[mod]}/lang/en_us.json`) || "{}")]));
+
+/* --- Bauen und prüfen --- */
+const selected = buildItemList({ selection, lang, is3d: (mod, id) => isModel3d(modFiles[mod], NAMESPACE[mod], id) });
+const { files, items } = buildResourcePack({ items: selected, modFiles, vanillaFiles, hatFiles });
+const problems = checkPack(files);
+const caseCount = [...files.keys()].filter((p) => p.startsWith("assets/minecraft/items/")).reduce((n, p) => n + JSON.parse(files.get(p)).model.cases.length, 0);
+console.log(`${caseCount} Item-Modelle geprüft, ${problems.length} Probleme`);
+if (problems.length) {
+  problems.forEach((p) => console.log(" - " + p));
+  process.exit(1);
+}
+const datapack = buildDatapack({ items });
+
+/* --- Schreiben --- */
+fs.writeFileSync(sources.resourcepackOut, writeZip(files));
+fs.writeFileSync(sources.datapackOut, writeZip(datapack));
+
+const out = path.join(here, "out");
+fs.mkdirSync(out, { recursive: true });
+const rows = items.map((i) => ({ name: i.name, base: i.base, kind: i.kind, cmd: giveCommand(i) }));
+fs.writeFileSync(path.join(out, "befehle.json"), JSON.stringify(rows, null, 2));
+fs.writeFileSync(path.join(out, "BEFEHLE.md"), "# Server Pack 2026 – Befehle\n\n| Name | Grund-Item | Befehl |\n|---|---|---|\n" + rows.map((r) => `| ${r.name} | ${r.base} | \`${r.cmd}\` |`).join("\n") + "\n");
+
+const iconDir = path.join(repo, "images", "server-pack-2026");
+fs.mkdirSync(iconDir, { recursive: true });
+let icons = 0;
+for (const item of items) {
+  const png = renderIcon(item.model, files, 64);
+  if (png) { fs.writeFileSync(path.join(iconDir, item.icon + ".png"), png); icons++; } else console.log(" - kein Icon: " + item.name);
+}
+const cover = renderIcon("funny_pumpkin:item/pumpkin_candle", files, 256);
+if (cover) fs.writeFileSync(path.join(repo, "images", "server-pack-2026.png"), cover);
+
+const itemsJs = path.join(repo, "data", "items.js");
+fs.writeFileSync(itemsJs, insertEntry(fs.readFileSync(itemsJs, "utf8"), entrySource(items)));
+
+const count = (k) => items.filter((i) => i.kind === k).length;
+console.log(`${items.length} Items (Kostüme ${count("costume")}, Deko ${count("deco")}, Essen ${count("food")}), ${icons} Icons, Datapack ${datapack.size} Dateien`);
+console.log(`Resource Pack → ${sources.resourcepackOut}`);
+console.log(`Datapack → ${sources.datapackOut}`);

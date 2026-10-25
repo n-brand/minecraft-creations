@@ -26,8 +26,8 @@ window.ITEMS = [
     id: "server-pack-2026",
     category: "texturepacks",
     name: "Server Pack 2026",
-    description: "Halloween auf unserem Server: 199 Deko-Items, Kostüme, Süssigkeiten und Weihnachtsmützen zum Umbenennen – ganz ohne Mods.",
-    version: "26.2+",
+    description: "Halloween auf unserem Server: 199 Deko-Items, Kostüme, Süssigkeiten und eine Weihnachtsmütze zum Umbenennen – ganz ohne Mods.",
+    version: "26.3",
     edition: "Java",
     serverOnly: true,
     image: "images/server-pack-2026.png",
@@ -35,15 +35,15 @@ window.ITEMS = [
     details: [
       "Das Server Pack 2026 bringt Sachen aus vier Halloween-Mods in Vanilla-Minecraft. Du benennst ein normales Item am Amboss um, und es sieht aus wie das Mod-Item. Ohne Umbenennen bleibt alles normal.",
       "Das Pack gibt es nur auf unserem Server, es lädt beim Beitreten automatisch. Hier findest du alle Namen und fertige /give-Befehle.",
-      "3D-Deko liegt auf der Eichenholzdruckplatte: In der Hand, im Itemrahmen und auf dem Kopf eines Rüstungsständers siehst du das Modell. Platziert wird sie wieder zur normalen Druckplatte – das ist eine Grenze von Minecraft."
+      "3D-Deko liegt auf der Eichenholzdruckplatte: Stell sie einfach hin, dann erscheint das Modell. Mit einem Linksklick aufs Modell baust du es wieder ab und bekommst das Item zurück."
     ],
     features: [
-      "Deko in 3D: Kerzenleuchter, Totenkopf-Kerzen, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr.",
+      "Deko in 3D: Kerzenleuchter, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr – hinstellen und per Linksklick wieder abbauen.",
       "Kostüme: Braut, Frankenstein, Meerjungfrau, Pirat, Mumie, Vampir, Hexe, Clown und viele mehr.",
-      "Per /give anziehbar mit echter Optik: Braut, Frankenstein, Meerjungfrau, Wassermann, Mumie, Pirat, Kürbis- und Baumrinden-Rüstung. Nur umbenannt ändert sich das Icon.",
+      "Echte Optik beim Anziehen: Braut, Frankenstein, Meerjungfrau, Wassermann, Mumie, Pirat, Kürbis- und Baumrinden-Rüstung. Einfach umbenennen und anziehen.",
       "Weihnachtsmütze: Geschnitzten Kürbis „Christmas Hat“ nennen und aufsetzen – mit freier Sicht.",
       "Süssigkeiten, Muffin und Lollis liegen auf dem Brot und sind essbar.",
-      "Totenköpfe mit Kerzen liegen auf dem Skelettschädel: Du kannst sie aufsetzen und hinstellen (platziert als normaler Schädel).",
+      "Totenköpfe mit Kerzen liegen auf dem Skelettschädel: aufsetzen oder hinstellen (platziert als normaler Schädel).",
       "Süssigkeiten-Beutel liegen auf dem Bündel – du kannst Sachen darin aufbewahren.",
       "Flügel liegen auf den Elytren – du kannst damit fliegen (angezogen sehen sie wie normale Elytren aus).",
       "6 Musik-Discs (spielen die normale Disc-Musik)."
@@ -65,7 +65,7 @@ window.ITEMS = [
         "Item rechts herausnehmen. Das Umbenennen kostet 1 Erfahrungslevel."
       ],
       hint: "Tipp: Ein Klick auf einen Namen kopiert ihn.",
-      giveHint: "Mit „/give“ kopierst du den Befehl für den Chat (Cheats müssen an sein). Bei Kostümen macht der Befehl sie auch anziehbar.",
+      giveHint: "Mit „/give“ kopierst du den Befehl für den Chat (Cheats müssen an sein).",
       iconPath: "images/server-pack-2026/",
       groups: [
         { id: "carved_pumpkin", item: "Geschnitzter Kürbis", itemEn: "Carved Pumpkin · Weihnachtsmützen", names: [["Christmas Hat", "halloween_christmas_hat"]] },

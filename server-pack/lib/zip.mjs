@@ -1,7 +1,7 @@
 import zlib from "node:zlib";
 
 /* --- Lesen --- */
-export function readZip(buf) {
+export function readZip(buf, keep = () => true) {
   let eocd = buf.length - 22;
   while (eocd >= 0 && buf.readUInt32LE(eocd) !== 0x06054b50) eocd--;
   if (eocd < 0) throw new Error("Kein Zip-Archiv");
@@ -15,7 +15,7 @@ export function readZip(buf) {
     const local = buf.readUInt32LE(pos + 42);
     const name = buf.toString("utf8", pos + 46, pos + 46 + nameLen);
     pos += 46 + nameLen + extraLen + commentLen;
-    if (name.endsWith("/")) continue;
+    if (name.endsWith("/") || !keep(name)) continue;
     const start = local + 30 + buf.readUInt16LE(local + 26) + buf.readUInt16LE(local + 28);
     const raw = buf.subarray(start, start + size);
     files.set(name, method === 8 ? zlib.inflateRawSync(raw) : Buffer.from(raw));
