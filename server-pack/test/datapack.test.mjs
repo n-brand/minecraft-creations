@@ -53,4 +53,50 @@ test("every item modify reference has a modifier file", () => {
   }
 });
 
+/* --- Deko --- */
+const adv = (icon) => JSON.parse(files.get(`data/server_pack_2026/advancement/deco/${icon}.json`));
+
+test("one placed_block advancement per pressure-plate item with exact name", () => {
+  const advs = [...files.keys()].filter((p) => p.startsWith("data/server_pack_2026/advancement/deco/"));
+  assert.equal(advs.length, 2);
+  const a = adv("decoween_haunted_fountain");
+  assert.equal(a.criteria.placed.trigger, "minecraft:placed_block");
+  assert.deepEqual(a.criteria.placed.conditions.location, [
+    { condition: "minecraft:block_state_property", block: "minecraft:oak_pressure_plate" },
+    { condition: "minecraft:match_tool", predicate: { items: "minecraft:oak_pressure_plate", components: { "minecraft:custom_name": "Haunted Fountain" } } },
+  ]);
+  assert.equal(a.rewards.function, "server_pack_2026:deco/placed/decoween_haunted_fountain");
+});
+
+test("reward revokes exactly its own advancement and passes the name", () => {
+  const f = fn("deco/placed/decoween_haunted_fountain");
+  assert.ok(f.includes("advancement revoke @s only server_pack_2026:deco/decoween_haunted_fountain"));
+  assert.ok(f.includes('function server_pack_2026:deco/place {name:"Haunted Fountain"}'));
+});
+
+test("raycast only converts a pressure plate without existing deco", () => {
+  const f = fn("deco/ray");
+  assert.ok(f.includes("minecraft:oak_pressure_plate"));
+  assert.ok(f.includes("unless entity @e[type=interaction,tag=sp26.deco,distance=..0.6]"));
+});
+
+test("left click breaks deco, drops only outside creative", () => {
+  assert.ok(fn("tick").includes("execute as @e[type=interaction,tag=sp26.deco] if data entity @s attack at @s run function server_pack_2026:deco/break"));
+  const f = fn("deco/break");
+  assert.ok(f.includes("gamemode=!creative"));
+  assert.ok(f.includes("distance=..0.5"));
+});
+
+test("item frames and armor stands are never touched", () => {
+  for (const [, c] of files) assert.ok(!/item_frame|armor_stand/.test(String(c)));
+});
+
+test("every function reference resolves to a file", () => {
+  for (const [path, content] of files) {
+    for (const m of String(content).matchAll(/(?:function|"function":\s*)\s*"?server_pack_2026:([a-z0-9_/]+)/g)) {
+      assert.ok(files.has(`data/server_pack_2026/function/${m[1]}.mcfunction`), `${path} → ${m[1]}`);
+    }
+  }
+});
+
 export { files, fn, items };
