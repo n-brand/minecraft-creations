@@ -25,14 +25,25 @@ test('every name variant is covered', () => {
 
 test('datapack has reset rules', () => {
     for (const entry of SET.filter(e => e.kind !== 'hand')) {
-        const reset = player.split('\n').filter(line => line.includes(`minecraft:${entry.item}[`) && line.endsWith('halloween:normal'));
+        const reset = player.split('\n').filter(line => line.endsWith(`halloween:${entry.key}_normal`));
         assert.equal(reset.length, 1, entry.item);
         for (const name of entry.names) assert.ok(reset[0].includes(`unless items`) && reset[0].includes(name), name);
     }
-    assert.deepEqual(JSON.parse(files['data/halloween/item_modifier/normal.json']), {
-        function: 'minecraft:set_components',
-        components: { '!minecraft:equippable': {} }
+});
+
+// "!minecraft:equippable" würde die Komponente ganz entfernen (Item nicht mehr tragbar),
+// darum setzt das Zurücksetzen die Vanilla-Werte von 26.3
+test('Zurücksetzen stellt die Vanilla-Ausrüstung her', () => {
+    const normal = key => JSON.parse(files[`data/halloween/item_modifier/${key}_normal.json`]);
+    assert.deepEqual(normal('teufelshoerner'), {
+        type: 'minecraft:set_components',
+        components: { 'minecraft:equippable': { slot: 'head', equip_sound: 'minecraft:item.armor.equip_leather', asset_id: 'minecraft:leather' } }
     });
+    assert.deepEqual(normal('teufelsfluegel'), {
+        type: 'minecraft:set_components',
+        components: { 'minecraft:equippable': { slot: 'chest', equip_sound: 'minecraft:item.armor.equip_elytra', asset_id: 'minecraft:elytra', damage_on_hurt: false } }
+    });
+    assert.ok(!Object.keys(files).some(path => path.endsWith('/normal.json')));
 });
 
 test('Hörner verlieren die Rüstungsoptik, Flügel bekommen eigene', () => {

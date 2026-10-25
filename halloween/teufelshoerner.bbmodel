@@ -104,7 +104,7 @@
         }
       },
       "type": "cube",
-      "uuid": "db16a88b-b59d-408e-890b-fe2e44d7610e"
+      "uuid": "48b3e9d0-6d63-4efe-90cb-631dafbcad2a"
     },
     {
       "name": "Horn Mitte links",
@@ -192,7 +192,7 @@
         }
       },
       "type": "cube",
-      "uuid": "01039dcd-1b95-4f27-97ac-d9d4507d3dee"
+      "uuid": "ffbbd23e-5ea0-48bd-af9d-5bd84a25a7e6"
     },
     {
       "name": "Horn Spitze links",
@@ -280,7 +280,7 @@
         }
       },
       "type": "cube",
-      "uuid": "e0b48922-1983-490b-bacc-2dbd1b38dd66"
+      "uuid": "ae5b5840-508e-4379-8bf4-6cc7572a53e4"
     },
     {
       "name": "Horn Basis rechts",
@@ -368,7 +368,7 @@
         }
       },
       "type": "cube",
-      "uuid": "792c09ef-f00c-48cd-8a6f-c2c09a8515be"
+      "uuid": "63eb5ac6-8c84-4379-a94d-f825f622f90c"
     },
     {
       "name": "Horn Mitte rechts",
@@ -456,7 +456,7 @@
         }
       },
       "type": "cube",
-      "uuid": "7b264923-0231-40ef-a259-d8429c007170"
+      "uuid": "f8ada03c-c25d-4174-94ee-87e5485d204c"
     },
     {
       "name": "Horn Spitze rechts",
@@ -544,16 +544,16 @@
         }
       },
       "type": "cube",
-      "uuid": "56db6218-57dd-4920-a17a-59d6dd7f7894"
+      "uuid": "e7c6d9c3-b649-4e6a-9cc2-001418382906"
     }
   ],
   "outliner": [
-    "db16a88b-b59d-408e-890b-fe2e44d7610e",
-    "01039dcd-1b95-4f27-97ac-d9d4507d3dee",
-    "e0b48922-1983-490b-bacc-2dbd1b38dd66",
-    "792c09ef-f00c-48cd-8a6f-c2c09a8515be",
-    "7b264923-0231-40ef-a259-d8429c007170",
-    "56db6218-57dd-4920-a17a-59d6dd7f7894"
+    "48b3e9d0-6d63-4efe-90cb-631dafbcad2a",
+    "ffbbd23e-5ea0-48bd-af9d-5bd84a25a7e6",
+    "ae5b5840-508e-4379-8bf4-6cc7572a53e4",
+    "63eb5ac6-8c84-4379-a94d-f825f622f90c",
+    "f8ada03c-c25d-4174-94ee-87e5485d204c",
+    "e7c6d9c3-b649-4e6a-9cc2-001418382906"
   ],
   "textures": [
     {
@@ -573,7 +573,7 @@
       "visible": true,
       "internal": true,
       "saved": false,
-      "uuid": "07ae1bd0-24c3-4ef7-8d38-fd21c114fcb9",
+      "uuid": "d72d816d-8820-49c9-80c2-24c0446f93c4",
       "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADeklEQVR42u2W525UVxSF768owPR261R73DBgXME2LhBK6rOgQOiYKlKQgBSSd6AloUNCKK+FohV9+3JG5NfwAHOkrX3O/bO+tfYeaTxvcAZncAanz7lfqulB2debzohe1Nt6HjX0NEj0LKzrcS3SqUJF56qhvv44oxO5kr03KoF9O1v21czn1a1WNVypWPFuFQoaKpft3Rfgr7ipfxodE3tYCewOxKNqaCAOgDqZL5vo4Y82G8w3W/ImmGQyvd7I5TQRRZpMEtWz2f4AT/xYQNBJAZBXrWEDAOhMqWbC9PO1qAdxPFs0OIQ7pZK5HQsCu1PjYahR3+8PgIiDwD3jeN3u2vvvpNUDwO3RzTlzT7kRIIQ4ndgZR7tY7AH1BWDuCCJGf9kcMoj3R4AgnTpdrFoSwNCJmZkDQCEKCClsjeP+ACybW0QScAtIAYQoTl1nGRFmB0gGcTcCALgzf5IA5IMSoBgD4oyEQpxvRzZldSxTsA7Axru9cEkQt4ud5eMOgBtNXwCiJn7ESMGNhB1gHDhHkJnjmujdIgKDS5aNuBHnzmLSScMbTloaaw2rFSRq+rHisq9uva2RRkfj7a4+371Hn+1a1uq2ndo/s6CvltfsTn0yPa87hZx+Lxf1R6WkJ3Fo9TSJ9DgK9Cj0pR/3SDfXpd/2pfdri9Kve9N+c10eoo1aZMJOdLQ5ZOUAPl1Y0t6pWR2Y3aW17dPWgTk4t9vEHgY1E6McjLvr+pL082oK8ctaCkG/sWzdQ3yiM2Luh+KmJeESIJ31HTOWwL6dcwYCEO75zvteqaD7tUoP4s9q2TrfScGcugIGYeqnFSvPCVHA4LwTNZRUAoP4YnHFxBE+NL9od1KgGAfiiLoRMJIHftXKRnB1QfphXrq4Xbo8lYpf2pECXdgmrx3WzTnFLhA74hSpvB8/zl38pEIKOL+dzxrEs3psokD1RvDdbCr8/Zx0flI6t9WE9e2MdGVaHm6JHWEAeHMnDe5OCAg6iaxMThnMl0uret5IDIC4gXAjobMfOjsunRpJO6LcqTNjBuYhxsyJHse82QneUalmIrhm4UgDCJcGIwGAuHF/t5g3cTpQpPD2aMtcWyeJd8LamDAQr14NbdZEzi/BuWckdBLANYJA8NNz7kkF5wjeymX+F72DQhDxf491pNOjKcDJrnW+Df7wDM7gDM5/iBsdtnXko/EAAAAASUVORK5CYII="
     }
   ],
