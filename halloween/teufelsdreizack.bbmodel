@@ -1,0 +1,1364 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "java_block",
+    "box_uv": false
+  },
+  "name": "Teufelsdreizack",
+  "parent": "",
+  "ambientocclusion": true,
+  "front_gui_light": false,
+  "visible_box": [
+    1,
+    1,
+    0
+  ],
+  "resolution": {
+    "width": 16,
+    "height": 16
+  },
+  "elements": [
+    {
+      "name": "Stiel",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        7.5,
+        -14,
+        7.5
+      ],
+      "to": [
+        8.5,
+        20,
+        8.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        8,
+        3,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            4,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            4,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            4,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            4,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            8,
+            8,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            8,
+            8,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "5854ba60-2606-4013-b992-05bcef21f292"
+    },
+    {
+      "name": "Griff",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        7.25,
+        -2,
+        7.25
+      ],
+      "to": [
+        8.75,
+        4,
+        8.75
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        8,
+        1,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            8,
+            8,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            8,
+            8,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            8,
+            8,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            8,
+            8,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            8,
+            8,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            8,
+            8,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "5538a431-6d46-4a8d-819d-4af49b927e20"
+    },
+    {
+      "name": "Knauf",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        7.25,
+        -15,
+        7.25
+      ],
+      "to": [
+        8.75,
+        -13,
+        8.75
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        8,
+        -14,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "963947e0-86cf-43b5-a3be-15b66c24f20e"
+    },
+    {
+      "name": "Querstück",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        3.5,
+        20,
+        7.25
+      ],
+      "to": [
+        12.5,
+        21.5,
+        8.75
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        8,
+        20.75,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            4,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            4,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            4,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            4,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            8,
+            8,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            8,
+            8,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "20ae1f27-3d4d-439c-a7dc-b2362d7a7fdf"
+    },
+    {
+      "name": "Zacke Mitte",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        7.25,
+        21.5,
+        7.5
+      ],
+      "to": [
+        8.75,
+        28,
+        8.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        8,
+        24.75,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "4d1317fc-6b6e-4682-a361-130c5c66786f"
+    },
+    {
+      "name": "Spitze Mitte",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        7.6,
+        28,
+        7.6
+      ],
+      "to": [
+        8.4,
+        31,
+        8.4
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        8,
+        29.5,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "0bef78ae-638b-44ed-9a56-1864ed87b4b9"
+    },
+    {
+      "name": "Zacke links",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        3.5,
+        21.5,
+        7.5
+      ],
+      "to": [
+        5,
+        26,
+        8.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        4.25,
+        23.75,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "58e45fd2-a87a-4ffb-8107-76be0eb1bb80"
+    },
+    {
+      "name": "Spitze links",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        3.8,
+        26,
+        7.6
+      ],
+      "to": [
+        4.6,
+        28.5,
+        8.4
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        4.199999999999999,
+        27.25,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "8af20626-4288-4e2c-9b73-934e8f433230"
+    },
+    {
+      "name": "Widerhaken links",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        5,
+        23,
+        7.6
+      ],
+      "to": [
+        6,
+        24.5,
+        8.4
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        5.5,
+        23.75,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "402051d8-be56-4643-af10-6ce5fb1ecbfb"
+    },
+    {
+      "name": "Widerhaken Mitte links",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        6.5,
+        25,
+        7.6
+      ],
+      "to": [
+        7.25,
+        26.5,
+        8.4
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        6.875,
+        25.75,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "7c2b39bd-1216-4d86-b9d5-918b39adfcbd"
+    },
+    {
+      "name": "Zacke rechts",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        11,
+        21.5,
+        7.5
+      ],
+      "to": [
+        12.5,
+        26,
+        8.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        11.75,
+        23.75,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "5f50f621-9533-460e-83ca-97213064eeb1"
+    },
+    {
+      "name": "Spitze rechts",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        11.4,
+        26,
+        7.6
+      ],
+      "to": [
+        12.2,
+        28.5,
+        8.4
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        11.8,
+        27.25,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "4333e84e-5b3d-4d84-85a9-58e908a8598a"
+    },
+    {
+      "name": "Widerhaken rechts",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        10,
+        23,
+        7.6
+      ],
+      "to": [
+        11,
+        24.5,
+        8.4
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        10.5,
+        23.75,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "6acead19-740f-4841-a7de-7e8e7a3e2b9f"
+    },
+    {
+      "name": "Widerhaken Mitte rechts",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        8.75,
+        25,
+        7.6
+      ],
+      "to": [
+        9.5,
+        26.5,
+        8.4
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        9.125,
+        25.75,
+        8
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            8,
+            16,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "b4781439-fad3-471f-9596-742212cc1723"
+    }
+  ],
+  "outliner": [
+    "5854ba60-2606-4013-b992-05bcef21f292",
+    "5538a431-6d46-4a8d-819d-4af49b927e20",
+    "963947e0-86cf-43b5-a3be-15b66c24f20e",
+    "20ae1f27-3d4d-439c-a7dc-b2362d7a7fdf",
+    "4d1317fc-6b6e-4682-a361-130c5c66786f",
+    "0bef78ae-638b-44ed-9a56-1864ed87b4b9",
+    "58e45fd2-a87a-4ffb-8107-76be0eb1bb80",
+    "8af20626-4288-4e2c-9b73-934e8f433230",
+    "402051d8-be56-4643-af10-6ce5fb1ecbfb",
+    "7c2b39bd-1216-4d86-b9d5-918b39adfcbd",
+    "5f50f621-9533-460e-83ca-97213064eeb1",
+    "4333e84e-5b3d-4d84-85a9-58e908a8598a",
+    "6acead19-740f-4841-a7de-7e8e7a3e2b9f",
+    "b4781439-fad3-471f-9596-742212cc1723"
+  ],
+  "textures": [
+    {
+      "path": "",
+      "name": "teufel.png",
+      "folder": "item",
+      "namespace": "halloween",
+      "id": "0",
+      "width": 32,
+      "height": 32,
+      "uv_width": 16,
+      "uv_height": 16,
+      "particle": false,
+      "render_mode": "default",
+      "render_sides": "auto",
+      "frame_time": 1,
+      "visible": true,
+      "internal": true,
+      "saved": false,
+      "uuid": "fd52c316-50c4-4710-b1d9-26cfb4a46fa3",
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADeklEQVR42u2W525UVxSF768owPR261R73DBgXME2LhBK6rOgQOiYKlKQgBSSd6AloUNCKK+FohV9+3JG5NfwAHOkrX3O/bO+tfYeaTxvcAZncAanz7lfqulB2debzohe1Nt6HjX0NEj0LKzrcS3SqUJF56qhvv44oxO5kr03KoF9O1v21czn1a1WNVypWPFuFQoaKpft3Rfgr7ipfxodE3tYCewOxKNqaCAOgDqZL5vo4Y82G8w3W/ImmGQyvd7I5TQRRZpMEtWz2f4AT/xYQNBJAZBXrWEDAOhMqWbC9PO1qAdxPFs0OIQ7pZK5HQsCu1PjYahR3+8PgIiDwD3jeN3u2vvvpNUDwO3RzTlzT7kRIIQ4ndgZR7tY7AH1BWDuCCJGf9kcMoj3R4AgnTpdrFoSwNCJmZkDQCEKCClsjeP+ACybW0QScAtIAYQoTl1nGRFmB0gGcTcCALgzf5IA5IMSoBgD4oyEQpxvRzZldSxTsA7Axru9cEkQt4ud5eMOgBtNXwCiJn7ESMGNhB1gHDhHkJnjmujdIgKDS5aNuBHnzmLSScMbTloaaw2rFSRq+rHisq9uva2RRkfj7a4+371Hn+1a1uq2ndo/s6CvltfsTn0yPa87hZx+Lxf1R6WkJ3Fo9TSJ9DgK9Cj0pR/3SDfXpd/2pfdri9Kve9N+c10eoo1aZMJOdLQ5ZOUAPl1Y0t6pWR2Y3aW17dPWgTk4t9vEHgY1E6McjLvr+pL082oK8ctaCkG/sWzdQ3yiM2Luh+KmJeESIJ31HTOWwL6dcwYCEO75zvteqaD7tUoP4s9q2TrfScGcugIGYeqnFSvPCVHA4LwTNZRUAoP4YnHFxBE+NL9od1KgGAfiiLoRMJIHftXKRnB1QfphXrq4Xbo8lYpf2pECXdgmrx3WzTnFLhA74hSpvB8/zl38pEIKOL+dzxrEs3psokD1RvDdbCr8/Zx0flI6t9WE9e2MdGVaHm6JHWEAeHMnDe5OCAg6iaxMThnMl0uret5IDIC4gXAjobMfOjsunRpJO6LcqTNjBuYhxsyJHse82QneUalmIrhm4UgDCJcGIwGAuHF/t5g3cTpQpPD2aMtcWyeJd8LamDAQr14NbdZEzi/BuWckdBLANYJA8NNz7kkF5wjeymX+F72DQhDxf491pNOjKcDJrnW+Df7wDM7gDM5/iBsdtnXko/EAAAAASUVORK5CYII="
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        6,
+        0.5
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        -90,
+        25
+      ],
+      "translation": [
+        1.13,
+        5,
+        1.13
+      ],
+      "scale": [
+        0.68,
+        0.68,
+        0.68
+      ]
+    },
+    "gui": {
+      "rotation": [
+        0,
+        0,
+        -45
+      ],
+      "scale": [
+        0.42,
+        0.42,
+        0.42
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "scale": [
+        0.35,
+        0.35,
+        0.35
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        -45
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  }
+}

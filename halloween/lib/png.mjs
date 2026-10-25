@@ -1,7 +1,7 @@
 // --- PNG ohne Zusatzpakete ---
 // pixels[y][x] = [r, g, b, a], 8 Bit pro Kanal
 
-import { deflateSync } from 'node:zlib';
+import { deflateSync, inflateSync } from 'node:zlib';
 import { crc32 } from './crc32.mjs';
 
 const chunk = (type, data) => {
@@ -30,4 +30,17 @@ export const pngBytes = pixels => {
         chunk('IDAT', deflateSync(raw, { level: 9 })),
         chunk('IEND', Buffer.alloc(0))
     ]);
+};
+
+// Vergrössert ein PNG aus pngBytes um einen ganzen Faktor (scharfe Pixel)
+export const scalePng = (png, factor) => {
+    const w = png.readUInt32BE(16);
+    const h = png.readUInt32BE(20);
+    const raw = inflateSync(png.subarray(41, 41 + png.readUInt32BE(33)));
+    const at = (x, y) => [...raw.subarray(y * (w * 4 + 1) + 1 + x * 4, y * (w * 4 + 1) + 5 + x * 4)];
+    const out = canvas(w * factor, h * factor);
+    for (let y = 0; y < h * factor; y++) {
+        for (let x = 0; x < w * factor; x++) out[y][x] = at(Math.floor(x / factor), Math.floor(y / factor));
+    }
+    return pngBytes(out);
 };

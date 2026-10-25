@@ -1,0 +1,664 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "java_block",
+    "box_uv": false
+  },
+  "name": "Teufelshörner",
+  "parent": "",
+  "ambientocclusion": true,
+  "front_gui_light": false,
+  "visible_box": [
+    1,
+    1,
+    0
+  ],
+  "resolution": {
+    "width": 16,
+    "height": 16
+  },
+  "elements": [
+    {
+      "name": "Horn Basis links",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        1,
+        15.5,
+        5.5
+      ],
+      "to": [
+        4.5,
+        19,
+        9
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        2.75,
+        17.25,
+        7.25
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            4,
+            12,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "db16a88b-b59d-408e-890b-fe2e44d7610e"
+    },
+    {
+      "name": "Horn Mitte links",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        1.25,
+        18.5,
+        5.75
+      ],
+      "to": [
+        4.25,
+        22,
+        8.75
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        2.75,
+        18.5,
+        7.25
+      ],
+      "rotation": [
+        0,
+        0,
+        22.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            4,
+            12,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "01039dcd-1b95-4f27-97ac-d9d4507d3dee"
+    },
+    {
+      "name": "Horn Spitze links",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        0.4,
+        21.5,
+        6.25
+      ],
+      "to": [
+        2.4,
+        25,
+        8.25
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        1.4,
+        21.5,
+        7.25
+      ],
+      "rotation": [
+        0,
+        0,
+        45
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "e0b48922-1983-490b-bacc-2dbd1b38dd66"
+    },
+    {
+      "name": "Horn Basis rechts",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        11.5,
+        15.5,
+        5.5
+      ],
+      "to": [
+        15,
+        19,
+        9
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        13.25,
+        17.25,
+        7.25
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            4,
+            12,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "792c09ef-f00c-48cd-8a6f-c2c09a8515be"
+    },
+    {
+      "name": "Horn Mitte rechts",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        11.75,
+        18.5,
+        5.75
+      ],
+      "to": [
+        14.75,
+        22,
+        8.75
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        13.25,
+        18.5,
+        7.25
+      ],
+      "rotation": [
+        0,
+        0,
+        -22.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8,
+            4,
+            12,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "7b264923-0231-40ef-a259-d8429c007170"
+    },
+    {
+      "name": "Horn Spitze rechts",
+      "box_uv": false,
+      "rescale": false,
+      "locked": false,
+      "render_order": "default",
+      "allow_mirror_modeling": true,
+      "from": [
+        13.6,
+        21.5,
+        6.25
+      ],
+      "to": [
+        15.6,
+        25,
+        8.25
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        14.6,
+        21.5,
+        7.25
+      ],
+      "rotation": [
+        0,
+        0,
+        -45
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "56db6218-57dd-4920-a17a-59d6dd7f7894"
+    }
+  ],
+  "outliner": [
+    "db16a88b-b59d-408e-890b-fe2e44d7610e",
+    "01039dcd-1b95-4f27-97ac-d9d4507d3dee",
+    "e0b48922-1983-490b-bacc-2dbd1b38dd66",
+    "792c09ef-f00c-48cd-8a6f-c2c09a8515be",
+    "7b264923-0231-40ef-a259-d8429c007170",
+    "56db6218-57dd-4920-a17a-59d6dd7f7894"
+  ],
+  "textures": [
+    {
+      "path": "",
+      "name": "teufel.png",
+      "folder": "item",
+      "namespace": "halloween",
+      "id": "0",
+      "width": 32,
+      "height": 32,
+      "uv_width": 16,
+      "uv_height": 16,
+      "particle": false,
+      "render_mode": "default",
+      "render_sides": "auto",
+      "frame_time": 1,
+      "visible": true,
+      "internal": true,
+      "saved": false,
+      "uuid": "07ae1bd0-24c3-4ef7-8d38-fd21c114fcb9",
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADeklEQVR42u2W525UVxSF768owPR261R73DBgXME2LhBK6rOgQOiYKlKQgBSSd6AloUNCKK+FohV9+3JG5NfwAHOkrX3O/bO+tfYeaTxvcAZncAanz7lfqulB2debzohe1Nt6HjX0NEj0LKzrcS3SqUJF56qhvv44oxO5kr03KoF9O1v21czn1a1WNVypWPFuFQoaKpft3Rfgr7ipfxodE3tYCewOxKNqaCAOgDqZL5vo4Y82G8w3W/ImmGQyvd7I5TQRRZpMEtWz2f4AT/xYQNBJAZBXrWEDAOhMqWbC9PO1qAdxPFs0OIQ7pZK5HQsCu1PjYahR3+8PgIiDwD3jeN3u2vvvpNUDwO3RzTlzT7kRIIQ4ndgZR7tY7AH1BWDuCCJGf9kcMoj3R4AgnTpdrFoSwNCJmZkDQCEKCClsjeP+ACybW0QScAtIAYQoTl1nGRFmB0gGcTcCALgzf5IA5IMSoBgD4oyEQpxvRzZldSxTsA7Axru9cEkQt4ud5eMOgBtNXwCiJn7ESMGNhB1gHDhHkJnjmujdIgKDS5aNuBHnzmLSScMbTloaaw2rFSRq+rHisq9uva2RRkfj7a4+371Hn+1a1uq2ndo/s6CvltfsTn0yPa87hZx+Lxf1R6WkJ3Fo9TSJ9DgK9Cj0pR/3SDfXpd/2pfdri9Kve9N+c10eoo1aZMJOdLQ5ZOUAPl1Y0t6pWR2Y3aW17dPWgTk4t9vEHgY1E6McjLvr+pL082oK8ctaCkG/sWzdQ3yiM2Luh+KmJeESIJ31HTOWwL6dcwYCEO75zvteqaD7tUoP4s9q2TrfScGcugIGYeqnFSvPCVHA4LwTNZRUAoP4YnHFxBE+NL9od1KgGAfiiLoRMJIHftXKRnB1QfphXrq4Xbo8lYpf2pECXdgmrx3WzTnFLhA74hSpvB8/zl38pEIKOL+dzxrEs3psokD1RvDdbCr8/Zx0flI6t9WE9e2MdGVaHm6JHWEAeHMnDe5OCAg6iaxMThnMl0uret5IDIC4gXAjobMfOjsunRpJO6LcqTNjBuYhxsyJHse82QneUalmIrhm4UgDCJcGIwGAuHF/t5g3cTpQpPD2aMtcWyeJd8LamDAQr14NbdZEzi/BuWckdBLANYJA8NNz7kkF5wjeymX+F72DQhDxf491pNOjKcDJrnW+Df7wDM7gDM5/iBsdtnXko/EAAAAASUVORK5CYII="
+    }
+  ],
+  "display": {
+    "head": {
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "gui": {
+      "rotation": [
+        25,
+        -135,
+        0
+      ],
+      "translation": [
+        0,
+        -6,
+        0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        -2,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "fixed": {
+      "translation": [
+        0,
+        -6,
+        0
+      ],
+      "scale": [
+        0.7,
+        0.7,
+        0.7
+      ]
+    },
+    "thirdperson_righthand": {
+      "translation": [
+        0,
+        -4,
+        1
+      ],
+      "scale": [
+        0.45,
+        0.45,
+        0.45
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        -90,
+        0
+      ],
+      "translation": [
+        0,
+        -2,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    }
+  }
+}
