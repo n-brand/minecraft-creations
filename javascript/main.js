@@ -355,7 +355,8 @@ const createViewer = viewer => {
             if (!section.isConnected) return handle.dispose();
             viewerHandle = handle;
         })
-        .catch(() => {
+        .catch(error => {
+            console.warn('3D-Ansicht:', error);
             stage.replaceChildren(el('p', 'viewer3d-note', '3D-Ansicht braucht Internet.'));
         });
     return section;

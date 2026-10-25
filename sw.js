@@ -1,9 +1,9 @@
 // --- Service Worker: Seite offline verfügbar ---
 // Eigene Dateien kommen zuerst aus dem Netz (immer aktuell), ohne Netz oder nach 4 s aus dem Speicher.
-// Schriften von Google Fonts kommen aus dem Speicher. Downloads (downloads/) werden nie gespeichert.
+// Schriften von Google Fonts und three.js (unpkg, fest versioniert) kommen aus dem Speicher. Downloads (downloads/) werden nie gespeichert.
 // VERSION erhöhen, wenn sich die Logik hier ändert.
 
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = `minecraft-creations-${VERSION}`;
 
 // PRECACHE-START (wird von tools/build-sw.mjs geschrieben)
@@ -80,6 +80,7 @@ const PRECACHE = [
     './images/mein-pack/water_ice_cream.png',
     './images/mein-pack/yellowraspberry.png',
     './javascript/main.js',
+    './javascript/viewer3d.js',
 ];
 // PRECACHE-END
 
@@ -128,7 +129,7 @@ self.addEventListener('fetch', event => {
     }
     const url = new URL(request.url);
 
-    if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
+    if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com' || url.href.startsWith('https://unpkg.com/three@0.160.0/')) {
         event.respondWith(caches.match(request).then(cached => cached || fromNetwork(request, 10000)));
         return;
     }
