@@ -352,7 +352,8 @@ const createViewer = viewer => {
     import('./viewer3d.js')
         .then(module => module.mountViewer(stage, viewer, section))
         .then(handle => {
-            if (!section.isConnected) return handle.dispose();
+            // Dialog inzwischen zu oder anderer Eintrag offen: gleich wieder freigeben
+            if (!section.isConnected || !dialog.open) return handle.dispose();
             viewerHandle = handle;
         })
         .catch(error => {
