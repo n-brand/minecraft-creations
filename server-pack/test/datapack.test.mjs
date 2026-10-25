@@ -23,11 +23,15 @@ test("pack.mcmeta targets data format 107 and newer", () => {
 });
 
 test("costume check line for Bride Mask", () => {
-  assert.ok(fn("costume/check").includes('execute if items entity @s armor.head minecraft:leather_helmet[minecraft:custom_name="Bride Mask"] unless items entity @s armor.head *[minecraft:custom_data~{sp26:1b}] run item modify entity @s armor.head server_pack_2026:costume/happyhallows_bride_mask'));
+  assert.ok(fn("costume/check").includes('execute if items entity @s armor.head minecraft:leather_helmet[minecraft:custom_name="Bride Mask"] unless items entity @s armor.head *[minecraft:custom_data~{sp26:"Bride Mask"}] run item modify entity @s armor.head server_pack_2026:costume/happyhallows_bride_mask'));
   const m = modifier("costume/happyhallows_bride_mask");
   assert.equal(m.function, "minecraft:set_components");
   assert.deepEqual(m.components["minecraft:equippable"], { slot: "head", asset_id: "halloween:hh_bride" });
-  assert.deepEqual(m.components["minecraft:custom_data"], { sp26: true });
+});
+
+test("costume marker stores the name, so renaming to another costume re-applies", () => {
+  assert.deepEqual(modifier("costume/happyhallows_bride_mask").components["minecraft:custom_data"], { sp26: "Bride Mask" });
+  assert.ok(!fn("costume/check").includes("sp26:1b"));
 });
 
 test("head pieces without armor texture get equippable without asset", () => {
@@ -78,6 +82,23 @@ test("raycast only converts a pressure plate without existing deco", () => {
   const f = fn("deco/ray");
   assert.ok(f.includes("minecraft:oak_pressure_plate"));
   assert.ok(f.includes("unless entity @e[type=interaction,tag=sp26.deco,distance=..0.6]"));
+});
+
+test("raycast converts only the plate right in front of the block the player looked at", () => {
+  const convert = fn("deco/ray").split("\n").find((l) => l.includes("deco/spawn"));
+  assert.ok(convert.startsWith("execute if block ~ ~ ~ minecraft:oak_pressure_plate unless block ^ ^ ^0.05 #minecraft:replaceable unless block ^ ^ ^0.05 minecraft:oak_pressure_plate "), convert);
+});
+
+test("raycast never passes through solid blocks", () => {
+  const recurse = fn("deco/ray").split("\n").filter((l) => l.includes("function server_pack_2026:deco/ray"));
+  assert.equal(recurse.length, 2);
+  assert.ok(recurse.some((l) => l.includes("positioned ^ ^ ^0.05 if block ~ ~ ~ #minecraft:replaceable run function server_pack_2026:deco/ray")));
+  assert.ok(recurse.some((l) => l.includes("positioned ^ ^ ^0.05 if block ~ ~ ~ minecraft:oak_pressure_plate run function server_pack_2026:deco/ray")));
+  assert.ok(recurse.every((l) => l.includes("if score #found sp26 matches 0") && l.includes("if score #steps sp26 matches ..120")));
+});
+
+test("player gets a hint when the placed plate was not found", () => {
+  assert.ok(fn("deco/place").includes("execute if score #found sp26 matches 0 run title @s actionbar"));
 });
 
 test("left click breaks deco, drops only outside creative", () => {

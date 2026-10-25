@@ -26,8 +26,9 @@ export function buildDatapack({ items }) {
     if (!item.equipment && item.slot !== "head") continue;
     const slot = `armor.${item.slot}`;
     const equippable = item.equipment ? { slot: item.slot, asset_id: item.equipment } : { slot: item.slot };
-    files.set(`data/${NS}/item_modifier/costume/${item.icon}.json`, json({ function: "minecraft:set_components", components: { "minecraft:equippable": equippable, "minecraft:custom_data": { sp26: true } } }));
-    check.push(`execute if items entity @s ${slot} minecraft:${item.base}[minecraft:custom_name="${quote(item.name)}"] unless items entity @s ${slot} *[minecraft:custom_data~{sp26:1b}] run item modify entity @s ${slot} ${NS}:costume/${item.icon}`);
+    // Marker mit Namen: wird das Teil später auf ein anderes Kostüm umbenannt, greift dessen Zeile wieder
+    files.set(`data/${NS}/item_modifier/costume/${item.icon}.json`, json({ function: "minecraft:set_components", components: { "minecraft:equippable": equippable, "minecraft:custom_data": { sp26: item.name } } }));
+    check.push(`execute if items entity @s ${slot} minecraft:${item.base}[minecraft:custom_name="${quote(item.name)}"] unless items entity @s ${slot} *[minecraft:custom_data~{sp26:"${quote(item.name)}"}] run item modify entity @s ${slot} ${NS}:costume/${item.icon}`);
   }
   fn("costume/check", check);
 
@@ -64,11 +65,17 @@ export function buildDatapack({ items }) {
     "scoreboard players set #steps sp26 0",
     "scoreboard players set #found sp26 0",
     `execute anchored eyes positioned ^ ^ ^ run function ${NS}:deco/ray`,
+    'execute if score #found sp26 matches 0 run title @s actionbar {"text":"Deko nicht gefunden – beim Platzieren direkt auf die Stelle schauen","color":"red"}',
   ]);
+  // Nur die Platte direkt vor dem angeschauten Block umwandeln (dort wurde sie gesetzt);
+  // der Strahl läuft nur durch Luft/ersetzbare Blöcke und Druckplatten, nie durch Wände.
+  const next = "^ ^ ^0.05";
+  const go = "if score #found sp26 matches 0 if score #steps sp26 matches ..120";
   fn("deco/ray", [
     "scoreboard players add #steps sp26 1",
-    `execute if block ~ ~ ~ minecraft:oak_pressure_plate align xyz positioned ~0.5 ~0.5 ~0.5 unless entity @e[type=interaction,tag=sp26.deco,distance=..0.6] run function ${NS}:deco/spawn with storage ${NS}:tmp`,
-    `execute if score #found sp26 matches 0 if score #steps sp26 matches ..60 positioned ^ ^ ^0.1 run function ${NS}:deco/ray`,
+    `execute if block ~ ~ ~ minecraft:oak_pressure_plate unless block ${next} #minecraft:replaceable unless block ${next} minecraft:oak_pressure_plate align xyz positioned ~0.5 ~0.5 ~0.5 unless entity @e[type=interaction,tag=sp26.deco,distance=..0.6] run function ${NS}:deco/spawn with storage ${NS}:tmp`,
+    `execute ${go} positioned ${next} if block ~ ~ ~ #minecraft:replaceable run function ${NS}:deco/ray`,
+    `execute ${go} positioned ${next} if block ~ ~ ~ minecraft:oak_pressure_plate run function ${NS}:deco/ray`,
   ]);
   fn("deco/spawn", [
     "setblock ~ ~ ~ minecraft:air",
