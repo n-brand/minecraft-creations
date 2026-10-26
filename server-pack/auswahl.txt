@@ -14,6 +14,7 @@ decoween-neoforge/startled_crow
 decoween-neoforge/witch_broom
 decoween-neoforge/witch_cauldron
 decoween-neoforge/witch_hat
+decoween-neoforge/zombie_hand
 funny_pumpkin/ancient_skeleton
 funny_pumpkin/angel_costume_chestplate
 funny_pumpkin/angel_costume_helmet
@@ -118,6 +119,7 @@ funny_pumpkin/seat_corpse
 funny_pumpkin/seat_mushroom_corpse
 funny_pumpkin/seat_skeleton
 funny_pumpkin/seat_torn_corpse
+funny_pumpkin/sewing_table
 funny_pumpkin/skeleton_grave
 funny_pumpkin/vampire_cloak
 funny_pumpkin/vampire_cloak_entity_chestplate
@@ -152,6 +154,7 @@ happyhallows/frankenstein_body
 happyhallows/frankenstein_feet
 happyhallows/frankenstein_leggings
 happyhallows/frankenstein_mask
+happyhallows/gravestone_plain
 happyhallows/gray_candelabra
 happyhallows/gray_skull_candle
 happyhallows/green_candelabra
