@@ -81,7 +81,9 @@ export function buildDatapack({ items }) {
       "scoreboard players set #steps sp26 0",
       "scoreboard players set #found sp26 0",
       `execute anchored eyes positioned ^ ^ ^ run function ${NS}:deco/${base}/ray`,
-      'execute if score #found sp26 matches 0 run title @s actionbar {"text":"Deko nicht gefunden – beim Platzieren direkt auf die Stelle schauen","color":"red"}',
+      // nicht gefunden: benanntes Item zurückgeben, damit der Name nicht verloren geht
+      `$execute if score #found sp26 matches 0 if entity @s[gamemode=!creative] run give @s ${block}[minecraft:custom_name="$(name)"]`,
+      'execute if score #found sp26 matches 0 run title @s actionbar {"text":"Deko nicht gefunden – Item zurückgegeben. Beim Platzieren auf die Stelle schauen","color":"red"}',
     ]);
     fn(`deco/${base}/later`, [
       `execute as @a[tag=sp26.placer] at @s run function ${NS}:deco/${base}/place with storage ${NS}:tmp`,

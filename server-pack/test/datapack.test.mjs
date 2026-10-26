@@ -160,3 +160,9 @@ test("hanging deco sits one block below the lantern, plates stay in place", () =
   assert.ok(plate.includes("$summon minecraft:item_display ~ ~ ~ "));
   assert.ok(plate.includes("summon minecraft:interaction ~ ~-0.5 ~ "));
 });
+
+test("when the placed block is not found, the named item comes back (not in creative)", () => {
+  const f = fn("deco/spruce_pressure_plate/place");
+  assert.ok(f.includes('$execute if score #found sp26 matches 0 if entity @s[gamemode=!creative] run give @s minecraft:spruce_pressure_plate[minecraft:custom_name="$(name)"]'));
+  assert.ok(fn("deco/lantern/place").includes('run give @s minecraft:lantern[minecraft:custom_name="$(name)"]'));
+});
