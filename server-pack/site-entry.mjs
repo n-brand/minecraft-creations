@@ -11,7 +11,8 @@ const BASES = {
   skeleton_skull: ["Skelettschädel", "Skeleton Skull"],
   bundle: ["Bündel", "Bundle"],
   turtle_egg: ["Schildkrötenei", "Turtle Egg"],
-  oak_pressure_plate: ["Eichenholzdruckplatte", "Oak Pressure Plate"],
+  spruce_pressure_plate: ["Fichtenholzdruckplatte", "Spruce Pressure Plate"],
+  lantern: ["Laterne", "Lantern"],
   bread: ["Brot", "Bread"],
   paper: ["Papier", "Paper"],
   music_disc_13: ["Schallplatte „13“", "Music Disc 13"],
@@ -41,7 +42,7 @@ export function entrySource(items) {
     details: [
       "Das Server Pack 2026 bringt Sachen aus vier Halloween-Mods in Vanilla-Minecraft. Du benennst ein normales Item am Amboss um, und es sieht aus wie das Mod-Item. Ohne Umbenennen bleibt alles normal.",
       "Das Pack gibt es nur auf unserem Server, es lädt beim Beitreten automatisch. Hier findest du alle Namen und fertige /give-Befehle.",
-      "3D-Deko liegt auf der Eichenholzdruckplatte: Stell sie einfach hin, dann erscheint das Modell. Mit einem Linksklick aufs Modell baust du es wieder ab und bekommst das Item zurück."
+      "3D-Deko liegt auf der Fichtenholzdruckplatte: Stell sie einfach hin, dann erscheint das Modell. Mit einem Linksklick aufs Modell baust du es wieder ab und bekommst das Item zurück."
     ],
     features: [
       "Deko in 3D: Kerzenleuchter, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr – hinstellen und per Linksklick wieder abbauen.",
@@ -49,6 +50,7 @@ export function entrySource(items) {
       "Echte Optik beim Anziehen: Braut, Frankenstein, Meerjungfrau, Wassermann, Mumie, Pirat, Kürbis- und Baumrinden-Rüstung. Einfach umbenennen und anziehen.",
       "Weihnachtsmütze: Geschnitzten Kürbis „Christmas Hat“ nennen und aufsetzen – mit freier Sicht.",
       "Süssigkeiten, Muffin und Lollis liegen auf dem Brot und sind essbar.",
+      "Hängende Deko (Leichen am Seil) liegt auf der Laterne: an die Decke hängen, dann erscheint das Modell.",
       "Totenköpfe mit Kerzen liegen auf dem Skelettschädel: aufsetzen oder hinstellen (platziert als normaler Schädel).",
       "Süssigkeiten-Beutel liegen auf dem Bündel – du kannst Sachen darin aufbewahren.",
       "Flügel liegen auf den Elytren – du kannst damit fliegen (angezogen sehen sie wie normale Elytren aus).",
@@ -66,7 +68,7 @@ export function entrySource(items) {
       steps: [
         "Auf dem Server das Pack beim Beitreten annehmen.",
         "Einen Amboss aufstellen und öffnen.",
-        "Das Grund-Item links in den Amboss legen, z.B. eine Eichenholzdruckplatte.",
+        "Das Grund-Item links in den Amboss legen, z.B. eine Fichtenholzdruckplatte.",
         "Oben den Namen genau so eintippen wie unten angegeben – Gross- und Kleinschreibung zählt.",
         "Item rechts herausnehmen. Das Umbenennen kostet 1 Erfahrungslevel."
       ],

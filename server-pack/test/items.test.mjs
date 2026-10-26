@@ -4,7 +4,8 @@ import { baseFor, buildItemList, giveCommand } from "../items.mjs";
 
 test("baseFor follows Nicolas' base items", () => {
   const cases = [
-    [{ mod: "decoween-neoforge", id: "haunted_fountain", name: "Haunted Fountain", is3d: true }, "oak_pressure_plate"],
+    [{ mod: "decoween-neoforge", id: "haunted_fountain", name: "Haunted Fountain", is3d: true }, "spruce_pressure_plate"],
+    [{ mod: "funny_pumpkin", id: "hanged_corpse", name: "Hanged Corpse", is3d: true }, "lantern"],
     [{ mod: "happyhallows", id: "red_skull_candle", name: "Skull With Red Candles", is3d: true }, "skeleton_skull"],
     [{ mod: "funny_pumpkin", id: "red_candy", name: "Red Candy", is3d: false }, "bread"],
     [{ mod: "funny_pumpkin", id: "berry_muffin", name: "Berry Muffin", is3d: false }, "bread"],
@@ -63,7 +64,7 @@ test("buildItemList sets equipment only for sets with armor textures", () => {
 
 test("giveCommand builds the exact /give line", () => {
   assert.equal(giveCommand(byId("bride_mask")), '/give @s leather_helmet[custom_name="Bride Mask",equippable={slot:"head",asset_id:"halloween:hh_bride"}]');
-  assert.equal(giveCommand({ base: "oak_pressure_plate", name: "Haunted Fountain", equipment: null, slot: null }), '/give @s oak_pressure_plate[custom_name="Haunted Fountain"]');
+  assert.equal(giveCommand({ base: "spruce_pressure_plate", name: "Haunted Fountain", equipment: null, slot: null }), '/give @s spruce_pressure_plate[custom_name="Haunted Fountain"]');
 });
 
 test("wings are elytra costumes with their own wing look", () => {

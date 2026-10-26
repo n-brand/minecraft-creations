@@ -1,5 +1,7 @@
 // Datapack: Kostüme anziehbar machen, Deko platzierbar machen. Läuft nur auf dem Server.
 
+import { DECO_BASES } from "./items.mjs";
+
 const NS = "server_pack_2026";
 const json = (o) => JSON.stringify(o, null, 2);
 const quote = (s) => s.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
@@ -33,7 +35,9 @@ export function buildDatapack({ items }) {
   fn("costume/check", check);
 
   /* --- Deko hinstellen --- */
-  for (const item of items.filter((i) => i.base === "oak_pressure_plate")) {
+  const decoItems = items.filter((i) => DECO_BASES.includes(i.base));
+  for (const item of decoItems) {
+    const block = `minecraft:${item.base}`;
     files.set(`data/${NS}/advancement/deco/${item.icon}.json`, json({
       criteria: {
         placed: {
@@ -42,8 +46,8 @@ export function buildDatapack({ items }) {
             location: {
               type: "minecraft:all_of",
               terms: [
-                { type: "minecraft:match_block", blocks: "minecraft:oak_pressure_plate" },
-                { type: "minecraft:match_tool", predicate: { items: "minecraft:oak_pressure_plate", components: { "minecraft:custom_name": item.name } } },
+                { type: "minecraft:match_block", blocks: block },
+                { type: "minecraft:match_tool", predicate: { items: block, components: { "minecraft:custom_name": item.name } } },
               ],
             },
           },
@@ -53,44 +57,47 @@ export function buildDatapack({ items }) {
     }));
     fn(`deco/placed/${item.icon}`, [
       `advancement revoke @s only ${NS}:deco/${item.icon}`,
-      `function ${NS}:deco/place {name:"${quote(item.name)}"}`,
+      `function ${NS}:deco/${item.base}/place {name:"${quote(item.name)}"}`,
     ]);
   }
 
-  // Name merken, Blickrichtung auf 90° runden (Modell schaut zum Spieler), dann vom Auge aus suchen
-  fn("deco/place", [
-    `$data modify storage ${NS}:tmp name set value "$(name)"`,
-    "execute store result score #yaw sp26 run data get entity @s Rotation[0]",
-    "scoreboard players add #yaw sp26 585",
-    "scoreboard players operation #yaw sp26 /= #90 sp26",
-    "scoreboard players operation #yaw sp26 *= #90 sp26",
-    `execute store result storage ${NS}:tmp yaw float 1 run scoreboard players get #yaw sp26`,
-    "scoreboard players set #steps sp26 0",
-    "scoreboard players set #found sp26 0",
-    `execute anchored eyes positioned ^ ^ ^ run function ${NS}:deco/ray`,
-    'execute if score #found sp26 matches 0 run title @s actionbar {"text":"Deko nicht gefunden – beim Platzieren direkt auf die Stelle schauen","color":"red"}',
-  ]);
-  // Nur die Platte direkt vor dem angeschauten Block umwandeln (dort wurde sie gesetzt);
-  // der Strahl läuft nur durch Luft/ersetzbare Blöcke und Druckplatten, nie durch Wände.
+  // Pro Grund-Block: Name merken, Blickrichtung auf 90° runden (Modell schaut zum Spieler), dann vom Auge aus suchen.
+  // Nur den Block direkt vor dem angeschauten Block umwandeln (dort wurde er gesetzt);
+  // der Strahl läuft nur durch Luft/ersetzbare Blöcke und den Grund-Block, nie durch Wände.
   const next = "^ ^ ^0.05";
   const go = "if score #found sp26 matches 0 if score #steps sp26 matches ..120";
-  fn("deco/ray", [
-    "scoreboard players add #steps sp26 1",
-    `execute if block ~ ~ ~ minecraft:oak_pressure_plate unless block ${next} #minecraft:replaceable unless block ${next} minecraft:oak_pressure_plate align xyz positioned ~0.5 ~0.5 ~0.5 unless entity @e[type=interaction,tag=sp26.deco,distance=..0.6] run function ${NS}:deco/spawn with storage ${NS}:tmp`,
-    `execute ${go} positioned ${next} if block ~ ~ ~ #minecraft:replaceable run function ${NS}:deco/ray`,
-    `execute ${go} positioned ${next} if block ~ ~ ~ minecraft:oak_pressure_plate run function ${NS}:deco/ray`,
-  ]);
-  fn("deco/spawn", [
-    "setblock ~ ~ ~ minecraft:air",
-    `$summon minecraft:item_display ~ ~ ~ {Tags:["sp26.deco"],item_display:"none",Rotation:[$(yaw)f,0f],item:{id:"minecraft:oak_pressure_plate",count:1,components:{"minecraft:custom_name":"$(name)"}}}`,
-    'summon minecraft:interaction ~ ~-0.5 ~ {Tags:["sp26.deco"],width:1f,height:1f}',
-    "scoreboard players set #found sp26 1",
-  ]);
+  for (const base of [...new Set(decoItems.map((i) => i.base))]) {
+    const block = `minecraft:${base}`;
+    fn(`deco/${base}/place`, [
+      `$data modify storage ${NS}:tmp name set value "$(name)"`,
+      "execute store result score #yaw sp26 run data get entity @s Rotation[0]",
+      "scoreboard players add #yaw sp26 585",
+      "scoreboard players operation #yaw sp26 /= #90 sp26",
+      "scoreboard players operation #yaw sp26 *= #90 sp26",
+      `execute store result storage ${NS}:tmp yaw float 1 run scoreboard players get #yaw sp26`,
+      "scoreboard players set #steps sp26 0",
+      "scoreboard players set #found sp26 0",
+      `execute anchored eyes positioned ^ ^ ^ run function ${NS}:deco/${base}/ray`,
+      'execute if score #found sp26 matches 0 run title @s actionbar {"text":"Deko nicht gefunden – beim Platzieren direkt auf die Stelle schauen","color":"red"}',
+    ]);
+    fn(`deco/${base}/ray`, [
+      "scoreboard players add #steps sp26 1",
+      `execute if block ~ ~ ~ ${block} unless block ${next} #minecraft:replaceable unless block ${next} ${block} align xyz positioned ~0.5 ~0.5 ~0.5 unless entity @e[type=interaction,tag=sp26.deco,distance=..0.6] run function ${NS}:deco/${base}/spawn with storage ${NS}:tmp`,
+      `execute ${go} positioned ${next} if block ~ ~ ~ #minecraft:replaceable run function ${NS}:deco/${base}/ray`,
+      `execute ${go} positioned ${next} if block ~ ~ ~ ${block} run function ${NS}:deco/${base}/ray`,
+    ]);
+    fn(`deco/${base}/spawn`, [
+      "setblock ~ ~ ~ minecraft:air",
+      `$summon minecraft:item_display ~ ~ ~ {Tags:["sp26.deco"],item_display:"none",Rotation:[$(yaw)f,0f],item:{id:"${block}",count:1,components:{"minecraft:custom_name":"$(name)"}}}`,
+      'summon minecraft:interaction ~ ~-0.5 ~ {Tags:["sp26.deco"],width:1f,height:1f}',
+      "scoreboard players set #found sp26 1",
+    ]);
+  }
 
   /* --- Deko abbauen (Linksklick aufs Modell) --- */
   fn("deco/break", [
     'execute on attacker if entity @s[gamemode=!creative] at @s run tag @s add sp26.breaker',
-    `execute if entity @a[tag=sp26.breaker] positioned ~ ~0.5 ~ run summon minecraft:item ~ ~ ~ {Tags:["sp26.drop"],Item:{id:"minecraft:oak_pressure_plate",count:1}}`,
+    `execute if entity @a[tag=sp26.breaker] positioned ~ ~0.5 ~ run summon minecraft:item ~ ~ ~ {Tags:["sp26.drop"],Item:{id:"minecraft:stick",count:1}}`,
     "execute positioned ~ ~0.5 ~ as @n[type=minecraft:item,tag=sp26.drop,distance=..0.1] run data modify entity @s Item set from entity @n[type=minecraft:item_display,tag=sp26.deco,distance=..0.5] item",
     "execute positioned ~ ~0.5 ~ run tag @n[type=minecraft:item,tag=sp26.drop,distance=..0.1] remove sp26.drop",
     "tag @a[tag=sp26.breaker] remove sp26.breaker",

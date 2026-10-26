@@ -30,6 +30,8 @@ export function equipmentFor(key) {
 }
 
 /* --- Grund-Items (Entscheidungen von Nicolas) --- */
+// Deko, die das Datapack beim Platzieren zum 3D-Modell macht
+export const DECO_BASES = ["spruce_pressure_plate", "lantern"];
 const isWings = (name) => /Wings$/.test(name);
 const isFood = (id) => /_candy$|^berry_muffin$|^pumpkin_lollipop$|^caramel_key$/.test(id);
 
@@ -42,7 +44,8 @@ export function baseFor({ mod, id, name, is3d }) {
   if (/^nether_monster_egg/.test(id)) return "turtle_egg";
   if (mod === "spookify" && /^bag_/.test(id)) return "bundle";
   if (isFood(id)) return "bread";
-  return is3d ? "oak_pressure_plate" : "paper";
+  if (/^hanged_/.test(id)) return "lantern";
+  return is3d ? "spruce_pressure_plate" : "paper";
 }
 
 /* --- Liste --- */
@@ -67,7 +70,7 @@ export function buildItemList({ selection, lang, is3d }) {
     i.base = baseFor({ ...i, is3d: is3d(i.mod, i.id) });
     i.slot = isWings(i.name) ? "chest" : slotOf(i.id);
     i.equipment = i.slot ? equipmentFor(i.key)?.asset ?? null : null;
-    i.kind = i.slot ? "costume" : i.base === "oak_pressure_plate" ? "deco" : i.base === "bread" ? "food" : "other";
+    i.kind = i.slot ? "costume" : DECO_BASES.includes(i.base) ? "deco" : i.base === "bread" ? "food" : "other";
     i.model = `${i.ns}:item/${i.id}`;
     i.icon = `${i.ns}_${i.id}`;
   }

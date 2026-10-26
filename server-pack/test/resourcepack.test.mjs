@@ -19,7 +19,7 @@ const modFiles = {
 };
 const vanillaFiles = new Map([
   ["assets/minecraft/items/paper.json", json({ model: { type: "minecraft:model", model: "minecraft:item/paper" } })],
-  ["assets/minecraft/items/oak_pressure_plate.json", json({ model: { type: "minecraft:model", model: "minecraft:block/oak_pressure_plate" } })],
+  ["assets/minecraft/items/spruce_pressure_plate.json", json({ model: { type: "minecraft:model", model: "minecraft:block/spruce_pressure_plate" } })],
   ["assets/minecraft/textures/block/anvil.png", png],
 ]);
 
@@ -45,11 +45,11 @@ test("faces with undefined textures are removed and render_type dropped", () => 
 });
 
 test("item definition selects on custom_name with vanilla fallback", () => {
-  const def = read("assets/minecraft/items/oak_pressure_plate.json").model;
+  const def = read("assets/minecraft/items/spruce_pressure_plate.json").model;
   assert.equal(def.type, "minecraft:select");
   assert.equal(def.component, "minecraft:custom_name");
   assert.deepEqual(def.cases, [{ when: "Statue", model: { type: "minecraft:model", model: "funny_pumpkin:item/statue" } }]);
-  assert.deepEqual(def.fallback, { type: "minecraft:model", model: "minecraft:block/oak_pressure_plate" });
+  assert.deepEqual(def.fallback, { type: "minecraft:model", model: "minecraft:block/spruce_pressure_plate" });
   assert.equal(read("pack.mcmeta").pack.min_format[0], 55);
 });
 

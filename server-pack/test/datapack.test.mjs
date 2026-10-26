@@ -7,8 +7,9 @@ const items = [
   item({ key: "happyhallows/bride_mask", mod: "happyhallows", ns: "happyhallows", id: "bride_mask", name: "Bride Mask", base: "leather_helmet", slot: "head", equipment: "halloween:hh_bride", kind: "costume" }),
   item({ key: "funny_pumpkin/witch_costume_helmet", mod: "funny_pumpkin", ns: "funny_pumpkin", id: "witch_costume_helmet", name: "Witch Hat", base: "leather_helmet", slot: "head", equipment: null, kind: "costume" }),
   item({ key: "funny_pumpkin/witch_costume_chestplate", mod: "funny_pumpkin", ns: "funny_pumpkin", id: "witch_costume_chestplate", name: "Witch Robe", base: "leather_chestplate", slot: "chest", equipment: null, kind: "costume" }),
-  item({ key: "decoween-neoforge/haunted_fountain", mod: "decoween-neoforge", ns: "decoween", id: "haunted_fountain", name: "Haunted Fountain", base: "oak_pressure_plate", slot: null, equipment: null, kind: "deco" }),
-  item({ key: "funny_pumpkin/lay_corpse", mod: "funny_pumpkin", ns: "funny_pumpkin", id: "lay_corpse", name: "Lay Corpse", base: "oak_pressure_plate", slot: null, equipment: null, kind: "deco" }),
+  item({ key: "decoween-neoforge/haunted_fountain", mod: "decoween-neoforge", ns: "decoween", id: "haunted_fountain", name: "Haunted Fountain", base: "spruce_pressure_plate", slot: null, equipment: null, kind: "deco" }),
+  item({ key: "funny_pumpkin/hanged_corpse", mod: "funny_pumpkin", ns: "funny_pumpkin", id: "hanged_corpse", name: "Hanged Corpse", base: "lantern", slot: null, equipment: null, kind: "deco" }),
+  item({ key: "funny_pumpkin/lay_corpse", mod: "funny_pumpkin", ns: "funny_pumpkin", id: "lay_corpse", name: "Lay Corpse", base: "spruce_pressure_plate", slot: null, equipment: null, kind: "deco" }),
 ];
 const files = buildDatapack({ items });
 const fn = (name) => files.get(`data/server_pack_2026/function/${name}.mcfunction`);
@@ -64,15 +65,15 @@ const adv = (icon) => JSON.parse(files.get(`data/server_pack_2026/advancement/de
 
 test("one placed_block advancement per pressure-plate item with exact name", () => {
   const advs = [...files.keys()].filter((p) => p.startsWith("data/server_pack_2026/advancement/deco/"));
-  assert.equal(advs.length, 2);
+  assert.equal(advs.length, 3);
   const a = adv("decoween_haunted_fountain");
   assert.equal(a.criteria.placed.trigger, "minecraft:placed_block");
   // 26.3: one condition object with "type"; several are combined with all_of
   assert.deepEqual(a.criteria.placed.conditions.location, {
     type: "minecraft:all_of",
     terms: [
-      { type: "minecraft:match_block", blocks: "minecraft:oak_pressure_plate" },
-      { type: "minecraft:match_tool", predicate: { items: "minecraft:oak_pressure_plate", components: { "minecraft:custom_name": "Haunted Fountain" } } },
+      { type: "minecraft:match_block", blocks: "minecraft:spruce_pressure_plate" },
+      { type: "minecraft:match_tool", predicate: { items: "minecraft:spruce_pressure_plate", components: { "minecraft:custom_name": "Haunted Fountain" } } },
     ],
   });
   assert.equal(a.rewards.function, "server_pack_2026:deco/placed/decoween_haunted_fountain");
@@ -81,30 +82,30 @@ test("one placed_block advancement per pressure-plate item with exact name", () 
 test("reward revokes exactly its own advancement and passes the name", () => {
   const f = fn("deco/placed/decoween_haunted_fountain");
   assert.ok(f.includes("advancement revoke @s only server_pack_2026:deco/decoween_haunted_fountain"));
-  assert.ok(f.includes('function server_pack_2026:deco/place {name:"Haunted Fountain"}'));
+  assert.ok(f.includes('function server_pack_2026:deco/spruce_pressure_plate/place {name:"Haunted Fountain"}'));
 });
 
 test("raycast only converts a pressure plate without existing deco", () => {
-  const f = fn("deco/ray");
-  assert.ok(f.includes("minecraft:oak_pressure_plate"));
+  const f = fn("deco/spruce_pressure_plate/ray");
+  assert.ok(f.includes("minecraft:spruce_pressure_plate"));
   assert.ok(f.includes("unless entity @e[type=interaction,tag=sp26.deco,distance=..0.6]"));
 });
 
 test("raycast converts only the plate right in front of the block the player looked at", () => {
-  const convert = fn("deco/ray").split("\n").find((l) => l.includes("deco/spawn"));
-  assert.ok(convert.startsWith("execute if block ~ ~ ~ minecraft:oak_pressure_plate unless block ^ ^ ^0.05 #minecraft:replaceable unless block ^ ^ ^0.05 minecraft:oak_pressure_plate "), convert);
+  const convert = fn("deco/spruce_pressure_plate/ray").split("\n").find((l) => l.includes("/spawn"));
+  assert.ok(convert.startsWith("execute if block ~ ~ ~ minecraft:spruce_pressure_plate unless block ^ ^ ^0.05 #minecraft:replaceable unless block ^ ^ ^0.05 minecraft:spruce_pressure_plate "), convert);
 });
 
 test("raycast never passes through solid blocks", () => {
-  const recurse = fn("deco/ray").split("\n").filter((l) => l.includes("function server_pack_2026:deco/ray"));
+  const recurse = fn("deco/spruce_pressure_plate/ray").split("\n").filter((l) => l.includes("function server_pack_2026:deco/spruce_pressure_plate/ray"));
   assert.equal(recurse.length, 2);
-  assert.ok(recurse.some((l) => l.includes("positioned ^ ^ ^0.05 if block ~ ~ ~ #minecraft:replaceable run function server_pack_2026:deco/ray")));
-  assert.ok(recurse.some((l) => l.includes("positioned ^ ^ ^0.05 if block ~ ~ ~ minecraft:oak_pressure_plate run function server_pack_2026:deco/ray")));
+  assert.ok(recurse.some((l) => l.includes("positioned ^ ^ ^0.05 if block ~ ~ ~ #minecraft:replaceable run function server_pack_2026:deco/spruce_pressure_plate/ray")));
+  assert.ok(recurse.some((l) => l.includes("positioned ^ ^ ^0.05 if block ~ ~ ~ minecraft:spruce_pressure_plate run function server_pack_2026:deco/spruce_pressure_plate/ray")));
   assert.ok(recurse.every((l) => l.includes("if score #found sp26 matches 0") && l.includes("if score #steps sp26 matches ..120")));
 });
 
 test("player gets a hint when the placed plate was not found", () => {
-  assert.ok(fn("deco/place").includes("execute if score #found sp26 matches 0 run title @s actionbar"));
+  assert.ok(fn("deco/spruce_pressure_plate/place").includes("execute if score #found sp26 matches 0 run title @s actionbar"));
 });
 
 test("left click breaks deco, drops only outside creative", () => {
@@ -127,3 +128,19 @@ test("every function reference resolves to a file", () => {
 });
 
 export { files, fn, items };
+
+test("hanging deco on lanterns is placeable too", () => {
+  const a = adv("funny_pumpkin_hanged_corpse");
+  assert.deepEqual(a.criteria.placed.conditions.location.terms, [
+    { type: "minecraft:match_block", blocks: "minecraft:lantern" },
+    { type: "minecraft:match_tool", predicate: { items: "minecraft:lantern", components: { "minecraft:custom_name": "Hanged Corpse" } } },
+  ]);
+  assert.ok(fn("deco/placed/funny_pumpkin_hanged_corpse").includes('function server_pack_2026:deco/lantern/place {name:"Hanged Corpse"}'));
+  assert.ok(fn("deco/lantern/ray").includes("execute if block ~ ~ ~ minecraft:lantern unless block ^ ^ ^0.05 #minecraft:replaceable unless block ^ ^ ^0.05 minecraft:lantern "));
+  assert.ok(fn("deco/lantern/spawn").includes('item:{id:"minecraft:lantern",count:1,components:{"minecraft:custom_name":"$(name)"}}'));
+});
+
+test("no oak pressure plates anywhere", () => {
+  for (const [, c] of files) assert.ok(!String(c).includes("oak_pressure_plate") || String(c).includes("spruce_pressure_plate"));
+  for (const [, c] of files) assert.ok(!/minecraft:oak_pressure_plate/.test(String(c)));
+});

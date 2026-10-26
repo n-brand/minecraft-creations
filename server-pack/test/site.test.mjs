@@ -6,7 +6,7 @@ import { entrySource, insertEntry } from "../site-entry.mjs";
 
 const items = [
   { key: "happyhallows/bride_mask", mod: "happyhallows", ns: "happyhallows", id: "bride_mask", name: "Bride Mask", base: "leather_helmet", slot: "head", equipment: "halloween:hh_bride", kind: "costume", model: "happyhallows:item/bride_mask", icon: "happyhallows_bride_mask" },
-  { key: "decoween-neoforge/haunted_fountain", mod: "decoween-neoforge", ns: "decoween", id: "haunted_fountain", name: "Haunted Fountain", base: "oak_pressure_plate", slot: null, equipment: null, kind: "deco", model: "decoween:item/haunted_fountain", icon: "decoween_haunted_fountain" },
+  { key: "decoween-neoforge/haunted_fountain", mod: "decoween-neoforge", ns: "decoween", id: "haunted_fountain", name: "Haunted Fountain", base: "spruce_pressure_plate", slot: null, equipment: null, kind: "deco", model: "decoween:item/haunted_fountain", icon: "decoween_haunted_fountain" },
 ];
 
 test("entrySource builds the server-only entry", () => {
