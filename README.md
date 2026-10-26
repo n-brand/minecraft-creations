@@ -13,6 +13,18 @@ Meine Mods, Texturepacks und Skins für Minecraft zum Herunterladen.
 
 Die Seite ist eine PWA: Sie lässt sich installieren und offline ansehen. Downloads funktionieren nur mit Internet.
 
+## Halloween-Pack neu bauen
+
+Resource Pack, Datapack und alle Bilder für die Seite entstehen aus `halloween/` (Node, keine Zusatzpakete):
+
+```bash
+node --test "halloween/test/*.test.mjs"
+node halloween/build.mjs
+node tools/build-sw.mjs
+```
+
+Danach in `server.properties` die neue SHA-1 eintragen (steht in der Detailansicht des Packs).
+
 ## Lokal testen
 
 Statische Seite ohne Build-Schritt, z.B. mit Python:

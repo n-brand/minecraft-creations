@@ -20,6 +20,13 @@
 //   example     true = Platzhalter, zeigt „Bald verfügbar“ statt Download
 //   serverOnly  true = kein Download, zeigt „Nur auf dem Server“ (z.B. Server Pack 2026)
 //               Im guide kann ein Name einen eigenen Befehl haben: [Name, Icon, "/give …"]
+//   info        optional: Schlüssel in window.PACK_INFO (data/halloween-pack.js, vom Generator geschrieben)
+//               für die Dateigrösse statt `size`
+//   fileLabel   optional: Beschriftung des Haupt-Downloads (sonst „Download“)
+//   extraFiles  optional: weitere Downloads [{ file, label, info }]
+//   server      optional: Anleitung für den eigenen Server (steps, packInfo = Schlüssel in PACK_INFO
+//               für Link und SHA-1)
+//   viewer      optional: 3D-Ansicht in der Detailansicht (base = Ordner mit Modellen und Texturen, parts)
 
 window.ITEMS = [
   {
@@ -90,6 +97,72 @@ window.ITEMS = [
         { id: "paper", item: "Papier", itemEn: "Paper · Funny Pumpkin", names: [["Dark Mummy Swathe", "funny_pumpkin_dark_mummy_swathe"], ["Demonic Cloth", "funny_pumpkin_demonic_cloth"], ["Depth Monster Tooth", "funny_pumpkin_depth_monster_tooth"], ["Ghoul Tongue", "funny_pumpkin_ghoul_tongue"], ["Living Root", "funny_pumpkin_living_root"], ["Mummy Swathe", "funny_pumpkin_mummy_swathe"]] },
         { id: "music_disc_13", item: "Schallplatte „13“", itemEn: "Music Disc 13 · Funny Pumpkin", names: [["Carnival Of Horrors", "funny_pumpkin_music_disc_3"], ["Creepy House", "funny_pumpkin_music_disc_2"], ["Ghostly Choir", "funny_pumpkin_music_disc_5"], ["Sweet Candy", "funny_pumpkin_music_disc_6"], ["This Is Halloween", "funny_pumpkin_music_disc_1"], ["Witch Dance", "funny_pumpkin_music_disc_4"]] }
       ]
+    }
+  },
+  {
+    id: "halloween-pack",
+    category: "texturepacks",
+    name: "Halloween-Pack",
+    description: "Teufelshörner, Teufelsflügel und ein Teufelsdreizack per Umbenennen – für deinen Server, alle Spieler sehen es.",
+    version: "26.3",
+    edition: "Java",
+    file: "downloads/texturepacks/halloween-pack.zip",
+    fileLabel: "Resource Pack",
+    info: "halloween-pack",
+    extraFiles: [
+      { file: "downloads/texturepacks/halloween-datapack.zip", label: "Datapack für den Server", info: "halloween-datapack" }
+    ],
+    image: "images/halloween-pack.png",
+    updated: "2026-10-25",
+    details: [
+      "Das Halloween-Pack ist für einen eigenen Server gemacht: Der Server schickt das Resource Pack allen Spielern, das Datapack läuft auf dem Server. Benennst du ein Item im Amboss richtig um, sehen alle Spieler die Teufels-Sachen – ohne Mods.",
+      "Nicht umbenannte Lederkappen, Elytren und Dreizacke sehen normal aus. Später kommen weitere Halloween-Sachen dazu.",
+      "Im Spiel noch nicht getestet – wenn etwas schief sitzt, bitte melden."
+    ],
+    features: [
+      "Teufelshörner: Lederkappe umbenennen – 3D-Hörner im Inventar und auf dem Kopf. Schützt weiter wie eine Lederkappe.",
+      "Teufelsflügel: Elytren umbenennen – beim Tragen rote Fledermausflügel. Fliegen geht wie immer.",
+      "Teufelsdreizack: Dreizack umbenennen – 3D-Teufelsdreizack in Hand und Inventar. Geworfen sieht er aus wie ein normaler Dreizack.",
+      "Auch ohne Umlaute: „Teufelshoerner“ und „Teufelsfluegel“ funktionieren ebenfalls."
+    ],
+    viewer: {
+      base: "images/halloween-pack/",
+      parts: [
+        { id: "all", label: "Alles am Spieler" },
+        { id: "teufelshoerner", label: "Hörner" },
+        { id: "teufelsfluegel", label: "Flügel" },
+        { id: "teufelsdreizack", label: "Dreizack" }
+      ]
+    },
+    guide: {
+      title: "Anleitung: Items umbenennen",
+      steps: [
+        "Auf dem Server spielen, auf dem das Halloween-Pack eingerichtet ist (siehe unten), und das Resource Pack beim Beitreten annehmen.",
+        "Einen Amboss aufstellen und öffnen.",
+        "Lederkappe, Elytren oder Dreizack links in den Amboss legen.",
+        "Oben den Namen genau so eintippen wie unten angegeben – Gross- und Kleinschreibung zählt.",
+        "Item herausnehmen. Teufelshörner und -flügel anziehen – erst dann erscheinen sie am Spieler."
+      ],
+      hint: "Tipp: Ein Klick auf einen Namen kopiert ihn.",
+      giveHint: "Mit „/give“ kopierst du den Befehl für den Chat (Cheats müssen an sein).",
+      iconPath: "images/halloween-pack/",
+      groups: [
+        { id: "leather_helmet", item: "Lederkappe", itemEn: "Leather Cap", names: [["Teufelshörner", "teufelshoerner"], ["Teufelshoerner", "teufelshoerner"]] },
+        { id: "elytra", item: "Elytren", itemEn: "Elytra", names: [["Teufelsflügel", "teufelsfluegel"], ["Teufelsfluegel", "teufelsfluegel"]] },
+        { id: "trident", item: "Dreizack", itemEn: "Trident", names: [["Teufelsdreizack", "teufelsdreizack"]] }
+      ]
+    },
+    server: {
+      title: "Auf dem Server einrichten",
+      packInfo: "halloween-pack",
+      steps: [
+        "Server stoppen.",
+        "In der Datei server.properties diese drei Zeilen eintragen (Link und SHA-1 unten kopieren).",
+        "require-resource-pack=true empfiehlt sich: Wer das Pack ablehnt, sähe bei anderen statt Hörnern nur eine normale Lederkappe.",
+        "Das Datapack (Zip, nicht entpacken) in den Ordner world/datapacks/ des Servers legen.",
+        "Server starten. Beim Beitreten fragt Minecraft jeden Spieler, ob er das Pack laden will."
+      ],
+      hint: "Nach jedem Update des Packs die neue SHA-1 in server.properties eintragen, sonst laden Spieler die alte Version. Der Link funktioniert erst, wenn GitHub Pages für die Seite eingeschaltet ist."
     }
   },
   {

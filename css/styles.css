@@ -937,6 +937,111 @@ code {
     display: none;
 }
 
+/* --- Server Guide --- */
+.server-guide {
+    margin-top: 28px;
+}
+
+.server-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.server-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.server-line:hover {
+    border-color: var(--accent-color);
+}
+
+.server-line code {
+    min-width: 0;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.server-line svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* --- 3D Viewer --- */
+.viewer3d {
+    margin-bottom: 24px;
+}
+
+.viewer3d-stage {
+    position: relative;
+    height: 360px;
+    border-radius: 12px;
+    background-color: var(--bg-color);
+    overflow: hidden;
+}
+
+.viewer3d-stage canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+    cursor: grab;
+}
+
+.viewer3d-note {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.viewer3d-parts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.viewer3d-parts button {
+    padding: 6px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 999px;
+    background: none;
+    color: var(--text-color);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.viewer3d-parts button[aria-pressed="true"] {
+    border-color: var(--yellow);
+    background-color: var(--yellow);
+    color: #183153;
+}
+
 .toast {
     position: fixed;
     left: 50%;
@@ -1089,6 +1194,10 @@ code {
 
 /* --- Responsive: Mobile --- */
 @media (max-width: 680px) {
+    .viewer3d-stage {
+        height: 280px;
+    }
+
     h2 {
         font-size: 1.6rem;
     }

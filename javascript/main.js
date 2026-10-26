@@ -130,7 +130,11 @@ const formatDate = iso => new Date(`${iso}T00:00:00`).toLocaleDateString('de-CH'
 
 const ARROW_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>';
 
-const hasDetails = item => Boolean(item.details || item.features || item.credits || item.guide);
+const hasDetails = item => Boolean(item.details || item.features || item.credits || item.guide || item.server || item.viewer);
+
+// Grösse und SHA-1 der Packs, vom Generator geschrieben (data/halloween-pack.js)
+const PACK_INFO = window.PACK_INFO || {};
+const sizeOf = item => (item.info && PACK_INFO[item.info]?.size) || item.size;
 
 const createArt = item => {
     if (!item.image) return pixelArt(item.category);
@@ -149,13 +153,14 @@ const createTags = item => {
     return tags;
 };
 
-const createDownload = item => {
+const createDownload = (item, file = item.file, label = 'Download') => {
     if (item.example) return el('span', 'download-btn soon', 'Bald verfügbar');
     if (item.serverOnly) return el('span', 'download-btn soon', 'Nur auf dem Server');
     const link = el('a', 'download-btn');
-    link.href = item.file;
+    link.href = file;
     link.setAttribute('download', '');
-    link.innerHTML = `${DOWNLOAD_ICON}<span>Download</span>`;
+    link.innerHTML = `${DOWNLOAD_ICON}<span></span>`;
+    link.querySelector('span').textContent = label;
     link.addEventListener('click', event => {
         if (navigator.onLine) return;
         event.preventDefault();
@@ -305,11 +310,71 @@ const createGuide = guide => {
     return section;
 };
 
+// --- Server Guide ---
+const createServerGuide = server => {
+    const section = el('section', 'guide server-guide');
+    section.appendChild(el('h3', '', server.title));
+
+    const steps = el('ol', 'guide-steps');
+    server.steps.forEach(text => steps.appendChild(el('li', '', text)));
+    section.appendChild(steps);
+
+    const info = PACK_INFO[server.packInfo] || {};
+    const lines = [
+        `resource-pack=${info.url || ''}`,
+        `resource-pack-sha1=${info.sha1 || ''}`,
+        'require-resource-pack=true'
+    ];
+    const list = el('div', 'server-lines');
+    lines.forEach(line => {
+        const button = el('button', 'server-line');
+        button.type = 'button';
+        button.title = 'Zeile kopieren';
+        button.appendChild(el('code', '', line));
+        button.insertAdjacentHTML('beforeend', COPY_ICON);
+        button.addEventListener('click', () => copyText(line, 'Zeile kopiert'));
+        list.appendChild(button);
+    });
+    section.appendChild(list);
+    section.appendChild(el('p', 'guide-hint', server.hint));
+    return section;
+};
+
+// --- 3D Viewer ---
+// three.js wird erst beim Öffnen geladen; beim Schliessen des Dialogs wieder freigegeben
+let viewerHandle = null;
+
+const createViewer = viewer => {
+    const section = el('section', 'viewer3d');
+    section.appendChild(el('h3', '', '3D-Ansicht'));
+    const stage = el('div', 'viewer3d-stage');
+    stage.appendChild(el('p', 'viewer3d-note', '3D-Ansicht lädt …'));
+    section.appendChild(stage);
+    import('./viewer3d.js')
+        .then(module => module.mountViewer(stage, viewer, section))
+        .then(handle => {
+            // Dialog inzwischen zu oder anderer Eintrag offen: gleich wieder freigeben
+            if (!section.isConnected || !dialog.open) return handle.dispose();
+            viewerHandle = handle;
+        })
+        .catch(error => {
+            console.warn('3D-Ansicht:', error);
+            stage.replaceChildren(el('p', 'viewer3d-note', '3D-Ansicht braucht Internet.'));
+        });
+    return section;
+};
+
+const disposeViewer = () => {
+    viewerHandle?.dispose();
+    viewerHandle = null;
+};
+
 // --- Detail Dialog ---
 const dialog = document.getElementById('detail');
 const dialogBody = document.getElementById('detail-body');
 
 const openDetail = item => {
+    disposeViewer();
     const category = CATEGORIES[item.category];
     const head = el('div', 'detail-head');
     const art = el('div', 'detail-art');
@@ -336,7 +401,11 @@ const openDetail = item => {
         body.push(list);
     }
 
+    if (item.viewer) body.push(createViewer(item.viewer));
+
     if (item.guide) body.push(createGuide(item.guide));
+
+    if (item.server) body.push(createServerGuide(item.server));
 
     if (item.credits) {
         body.push(el('h3', '', 'Enthält Inhalte von'));
@@ -346,9 +415,10 @@ const openDetail = item => {
     }
 
     const footer = el('div', 'detail-footer');
-    footer.appendChild(createDownload(item));
+    footer.appendChild(createDownload(item, item.file, item.fileLabel));
+    (item.extraFiles || []).forEach(extra => footer.appendChild(createDownload(item, extra.file, extra.label)));
     footer.appendChild(createShare(item));
-    const meta = [formatDate(item.updated), item.size].filter(Boolean).join(' · ');
+    const meta = [formatDate(item.updated), sizeOf(item)].filter(Boolean).join(' · ');
     footer.appendChild(el('span', 'card-date', meta));
     body.push(footer);
 
@@ -381,6 +451,7 @@ dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.clo
 
 // Beim Schliessen den Link wieder auf die Kategorie setzen
 dialog.addEventListener('close', () => {
+    disposeViewer();
     const hash = location.hash.slice(1);
     if (CATEGORIES[hash] || hash === '' || hash === 'install') return;
     history.replaceState(null, '', state.category === 'all' ? location.pathname : `#${state.category}`);

@@ -1,9 +1,9 @@
 // --- Service Worker: Seite offline verfügbar ---
 // Eigene Dateien kommen zuerst aus dem Netz (immer aktuell), ohne Netz oder nach 4 s aus dem Speicher.
-// Schriften von Google Fonts kommen aus dem Speicher. Downloads (downloads/) werden nie gespeichert.
+// Schriften von Google Fonts und three.js (unpkg, fest versioniert) kommen aus dem Speicher. Downloads (downloads/) werden nie gespeichert.
 // VERSION erhöhen, wenn sich die Logik hier ändert.
 
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = `minecraft-creations-${VERSION}`;
 
 // PRECACHE-START (wird von tools/build-sw.mjs geschrieben)
@@ -12,8 +12,18 @@ const PRECACHE = [
     './index.html',
     './manifest.webmanifest',
     './css/styles.css',
+    './data/halloween-pack.js',
     './data/items.js',
     './images/grass-block.png',
+    './images/halloween-pack.png',
+    './images/halloween-pack/skin.png',
+    './images/halloween-pack/teufel.png',
+    './images/halloween-pack/teufelsdreizack.json',
+    './images/halloween-pack/teufelsdreizack.png',
+    './images/halloween-pack/teufelsfluegel.png',
+    './images/halloween-pack/teufelshoerner.json',
+    './images/halloween-pack/teufelshoerner.png',
+    './images/halloween-pack/wings.png',
     './images/icons/apple-touch-icon.png',
     './images/icons/icon-192.png',
     './images/icons/icon-32.png',
@@ -270,6 +280,7 @@ const PRECACHE = [
     './images/server-pack-2026/spookify_coffin.png',
     './images/server-pack-2026/spookify_kotel.png',
     './javascript/main.js',
+    './javascript/viewer3d.js',
 ];
 // PRECACHE-END
 
@@ -318,7 +329,7 @@ self.addEventListener('fetch', event => {
     }
     const url = new URL(request.url);
 
-    if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
+    if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com' || url.href.startsWith('https://unpkg.com/three@0.160.0/')) {
         event.respondWith(caches.match(request).then(cached => cached || fromNetwork(request, 10000)));
         return;
     }
