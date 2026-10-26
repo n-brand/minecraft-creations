@@ -45,13 +45,12 @@ export function entrySource(items) {
       "3D-Deko liegt auf der Fichtenholzdruckplatte: Stell sie einfach hin, dann erscheint das Modell. Mit einem Linksklick aufs Modell baust du es wieder ab und bekommst das Item zurück."
     ],
     features: [
-      "Deko in 3D: Kerzenleuchter, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr – hinstellen und per Linksklick wieder abbauen.",
+      "Deko in 3D: Kerzenleuchter, Totenkopf-Kerzen, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr – hinstellen und per Linksklick wieder abbauen.",
       "Kostüme: Braut, Frankenstein, Meerjungfrau, Pirat, Mumie, Vampir, Hexe, Clown und viele mehr.",
       "Echte Optik beim Anziehen: Braut, Frankenstein, Meerjungfrau, Wassermann, Mumie, Pirat, Kürbis- und Baumrinden-Rüstung. Einfach umbenennen und anziehen.",
       "Weihnachtsmütze: Geschnitzten Kürbis „Christmas Hat“ nennen und aufsetzen – mit freier Sicht.",
       "Süssigkeiten, Muffin und Lollis liegen auf dem Brot und sind essbar.",
       "Hängende Deko (Leichen am Seil) liegt auf der Laterne: an die Decke hängen, dann erscheint das Modell.",
-      "Totenköpfe mit Kerzen liegen auf dem Skelettschädel: aufsetzen oder hinstellen (platziert als normaler Schädel).",
       "Süssigkeiten-Beutel liegen auf dem Bündel – du kannst Sachen darin aufbewahren.",
       "Flügel liegen auf den Elytren – du kannst damit fliegen (angezogen sehen sie wie normale Elytren aus).",
       "6 Musik-Discs (spielen die normale Disc-Musik)."

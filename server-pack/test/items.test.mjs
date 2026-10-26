@@ -6,7 +6,7 @@ test("baseFor follows Nicolas' base items", () => {
   const cases = [
     [{ mod: "decoween-neoforge", id: "haunted_fountain", name: "Haunted Fountain", is3d: true }, "spruce_pressure_plate"],
     [{ mod: "funny_pumpkin", id: "hanged_corpse", name: "Hanged Corpse", is3d: true }, "lantern"],
-    [{ mod: "happyhallows", id: "red_skull_candle", name: "Skull With Red Candles", is3d: true }, "skeleton_skull"],
+    [{ mod: "happyhallows", id: "red_skull_candle", name: "Skull With Red Candles", is3d: true }, "spruce_pressure_plate"],
     [{ mod: "funny_pumpkin", id: "red_candy", name: "Red Candy", is3d: false }, "bread"],
     [{ mod: "funny_pumpkin", id: "berry_muffin", name: "Berry Muffin", is3d: false }, "bread"],
     [{ mod: "funny_pumpkin", id: "pumpkin_lollipop", name: "Pumpkin Lollipop", is3d: false }, "bread"],
