@@ -29,6 +29,13 @@ function loadTex(id) {
 }
 
 function rotatePoint(p, rot) {
+  // 26.x: Drehung als x/y/z (R = Rx·Ry·Rz), sonst axis + angle
+  if (rot && rot.angle === undefined && (rot.x || rot.y || rot.z)) {
+    const o = rot.origin || [8, 8, 8];
+    let v = [p[0] - o[0], p[1] - o[1], p[2] - o[2]];
+    for (const [axis, deg] of [["z", rot.z], ["y", rot.y], ["x", rot.x]]) if (deg) v = rotatePoint([v[0] + 8, v[1] + 8, v[2] + 8], { axis, angle: deg, origin: [8, 8, 8] }).map((n) => n - 8);
+    return [v[0] + o[0], v[1] + o[1], v[2] + o[2]];
+  }
   if (!rot || !rot.angle) return p;
   const a = (rot.angle * Math.PI) / 180, c = Math.cos(a), s = Math.sin(a), o = rot.origin || [8, 8, 8];
   let [x, y, z] = [p[0] - o[0], p[1] - o[1], p[2] - o[2]];

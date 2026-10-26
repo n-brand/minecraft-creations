@@ -179,8 +179,17 @@ export function buildResourcePack({ items, modFiles, vanillaFiles, hatFiles, cos
   }
 
   /* --- Item-Definitionen --- */
+  /* --- 3D-Hüte: auf dem Kopf das Hut-Modell, sonst das Icon --- */
+  for (const item of all.filter((i) => i.hat)) {
+    out.set(`assets/halloween/textures/item/hx/costume/${item.hat.textureName}.png`, item.hat.texture);
+    out.set(`assets/halloween/models/item/hat/${item.icon}.json`, item.hat.model);
+  }
+  const itemModel = (item) => item.hat
+    ? { type: "minecraft:select", property: "minecraft:display_context", cases: [{ when: "head", model: { type: "minecraft:model", model: `halloween:item/hat/${item.icon}` } }], fallback: { type: "minecraft:model", model: item.model } }
+    : { type: "minecraft:model", model: item.model };
+
   const byBase = {};
-  for (const item of all) (byBase[item.base] ||= []).push({ when: item.name, model: { type: "minecraft:model", model: item.model } });
+  for (const item of all) (byBase[item.base] ||= []).push({ when: item.name, model: itemModel(item) });
   for (const [base, cases] of Object.entries(byBase)) {
     const vanilla = JSON.parse(vanillaFiles.get(`assets/minecraft/items/${base}.json`)).model;
     out.set(`assets/minecraft/items/${base}.json`, { model: { type: "minecraft:select", property: "minecraft:component", component: "minecraft:custom_name", cases, fallback: vanilla } });

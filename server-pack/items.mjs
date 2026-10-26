@@ -95,3 +95,15 @@ export function oggSeconds(buf) {
   const last = buf.lastIndexOf(Buffer.from("OggS", "latin1"));
   return Math.ceil(Number(buf.readBigInt64LE(last + 6)) / rate);
 }
+
+/* --- Grössen-Liste (server-pack/groessen.json): platzierte Deko vergrössern --- */
+// Gibt die Namen zurück, die es im Pack nicht gibt (Tippfehler sichtbar machen).
+export function applySizes(items, sizes) {
+  const unknown = [];
+  for (const [name, factor] of Object.entries(sizes)) {
+    const item = items.find((i) => i.name === name && i.kind === "deco");
+    if (!item) { unknown.push(name); continue; }
+    item.scale = Math.round((item.scale ?? 1) * factor * 1000) / 1000;
+  }
+  return unknown;
+}

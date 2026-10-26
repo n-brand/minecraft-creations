@@ -1,0 +1,87 @@
+// 3D-Hüte: Kopf-Teil eines Mod-Modells (Java-Würfel) als Minecraft-Item-Modell für den Kopf.
+//
+// Kopf-Item-Ebene (CustomHeadLayer) auf das Java-Modell umgerechnet, mit display.head scale 1.6:
+//   item = G·java + C   mit G = 180° um z (x und y spiegeln), C = (8, 4, 8)
+// Drehungen: R_item = G·R_java·G (Java: rotationZYX), als Euler x/y/z (Annahme: R = Rx·Ry·Rz).
+
+const G = (v) => [-v[0], -v[1], v[2]];
+const C = [8, 4, 8];
+const r6 = (n) => Math.round(n * 1e6) / 1e6;
+
+/* --- Matrizen (3×3, zeilenweise) --- */
+const mul = (a, b) => a.map((row, i) => [0, 1, 2].map((j) => row[0] * b[0][j] + row[1] * b[1][j] + row[2] * b[2][j]));
+const apply = (m, v) => m.map((row) => row[0] * v[0] + row[1] * v[1] + row[2] * v[2]);
+const rx = (a) => [[1, 0, 0], [0, Math.cos(a), -Math.sin(a)], [0, Math.sin(a), Math.cos(a)]];
+const ry = (a) => [[Math.cos(a), 0, Math.sin(a)], [0, 1, 0], [-Math.sin(a), 0, Math.cos(a)]];
+const rz = (a) => [[Math.cos(a), -Math.sin(a), 0], [Math.sin(a), Math.cos(a), 0], [0, 0, 1]];
+const GM = [[-1, 0, 0], [0, -1, 0], [0, 0, 1]];
+const I = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+
+function eulerXYZ(m) {
+  const b = Math.asin(Math.max(-1, Math.min(1, m[0][2])));
+  const a = Math.atan2(-m[1][2], m[2][2]);
+  const c = Math.atan2(-m[0][1], m[0][0]);
+  const deg = (x) => r6((x * 180) / Math.PI) + 0;
+  return { x: deg(a), y: deg(b), z: deg(c) };
+}
+
+/* --- UV einer Box im Textur-Netz (in 16tel der Textur) --- */
+function boxFaces(c, texW, texH, tex) {
+  const [u, v] = c.uv, [w, h, d] = c.size;
+  const U = (x) => r6((x * 16) / texW), V = (y) => r6((y * 16) / texH);
+  const rect = (x0, y0, x1, y1) => ({ uv: [U(x0), V(y0), U(x1), V(y1)], texture: tex });
+  const f = {
+    up: rect(u + d, v, u + d + w, v + d),
+    down: rect(u + d + w, v, u + d + 2 * w, v + d),
+    north: rect(u + d, v + d, u + d + w, v + d + h),
+    east: rect(u, v + d, u + d, v + d + h),
+    west: rect(u + d + w, v + d, u + 2 * d + w, v + d + h),
+    south: rect(u + 2 * d + w, v + d, u + 2 * d + 2 * w, v + d + h),
+  };
+  if (c.mirror) {
+    [f.east, f.west] = [f.west, f.east];
+    for (const face of Object.values(f)) face.uv = [face.uv[2], face.uv[1], face.uv[0], face.uv[3]];
+  }
+  return f;
+}
+
+/* --- Modell --- */
+export function hatModel(model, texture) {
+  const byName = new Map(model.parts.map((p) => [p.name, p]));
+  const hasHead = byName.has("head");
+  const inHead = (p) => { for (let cur = p; cur; cur = byName.get(cur.parent)) if (cur.name === "head") return true; return false; };
+  const parts = hasHead ? model.parts.filter(inHead) : model.parts;
+
+  const world = new Map();
+  const worldOf = (p) => {
+    if (world.has(p.name)) return world.get(p.name);
+    const parent = byName.get(p.parent);
+    const pw = parent ? worldOf(parent) : { R: I, P: [0, 0, 0] };
+    const pos = apply(pw.R, [p.pose.x, p.pose.y, p.pose.z]);
+    const w = { R: mul(pw.R, mul(rz(p.pose.rz), mul(ry(p.pose.ry), rx(p.pose.rx)))), P: [pw.P[0] + pos[0], pw.P[1] + pos[1], pw.P[2] + pos[2]] };
+    world.set(p.name, w);
+    return w;
+  };
+
+  const elements = [];
+  for (const p of parts) {
+    const { R, P } = worldOf(p);
+    const Ri = mul(GM, mul(R, GM));
+    const origin = G(P).map((n, i) => r6(n + C[i]));
+    for (const c of p.cubes) {
+      const a = c.from.map((n) => n - c.inflate), b = c.from.map((n, i) => n + c.size[i] + c.inflate);
+      const ga = G(a), gb = G(b);
+      const from = [0, 1, 2].map((i) => r6(origin[i] + Math.min(ga[i], gb[i])));
+      const to = [0, 1, 2].map((i) => r6(origin[i] + Math.max(ga[i], gb[i])));
+      const el = { from, to, faces: boxFaces(c, model.texW, model.texH, "#0") };
+      const e = eulerXYZ(Ri);
+      if (e.x || e.y || e.z) el.rotation = { origin, ...e };
+      elements.push(el);
+    }
+  }
+  return {
+    textures: { 0: texture, particle: texture },
+    elements,
+    display: { head: { rotation: [0, 0, 0], translation: [0, 0, 0], scale: [1.6, 1.6, 1.6] } },
+  };
+}

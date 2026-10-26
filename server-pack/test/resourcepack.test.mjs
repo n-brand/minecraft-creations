@@ -112,3 +112,19 @@ test("disc songs are copied with a streamed sound event", () => {
   assert.ok(built.get("assets/halloween/sounds/disc/witch_dance.ogg").equals(ogg));
   assert.deepEqual(JSON.parse(built.get("assets/halloween/sounds.json"))["disc.witch_dance"], { sounds: [{ name: "halloween:disc/witch_dance", stream: true }] });
 });
+
+test("3D hats: head context shows the hat model, everything else the icon", () => {
+  const tex = encodePng({ w: 4, h: 4, data: Buffer.alloc(64, 200) });
+  const hatItems = buildItemList({ selection: ["funny_pumpkin/flat_thing"], lang: {}, is3d: () => false });
+  hatItems[0].hat = { model: { textures: { 0: "halloween:item/hx/costume/witch_hat", particle: "halloween:item/hx/costume/witch_hat" }, elements: [{ from: [4, 4, 4], to: [12, 12, 12], faces: { up: { uv: [0, 0, 4, 4], texture: "#0" } } }], display: { head: { scale: [1.6, 1.6, 1.6] } } }, texture: tex, textureName: "witch_hat" };
+  const built = buildResourcePack({ items: hatItems, modFiles, vanillaFiles, hatFiles: null }).files;
+  const cs = JSON.parse(built.get("assets/minecraft/items/paper.json")).model.cases[0];
+  assert.deepEqual(cs.model, {
+    type: "minecraft:select", property: "minecraft:display_context",
+    cases: [{ when: "head", model: { type: "minecraft:model", model: "halloween:item/hat/funny_pumpkin_flat_thing" } }],
+    fallback: { type: "minecraft:model", model: "funny_pumpkin:item/flat_thing" },
+  });
+  assert.ok(built.has("assets/halloween/models/item/hat/funny_pumpkin_flat_thing.json"));
+  assert.ok(built.has("assets/halloween/textures/item/hx/costume/witch_hat.png"));
+  assert.deepEqual(checkPack(built), []);
+});

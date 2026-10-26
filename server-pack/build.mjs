@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readZip, writeZip } from "./lib/zip.mjs";
-import { NAMESPACE, buildItemList, giveCommand, oggSeconds } from "./items.mjs";
+import { NAMESPACE, applySizes, buildItemList, giveCommand, oggSeconds } from "./items.mjs";
 import { buildResourcePack, decoScale, isModel3d } from "./resourcepack.mjs";
 import { checkPack } from "./check.mjs";
 import { buildDatapack } from "./datapack.mjs";
@@ -11,6 +11,7 @@ import { renderIcon } from "./icons.mjs";
 import { entrySource, insertEntry } from "./site-entry.mjs";
 import { armorLayer, costumePieces } from "./costumes.mjs";
 import { readModel } from "./lib/javamodel.mjs";
+import { hatModel } from "./hats.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.dirname(here);
@@ -31,6 +32,8 @@ for (const item of selected) if (item.song) { const ogg = modFiles[item.mod].get
 
 /* --- Mehrblock-Deko: echte Grösse beim Platzieren --- */
 for (const item of selected) if (item.kind === "deco") item.scale = decoScale(modFiles[item.mod], item.ns, item.id);
+const unknownSizes = applySizes(selected, JSON.parse(fs.readFileSync(path.join(here, "groessen.json"), "utf8")));
+if (unknownSizes.length) console.log(` - groessen.json: unbekannte Namen: ${unknownSizes.join(", ")}`);
 const scaled = selected.filter((i) => i.scale && i.scale !== 1);
 
 /* --- Kostüm-Optik aus den Mod-Modellen (Funny Pumpkin) --- */
@@ -43,7 +46,14 @@ for (const item of selected) {
   const modelClass = piece && [...fpClasses.keys()].find((k) => k.endsWith(`/client/model/${piece.model}.class`));
   const png = piece && modFiles.funny_pumpkin.get(piece.texture);
   if (!modelClass || !png) continue;
-  const layer = armorLayer(readModel(fpClasses.get(modelClass)), png, item.slot);
+  const javaModel = readModel(fpClasses.get(modelClass));
+  // Kopfteile: echtes 3D-Modell auf dem Kopf statt flacher Rüstungs-Optik
+  if (item.slot === "head") {
+    const textureName = piece.texture.split("/").pop().replace(".png", "");
+    const hat = hatModel(javaModel, `halloween:item/hx/costume/${textureName}`);
+    if (hat.elements.length) { item.hat = { model: hat, texture: png, textureName }; continue; }
+  }
+  const layer = armorLayer(javaModel, png, item.slot);
   if (!layer) continue;
   const name = `fp_${item.id}`;
   costumeLayers.set(item.key, { name, layer: item.slot === "legs" ? "humanoid_leggings" : "humanoid", png: layer });
@@ -85,7 +95,8 @@ const itemsJs = path.join(repo, "data", "items.js");
 fs.writeFileSync(itemsJs, insertEntry(fs.readFileSync(itemsJs, "utf8"), entrySource(items)));
 
 const count = (k) => items.filter((i) => i.kind === k).length;
-console.log(`Mehrblock-Deko vergrössert: ${scaled.map((i) => `${i.name} ×${i.scale}`).join(", ")}`);
+console.log(`Deko vergrössert: ${scaled.map((i) => `${i.name} ×${i.scale}`).join(", ")}`);
+console.log(`3D-Hüte: ${selected.filter((i) => i.hat).map((i) => i.name).join(", ")}`);
 console.log(`Kostüm-Optik aus Mod-Modellen: ${costumeLayers.size} Teile (${[...costumeLayers.keys()].map((k) => k.split("/")[1]).join(", ")})`);
 console.log(`${items.length} Items (Kostüme ${count("costume")}, Deko ${count("deco")}, Essen ${count("food")}), ${icons} Icons, Datapack ${datapack.size} Dateien`);
 console.log(`Resource Pack → ${sources.resourcepackOut}`);

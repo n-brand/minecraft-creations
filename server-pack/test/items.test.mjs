@@ -88,3 +88,13 @@ test("oggSeconds reads the length of a vorbis file", { skip: !fs.existsSync("C:/
   const s = oggSeconds([...f.values()][0]);
   assert.ok(s > 30 && s < 600, String(s));
 });
+
+test("size list multiplies the placed deco size by name", async () => {
+  const { applySizes } = await import("../items.mjs");
+  const list = [{ name: "Fortune Teller's Table", kind: "deco", scale: 1 }, { name: "Gothic Throne", kind: "deco", scale: 2 }, { name: "Bride Mask", kind: "costume" }];
+  const unknown = applySizes(list, { "Fortune Teller's Table": 1.5, "Gothic Throne": 1.25, "Gibt Es Nicht": 2 });
+  assert.equal(list[0].scale, 1.5);
+  assert.equal(list[1].scale, 2.5);
+  assert.equal(list[2].scale, undefined);
+  assert.deepEqual(unknown, ["Gibt Es Nicht"]);
+});

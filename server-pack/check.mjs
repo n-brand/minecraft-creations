@@ -26,6 +26,18 @@ export function checkPack(files) {
     for (const c of read(path).model.cases || []) {
       if (names.has(c.when)) problems.push(`${c.when}: Name doppelt`);
       names.add(c.when);
+      // verschachtelte Auswahl (z.B. 3D-Hut nur auf dem Kopf): jedes Modell einzeln prüfen
+      const ids = [];
+      const collect = (m) => { if (!m) return; if (m.model) ids.push(m.model); (m.cases || []).forEach((x) => collect(x.model)); collect(m.fallback); };
+      collect(c.model);
+      for (const id of ids) checkModel(c.when, id);
+    }
+  }
+  return problems;
+
+  function checkModel(when, id) {
+    {
+      const c = { when, model: { model: id } };
       const ch = chain(c.model.model);
       const tex = Object.assign({}, ...ch.slice().reverse().map((x) => x.j?.textures || {}));
       const resolve = (k, n = 0) => { let v = tex[k]; while (v && v.startsWith("#") && n++ < 10) v = tex[v.slice(1)]; return v && !v.startsWith("#") ? v : null; };
