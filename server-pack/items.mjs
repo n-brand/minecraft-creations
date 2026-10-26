@@ -40,7 +40,7 @@ export function baseFor({ mod, id, name, is3d }) {
   const slot = slotOf(id);
   if (slot) return LEATHER[slot];
   if (/^music_disc_\d$/.test(id)) return "music_disc_13";
-  if (/^nether_monster_egg/.test(id)) return "turtle_egg";
+  if (/^nether_monster_egg/.test(id)) return "bread";
   if (mod === "spookify" && /^bag_/.test(id)) return "bundle";
   if (isFood(id)) return "bread";
   if (/^hanged_/.test(id)) return "lantern";
