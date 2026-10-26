@@ -152,3 +152,11 @@ test("search runs one tick after placing, as the placing player", () => {
   assert.ok(f.includes("execute as @a[tag=sp26.placer] at @s run function server_pack_2026:deco/spruce_pressure_plate/place with storage server_pack_2026:tmp"));
   assert.ok(f.includes("tag @a remove sp26.placer"));
 });
+
+test("hanging deco sits one block below the lantern, plates stay in place", () => {
+  const lantern = fn("deco/lantern/spawn"), plate = fn("deco/spruce_pressure_plate/spawn");
+  assert.ok(lantern.includes("$summon minecraft:item_display ~ ~-1 ~ "));
+  assert.ok(lantern.includes("summon minecraft:interaction ~ ~-1.5 ~ "));
+  assert.ok(plate.includes("$summon minecraft:item_display ~ ~ ~ "));
+  assert.ok(plate.includes("summon minecraft:interaction ~ ~-0.5 ~ "));
+});

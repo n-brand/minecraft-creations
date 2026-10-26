@@ -93,10 +93,13 @@ export function buildDatapack({ items }) {
       `execute ${go} positioned ${next} if block ~ ~ ~ #minecraft:replaceable run function ${NS}:deco/${base}/ray`,
       `execute ${go} positioned ${next} if block ~ ~ ~ ${block} run function ${NS}:deco/${base}/ray`,
     ]);
+    // Hängende Deko (Laterne an der Decke) hängt einen Block tiefer
+    const dy = base === "lantern" ? -1 : 0;
+    const at = (y) => `~ ~${y === 0 ? "" : y} ~`;
     fn(`deco/${base}/spawn`, [
       "setblock ~ ~ ~ minecraft:air",
-      `$summon minecraft:item_display ~ ~ ~ {Tags:["sp26.deco"],item_display:"none",Rotation:[$(yaw)f,0f],item:{id:"${block}",count:1,components:{"minecraft:custom_name":"$(name)"}}}`,
-      'summon minecraft:interaction ~ ~-0.5 ~ {Tags:["sp26.deco"],width:1f,height:1f}',
+      `$summon minecraft:item_display ${at(dy)} {Tags:["sp26.deco"],item_display:"none",Rotation:[$(yaw)f,0f],item:{id:"${block}",count:1,components:{"minecraft:custom_name":"$(name)"}}}`,
+      `summon minecraft:interaction ${at(dy - 0.5)} {Tags:["sp26.deco"],width:1f,height:1f}`,
       "scoreboard players set #found sp26 1",
     ]);
   }
