@@ -8,7 +8,9 @@ decoween-neoforge/haunted_well
 decoween-neoforge/jack_in_the_box
 decoween-neoforge/pumpkin_cart
 decoween-neoforge/pumpkin_pile
+decoween-neoforge/scarecrow
 decoween-neoforge/skull_candle
+decoween-neoforge/startled_crow
 decoween-neoforge/witch_broom
 decoween-neoforge/witch_cauldron
 decoween-neoforge/witch_hat
