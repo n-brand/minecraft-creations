@@ -68,6 +68,7 @@ const out = path.join(here, "out");
 fs.mkdirSync(out, { recursive: true });
 const rows = items.map((i) => ({ name: i.name, base: i.base, kind: i.kind, cmd: giveCommand(i) }));
 fs.writeFileSync(path.join(out, "befehle.json"), JSON.stringify(rows, null, 2));
+fs.writeFileSync(path.join(out, "items.json"), JSON.stringify(items.map(({ key, name, base, slot, equipment, kind, scale, song }) => ({ key, name, base, slot, equipment, kind, scale, song: song && { event: song.event, seconds: song.seconds } })), null, 2));
 fs.writeFileSync(path.join(out, "BEFEHLE.md"), "# Server Pack 2026 – Befehle\n\n| Name | Grund-Item | Befehl |\n|---|---|---|\n" + rows.map((r) => `| ${r.name} | ${r.base} | \`${r.cmd}\` |`).join("\n") + "\n");
 
 const iconDir = path.join(repo, "images", "server-pack-2026");
