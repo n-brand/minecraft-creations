@@ -27,7 +27,7 @@ export function buildDatapack({ items }) {
     const slot = `armor.${item.slot}`;
     const equippable = item.equipment ? { slot: item.slot, asset_id: item.equipment } : { slot: item.slot };
     // Marker mit Namen: wird das Teil später auf ein anderes Kostüm umbenannt, greift dessen Zeile wieder
-    files.set(`data/${NS}/item_modifier/costume/${item.icon}.json`, json({ function: "minecraft:set_components", components: { "minecraft:equippable": equippable, "minecraft:custom_data": { sp26: item.name } } }));
+    files.set(`data/${NS}/item_modifier/costume/${item.icon}.json`, json({ type: "minecraft:set_components", components: { "minecraft:equippable": equippable, "minecraft:custom_data": { sp26: item.name } } }));
     check.push(`execute if items entity @s ${slot} minecraft:${item.base}[minecraft:custom_name="${quote(item.name)}"] unless items entity @s ${slot} *[minecraft:custom_data~{sp26:"${quote(item.name)}"}] run item modify entity @s ${slot} ${NS}:costume/${item.icon}`);
   }
   fn("costume/check", check);
@@ -39,10 +39,13 @@ export function buildDatapack({ items }) {
         placed: {
           trigger: "minecraft:placed_block",
           conditions: {
-            location: [
-              { condition: "minecraft:block_state_property", block: "minecraft:oak_pressure_plate" },
-              { condition: "minecraft:match_tool", predicate: { items: "minecraft:oak_pressure_plate", components: { "minecraft:custom_name": item.name } } },
-            ],
+            location: {
+              type: "minecraft:all_of",
+              terms: [
+                { type: "minecraft:match_block", blocks: "minecraft:oak_pressure_plate" },
+                { type: "minecraft:match_tool", predicate: { items: "minecraft:oak_pressure_plate", components: { "minecraft:custom_name": item.name } } },
+              ],
+            },
           },
         },
       },

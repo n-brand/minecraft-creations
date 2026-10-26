@@ -25,7 +25,9 @@ test("pack.mcmeta targets data format 107 and newer", () => {
 test("costume check line for Bride Mask", () => {
   assert.ok(fn("costume/check").includes('execute if items entity @s armor.head minecraft:leather_helmet[minecraft:custom_name="Bride Mask"] unless items entity @s armor.head *[minecraft:custom_data~{sp26:"Bride Mask"}] run item modify entity @s armor.head server_pack_2026:costume/happyhallows_bride_mask'));
   const m = modifier("costume/happyhallows_bride_mask");
-  assert.equal(m.function, "minecraft:set_components");
+  // 26.3: loot functions use "type" (was "function" up to 26.2)
+  assert.equal(m.type, "minecraft:set_components");
+  assert.equal(m.function, undefined);
   assert.deepEqual(m.components["minecraft:equippable"], { slot: "head", asset_id: "halloween:hh_bride" });
 });
 
@@ -65,10 +67,14 @@ test("one placed_block advancement per pressure-plate item with exact name", () 
   assert.equal(advs.length, 2);
   const a = adv("decoween_haunted_fountain");
   assert.equal(a.criteria.placed.trigger, "minecraft:placed_block");
-  assert.deepEqual(a.criteria.placed.conditions.location, [
-    { condition: "minecraft:block_state_property", block: "minecraft:oak_pressure_plate" },
-    { condition: "minecraft:match_tool", predicate: { items: "minecraft:oak_pressure_plate", components: { "minecraft:custom_name": "Haunted Fountain" } } },
-  ]);
+  // 26.3: one condition object with "type"; several are combined with all_of
+  assert.deepEqual(a.criteria.placed.conditions.location, {
+    type: "minecraft:all_of",
+    terms: [
+      { type: "minecraft:match_block", blocks: "minecraft:oak_pressure_plate" },
+      { type: "minecraft:match_tool", predicate: { items: "minecraft:oak_pressure_plate", components: { "minecraft:custom_name": "Haunted Fountain" } } },
+    ],
+  });
   assert.equal(a.rewards.function, "server_pack_2026:deco/placed/decoween_haunted_fountain");
 });
 
