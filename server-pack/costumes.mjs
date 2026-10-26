@@ -40,8 +40,10 @@ const BOX = {
   body: { bone: ["body"], u: 16, v: 16, w: 8, h: 12, d: 4, top: 0 },
   arm: { bone: ["right_arm", "left_arm"], u: 40, v: 16, w: 4, h: 12, d: 4, top: -2 },
   leg: { bone: ["right_leg", "left_leg"], u: 0, v: 16, w: 4, h: 12, d: 4, top: 0 },
+  // Schuhe: eigene Stiefel-Teile haben Vorrang vor den Hosenbeinen
+  boot: { bone: ["right_boot", "left_boot", "right_leg", "left_leg"], u: 0, v: 16, w: 4, h: 12, d: 4, top: 0 },
 };
-const SLOT_BOXES = { head: ["head"], chest: ["body", "arm"], legs: ["body", "leg"], feet: ["leg"] };
+const SLOT_BOXES = { head: ["head"], chest: ["body", "arm"], legs: ["body", "leg"], feet: ["boot"] };
 
 // Flächen einer Box im Textur-Netz (wie bei Minecraft-Modellen): [x, y, breite, höhe, seitlich?]
 function faces(u, v, w, h, d) {
@@ -58,10 +60,12 @@ export function armorLayer(model, png, slot) {
   let used = 0;
   for (const boxName of SLOT_BOXES[slot]) {
     const box = BOX[boxName];
-    const part = box.bone.map((b) => model.parts.find((p) => p.name === b)).find(Boolean);
+    // nur Würfel in Rüstungs-Grundform; innere Schicht zuerst, äussere darüber.
+    // Erstes Teil mit passenden Würfeln nehmen (z.B. ist beim Clown das rechte Bein leer).
+    const fits = (p) => p.cubes.filter((c) => c.size[0] === box.w && c.size[2] === box.d && c.size[1] > 0).sort((a, b) => a.inflate - b.inflate);
+    const part = box.bone.map((b) => model.parts.find((p) => p.name === b)).find((p) => p && fits(p).length);
     if (!part) continue;
-    // nur Würfel in Rüstungs-Grundform; innere Schicht zuerst, äussere darüber
-    const cubes = part.cubes.filter((c) => c.size[0] === box.w && c.size[2] === box.d && c.size[1] > 0).sort((a, b) => a.inflate - b.inflate);
+    const cubes = fits(part);
     for (const c of cubes) {
       const offset = Math.round(c.from[1] - box.top);
       if (offset >= box.h || offset + c.size[1] <= 0) continue;

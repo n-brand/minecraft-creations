@@ -62,3 +62,21 @@ test("face overlays: vampire fangs become a thin layer over the head", async () 
   assert.deepEqual(m.parts[0].cubes[0], { from: [-4, -8, -4], size: [8, 8, 8], uv: [0, 0], inflate: 0.05, mirror: false });
   assert.equal(m.parts[0].name, "head");
 });
+
+test("boots use the boot parts of a full costume model, not the trouser legs", () => {
+  const blue = encodePng({ w: 64, h: 64, data: Buffer.alloc(64 * 64 * 4).map((_, i) => { const p = Math.floor(i / 4), x = p % 64; return x >= 32 ? [20, 20, 220, 255][i % 4] : [220, 20, 20, 255][i % 4]; }) });
+  const model = { texW: 64, texH: 64, parts: [
+    part("right_leg", [{ from: [-2, 0, -2], size: [4, 12, 4], uv: [0, 0], inflate: 0, mirror: false }]),   // red side of the texture
+    part("right_boot", [{ from: [-2, 0, -2], size: [4, 12, 4], uv: [32, 0], inflate: 0, mirror: false }]), // blue side
+  ] };
+  const img = decodePng(armorLayer(model, blue, "feet"));
+  assert.deepEqual(px(img, 4, 25), [20, 20, 220, 255]);
+  const legs = decodePng(armorLayer(model, blue, "legs"));
+  assert.deepEqual(px(legs, 4, 25), [220, 20, 20, 255]);
+});
+
+test("an empty right part falls back to the left one", () => {
+  const model = { texW: 64, texH: 64, parts: [part("right_leg", []), part("left_leg", [cube([-2, 0, -2], [4, 12, 4])])] };
+  const img = decodePng(armorLayer(model, red, "legs"));
+  assert.deepEqual(px(img, 4, 25), [220, 20, 20, 255]);
+});
