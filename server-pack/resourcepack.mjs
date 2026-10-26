@@ -147,6 +147,17 @@ export function buildResourcePack({ items, modFiles, vanillaFiles, hatFiles, cos
     out.set(`assets/halloween/equipment/${eq.name}.json`, { layers: { humanoid: [{ texture: eq.asset }], humanoid_leggings: [{ texture: eq.asset }] } });
   }
 
+  /* --- Lieder der Musik-Discs --- */
+  const sounds = {};
+  for (const item of items.filter((i) => i.song)) {
+    const ogg = modFiles[item.mod].get(item.song.file);
+    if (!ogg) continue;
+    const name = item.song.event.split(":")[1].replace(/^disc\./, "");
+    out.set(`assets/halloween/sounds/disc/${name}.ogg`, ogg);
+    sounds[`disc.${name}`] = { sounds: [{ name: `halloween:disc/${name}`, stream: true }] };
+  }
+  if (Object.keys(sounds).length) out.set("assets/halloween/sounds.json", sounds);
+
   /* --- Kostüme, deren Optik aus dem Mod-Modell erzeugt wurde --- */
   for (const { name, layer, png } of costumeLayers.values()) {
     out.set(`assets/halloween/textures/entity/equipment/${layer}/${name}.png`, png);

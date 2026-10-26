@@ -1,4 +1,5 @@
 import { test } from "node:test";
+import fs from "node:fs";
 import assert from "node:assert/strict";
 import { baseFor, buildItemList, giveCommand } from "../items.mjs";
 
@@ -78,4 +79,12 @@ test("wings are elytra costumes with their own wing look", () => {
   assert.equal(wings.kind, "costume");
   assert.equal(wings.equipment, "halloween:fp_demon_wings");
   assert.equal(giveCommand(wings), '/give @s elytra[custom_name="Demonic Wings",equippable={slot:"chest",asset_id:"halloween:fp_demon_wings"}]');
+});
+
+test("oggSeconds reads the length of a vorbis file", { skip: !fs.existsSync("C:/Users/nicol/Downloads/funny_pumpkin-1.2.3-forge-1.20.1.jar") }, async () => {
+  const { readZip } = await import("../lib/zip.mjs");
+  const { oggSeconds } = await import("../items.mjs");
+  const f = readZip(fs.readFileSync("C:/Users/nicol/Downloads/funny_pumpkin-1.2.3-forge-1.20.1.jar"), (n) => n.endsWith("sounds/witch_dance.ogg"));
+  const s = oggSeconds([...f.values()][0]);
+  assert.ok(s > 30 && s < 600, String(s));
 });

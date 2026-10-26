@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readZip, writeZip } from "./lib/zip.mjs";
-import { NAMESPACE, buildItemList, giveCommand } from "./items.mjs";
+import { NAMESPACE, buildItemList, giveCommand, oggSeconds } from "./items.mjs";
 import { buildResourcePack, decoScale, isModel3d } from "./resourcepack.mjs";
 import { checkPack } from "./check.mjs";
 import { buildDatapack } from "./datapack.mjs";
@@ -26,6 +26,9 @@ const lang = Object.fromEntries(Object.keys(sources.mods).map((mod) => [mod, JSO
 
 /* --- Bauen und prüfen --- */
 const selected = buildItemList({ selection, lang, is3d: (mod, id) => isModel3d(modFiles[mod], NAMESPACE[mod], id) });
+/* --- Musik-Discs: Länge der Lieder --- */
+for (const item of selected) if (item.song) { const ogg = modFiles[item.mod].get(item.song.file); if (ogg) item.song.seconds = oggSeconds(ogg); }
+
 /* --- Mehrblock-Deko: echte Grösse beim Platzieren --- */
 for (const item of selected) if (item.kind === "deco") item.scale = decoScale(modFiles[item.mod], item.ns, item.id);
 const scaled = selected.filter((i) => i.scale && i.scale !== 1);

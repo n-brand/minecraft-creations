@@ -19,7 +19,7 @@ export function buildDatapack({ items }) {
     "scoreboard players set #90 sp26 90",
     `schedule function ${NS}:second 20t`,
   ]);
-  fn("second", [`execute as @a run function ${NS}:costume/check`, `schedule function ${NS}:second 20t`]);
+  fn("second", [`execute as @a run function ${NS}:costume/check`, `execute as @a run function ${NS}:disc/check`, `schedule function ${NS}:second 20t`]);
   fn("tick", [`execute as @e[type=interaction,tag=sp26.deco] if data entity @s attack at @s run function ${NS}:deco/break`]);
 
   /* --- Kostüme --- */
@@ -33,6 +33,17 @@ export function buildDatapack({ items }) {
     check.push(`execute if items entity @s ${slot} minecraft:${item.base}[minecraft:custom_name="${quote(item.name)}"] unless items entity @s ${slot} *[minecraft:custom_data~{sp26:"${quote(item.name)}"}] run item modify entity @s ${slot} ${NS}:costume/${item.icon}`);
   }
   fn("costume/check", check);
+
+  /* --- Musik-Discs: Lied der Mod, sobald die umbenannte Disc in der Hand ist --- */
+  const discCheck = [];
+  for (const item of items.filter((i) => i.song)) {
+    files.set(`data/${NS}/jukebox_song/${item.icon}.json`, json({ sound_event: { sound_id: item.song.event }, description: { text: item.song.title }, length_in_seconds: item.song.seconds, comparator_output: item.song.index }));
+    files.set(`data/${NS}/item_modifier/disc/${item.icon}.json`, json({ type: "minecraft:set_components", components: { "minecraft:jukebox_playable": `${NS}:${item.icon}`, "minecraft:custom_data": { sp26: item.name } } }));
+    for (const slot of ["weapon.mainhand", "weapon.offhand"]) {
+      discCheck.push(`execute if items entity @s ${slot} minecraft:${item.base}[minecraft:custom_name="${quote(item.name)}"] unless items entity @s ${slot} *[minecraft:custom_data~{sp26:"${quote(item.name)}"}] run item modify entity @s ${slot} ${NS}:disc/${item.icon}`);
+    }
+  }
+  fn("disc/check", discCheck);
 
   /* --- Deko hinstellen --- */
   const decoItems = items.filter((i) => DECO_BASES.includes(i.base));

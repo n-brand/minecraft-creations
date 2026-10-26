@@ -102,3 +102,13 @@ test("decoScale finds how much the mod shrank a multi-block item", async () => {
   assert.equal(decoScale(files, "d", "lamp"), 1);
   assert.equal(decoScale(files, "d", "missing"), 1);
 });
+
+test("disc songs are copied with a streamed sound event", () => {
+  const ogg = Buffer.from("OggS-fake");
+  const mods = { funny_pumpkin: new Map([...modFiles.funny_pumpkin, ["assets/funny_pumpkin/sounds/witch_dance.ogg", ogg], ["assets/funny_pumpkin/models/item/music_disc_4.json", json({ parent: "item/generated", textures: { layer0: "funny_pumpkin:block/x" } })]]) };
+  const v = new Map([...vanillaFiles, ["assets/minecraft/items/music_disc_13.json", json({ model: { type: "minecraft:model", model: "minecraft:item/music_disc_13" } })]]);
+  const discItems = [{ key: "funny_pumpkin/music_disc_4", mod: "funny_pumpkin", ns: "funny_pumpkin", id: "music_disc_4", name: "Witch Dance", base: "music_disc_13", slot: null, equipment: null, kind: "other", model: "funny_pumpkin:item/music_disc_4", icon: "funny_pumpkin_music_disc_4", song: { event: "halloween:disc.witch_dance", file: "assets/funny_pumpkin/sounds/witch_dance.ogg", title: "Devilry - Witch dance", seconds: 1, index: 4 } }];
+  const built = buildResourcePack({ items: discItems, modFiles: mods, vanillaFiles: v, hatFiles: null }).files;
+  assert.ok(built.get("assets/halloween/sounds/disc/witch_dance.ogg").equals(ogg));
+  assert.deepEqual(JSON.parse(built.get("assets/halloween/sounds.json"))["disc.witch_dance"], { sounds: [{ name: "halloween:disc/witch_dance", stream: true }] });
+});

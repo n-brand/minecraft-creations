@@ -72,6 +72,8 @@ export function buildItemList({ selection, lang, is3d }) {
     i.kind = i.slot ? "costume" : DECO_BASES.includes(i.base) ? "deco" : i.base === "bread" ? "food" : "other";
     i.model = `${i.ns}:item/${i.id}`;
     i.icon = `${i.ns}_${i.id}`;
+    const ev = i.mod === "funny_pumpkin" && DISC_SONGS[i.id];
+    if (ev) i.song = { event: `halloween:disc.${ev}`, file: `assets/funny_pumpkin/sounds/${ev}.ogg`, title: stripCodes(lang[i.mod]?.[`item.${i.ns}.${i.id}.desc`] || i.name), seconds: 0, index: Number(i.id.slice(-1)) };
   }
   return items;
 }
@@ -80,4 +82,16 @@ export function giveCommand(item) {
   const parts = [`custom_name="${item.name.replace(/"/g, '\\"')}"`];
   if (item.equipment) parts.push(`equippable={slot:"${item.slot}",asset_id:"${item.equipment}"}`);
   return `/give @s ${item.base}[${parts.join(",")}]`;
+}
+
+/* --- Musik-Discs: Lied aus der Mod (Funny Pumpkin) --- */
+// music_disc_N → Sound der Mod (aus den Beschreibungen in en_us.json abgeglichen)
+export const DISC_SONGS = { music_disc_1: "this_is_halloween", music_disc_2: "creepy_house", music_disc_3: "traveling_circus", music_disc_4: "witch_dance", music_disc_5: "ghost_choir", music_disc_6: "sweet_candy" };
+
+// Länge einer Ogg-Vorbis-Datei in Sekunden (letzte Granule-Position / Abtastrate)
+export function oggSeconds(buf) {
+  const id = buf.indexOf(Buffer.from("\x01vorbis", "latin1"));
+  const rate = buf.readUInt32LE(id + 12);
+  const last = buf.lastIndexOf(Buffer.from("OggS", "latin1"));
+  return Math.ceil(Number(buf.readBigInt64LE(last + 6)) / rate);
 }

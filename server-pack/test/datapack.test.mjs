@@ -175,3 +175,17 @@ test("placed deco is scaled back to its real size and stands on the floor", () =
   assert.ok(fn("deco/placed/decoween_haunted_fountain").includes("data modify storage server_pack_2026:tmp scale set value 1f"));
   assert.ok(fn("deco/spruce_pressure_plate/spawn").includes("transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,$(ty)f,0f],scale:[$(scale)f,$(scale)f,$(scale)f]}"));
 });
+
+test("renamed discs play the mod song", () => {
+  const disc = item({ key: "funny_pumpkin/music_disc_4", mod: "funny_pumpkin", ns: "funny_pumpkin", id: "music_disc_4", name: "Witch Dance", base: "music_disc_13", slot: null, equipment: null, kind: "other", song: { event: "halloween:disc.witch_dance", title: "Devilry - Witch dance", seconds: 123, index: 4 } });
+  const dp = buildDatapack({ items: [disc] });
+  const song = JSON.parse(dp.get("data/server_pack_2026/jukebox_song/funny_pumpkin_music_disc_4.json"));
+  assert.deepEqual(song, { sound_event: { sound_id: "halloween:disc.witch_dance" }, description: { text: "Devilry - Witch dance" }, length_in_seconds: 123, comparator_output: 4 });
+  const mod = JSON.parse(dp.get("data/server_pack_2026/item_modifier/disc/funny_pumpkin_music_disc_4.json"));
+  assert.equal(mod.components["minecraft:jukebox_playable"], "server_pack_2026:funny_pumpkin_music_disc_4");
+  const check = dp.get("data/server_pack_2026/function/disc/check.mcfunction");
+  for (const slot of ["weapon.mainhand", "weapon.offhand"]) {
+    assert.ok(check.includes(`execute if items entity @s ${slot} minecraft:music_disc_13[minecraft:custom_name="Witch Dance"] unless items entity @s ${slot} *[minecraft:custom_data~{sp26:"Witch Dance"}] run item modify entity @s ${slot} server_pack_2026:disc/funny_pumpkin_music_disc_4`));
+  }
+  assert.ok(dp.get("data/server_pack_2026/function/second.mcfunction").includes("execute as @a run function server_pack_2026:disc/check"));
+});
