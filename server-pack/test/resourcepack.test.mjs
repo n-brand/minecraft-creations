@@ -59,3 +59,18 @@ test("checkPack accepts the built pack and reports mixed atlases", () => {
   broken.set("assets/funny_pumpkin/models/block/template.json", json({ textures: { particle: "block/anvil" }, elements: [{ from: [0, 0, 0], to: [16, 16, 16], faces: { north: { texture: "#t" } } }] }));
   assert.ok(checkPack(broken).some((p) => p.includes("mehrere Atlanten")));
 });
+
+test("wings get an elytra-shaped wings texture", async () => {
+  const { decodePng } = await import("../lib/png.mjs");
+  const wingPng = encodePng({ w: 64, h: 64, data: Buffer.alloc(64 * 64 * 4).fill(0).map((v, i) => (Math.floor(i / 4) % 64 < 12 && Math.floor(i / 256) > 24 && Math.floor(i / 256) < 36 ? 200 : 0)) });
+  const mods = { funny_pumpkin: new Map([...modFiles.funny_pumpkin, ["assets/funny_pumpkin/textures/entities/demon_wings.png", wingPng], ["assets/funny_pumpkin/models/item/demon_costume_chestplate.json", json({ parent: "item/generated", textures: { layer0: "funny_pumpkin:block/x" } })]]) };
+  const v = new Map([...vanillaFiles, ["assets/minecraft/items/elytra.json", json({ model: { type: "minecraft:model", model: "minecraft:item/elytra" } })]]);
+  const wingsItems = buildItemList({ selection: ["funny_pumpkin/demon_costume_chestplate"], lang: { funny_pumpkin: { "item.funny_pumpkin.demon_costume_chestplate": "Demonic Wings" } }, is3d: () => false });
+  const built = buildResourcePack({ items: wingsItems, modFiles: mods, vanillaFiles: v, hatFiles: null }).files;
+  assert.deepEqual(JSON.parse(built.get("assets/halloween/equipment/fp_demon_wings.json")), { layers: { wings: [{ texture: "halloween:fp_demon_wings" }] } });
+  const tex = decodePng(built.get("assets/halloween/textures/entity/equipment/wings/fp_demon_wings.png"));
+  assert.equal(tex.w, 64);
+  assert.equal(tex.h, 32);
+  // front face of the elytra wing (u 24..34, v 2..22) carries the painted wing
+  assert.ok(tex.data[(10 * 64 + 28) * 4 + 3] > 0);
+});

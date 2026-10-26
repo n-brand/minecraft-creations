@@ -65,3 +65,16 @@ test("giveCommand builds the exact /give line", () => {
   assert.equal(giveCommand(byId("bride_mask")), '/give @s leather_helmet[custom_name="Bride Mask",equippable={slot:"head",asset_id:"halloween:hh_bride"}]');
   assert.equal(giveCommand({ base: "oak_pressure_plate", name: "Haunted Fountain", equipment: null, slot: null }), '/give @s oak_pressure_plate[custom_name="Haunted Fountain"]');
 });
+
+test("wings are elytra costumes with their own wing look", () => {
+  const [wings] = buildItemList({
+    selection: ["funny_pumpkin/demon_costume_chestplate"],
+    lang: { funny_pumpkin: { "item.funny_pumpkin.demon_costume_chestplate": "Demonic Wings" } },
+    is3d: () => false,
+  });
+  assert.equal(wings.base, "elytra");
+  assert.equal(wings.slot, "chest");
+  assert.equal(wings.kind, "costume");
+  assert.equal(wings.equipment, "halloween:fp_demon_wings");
+  assert.equal(giveCommand(wings), '/give @s elytra[custom_name="Demonic Wings",equippable={slot:"chest",asset_id:"halloween:fp_demon_wings"}]');
+});

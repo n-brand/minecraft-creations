@@ -1,5 +1,29 @@
 // Resource Pack: Modelle und Texturen aus den Mods kopieren, Item-Definitionen pro Grund-Item bauen.
 import { equipmentFor } from "./items.mjs";
+import { decodePng, encodePng } from "./lib/png.mjs";
+
+/* --- Flügel-Textur auf Elytren-Form (64×32) umbauen --- */
+// Elytren-Flügel: Vorderseite u 24–34, Rückseite u 36–46, je v 2–22 (10×20)
+export function elytraTexture(src) {
+  const img = decodePng(src);
+  let x0 = img.w, y0 = img.h, x1 = -1, y1 = -1;
+  for (let y = 0; y < img.h; y++) for (let x = 0; x < img.w / 2; x++) {
+    if (img.data[(y * img.w + x) * 4 + 3] === 0) continue;
+    x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y);
+  }
+  const out = Buffer.alloc(64 * 32 * 4);
+  if (x1 < 0) return encodePng({ w: 64, h: 32, data: out });
+  const w = x1 - x0 + 1, h = y1 - y0 + 1, rotate = w > h;
+  for (const faceU of [24, 36]) {
+    for (let v = 0; v < 20; v++) for (let u = 0; u < 10; u++) {
+      // breites Motiv um 90° drehen, damit der Flügel nach unten hängt
+      const sx = rotate ? x0 + Math.floor((v / 20) * w) : x0 + Math.floor((u / 10) * w);
+      const sy = rotate ? y0 + Math.floor(((9 - u) / 10) * h) : y0 + Math.floor((v / 20) * h);
+      img.data.copy(out, ((2 + v) * 64 + faceU + u) * 4, (sy * img.w + sx) * 4, (sy * img.w + sx) * 4 + 4);
+    }
+  }
+  return encodePng({ w: 64, h: 32, data: out });
+}
 
 const split = (id, defNs = "minecraft") => (id.includes(":") ? id.split(":") : [defNs, id]);
 const json = (o) => JSON.stringify(o, null, 2);
@@ -89,6 +113,11 @@ export function buildResourcePack({ items, modFiles, vanillaFiles, hatFiles }) {
     if (!eq || done.has(eq.name)) continue;
     done.add(eq.name);
     const [l1, l2] = eq.layers.map((p) => modFiles[item.mod].get(p));
+    if (eq.wings) {
+      out.set(`assets/halloween/textures/entity/equipment/wings/${eq.name}.png`, elytraTexture(l1));
+      out.set(`assets/halloween/equipment/${eq.name}.json`, { layers: { wings: [{ texture: eq.asset }] } });
+      continue;
+    }
     out.set(`assets/halloween/textures/entity/equipment/humanoid/${eq.name}.png`, l1);
     out.set(`assets/halloween/textures/entity/equipment/humanoid_leggings/${eq.name}.png`, l2);
     out.set(`assets/halloween/equipment/${eq.name}.json`, { layers: { humanoid: [{ texture: eq.asset }], humanoid_leggings: [{ texture: eq.asset }] } });
