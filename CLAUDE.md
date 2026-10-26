@@ -58,7 +58,7 @@ Erledigt:
 - PWA (installierbar, offline lesbar, Downloads nur online). Lokal geprüft: Service Worker aktiv, 61 Dateien gespeichert, Seite inkl. Bilder lädt bei gestopptem Server.
 
 Offen:
-- **Server Pack 2026:** Datapack im Spiel testen (Kostüme anziehen, Deko hinstellen/abbauen, 3D auf dem Kopf bei Masken ohne Rüstungs-Textur). Download-Link fürs Server-Resource-Pack (`resource-pack` in den Server-Einstellungen) entscheidet Nicolas.
+- **Server Pack 2026:** Deko hinstellen/abbauen im Spiel bestätigt (2026-10-26, nach `/reload`; neue Datapack-Versionen werden erst mit `/reload` oder Welt neu öffnen aktiv). Offen: Kostüme ohne Rüstungs-Textur (3D-Hüte aus dem Mod-Code, Kleider als Rüstungs-Optik), Download-Link fürs Server-Resource-Pack entscheidet Nicolas.
 - **Halloween-Pack im Spiel testen** (Client): Sitzen die Hörner auf dem Kopf (Annahme: Kopf-Item ohne `asset_id` wird als Item-Modell gezeichnet, `display.head` Skalierung 0.8)? Lage von Hörnern/Dreizack in der Hand und im Inventar (Display-Werte geschätzt)? Flügel-Textur richtig herum? Geworfener Dreizack bleibt Vanilla.
 - Halloween-Pack: weitere Halloween-Sachen (z.B. eigene Deko wie Grabstein/Sarg). Spookify-Mod (AndroFox, All Rights Reserved) nicht übernehmen.
 - **Mein Pack enthält fremde Packs** (Golden Tridents – nela1, LowOnFire – haikis, No Pumpkin Blur, McDonald Food V3 – ItzAX0LOTL). Vor dem Veröffentlichen klären, ob deren Lizenzen das Weiterverteilen erlauben; Credits stehen in der Detailansicht.
