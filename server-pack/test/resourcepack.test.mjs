@@ -74,3 +74,16 @@ test("wings get an elytra-shaped wings texture", async () => {
   // front face of the elytra wing (u 24..34, v 2..22) carries the painted wing
   assert.ok(tex.data[(10 * 64 + 28) * 4 + 3] > 0);
 });
+
+test("generated costume looks become equipment assets", () => {
+  const look = encodePng({ w: 64, h: 32, data: Buffer.alloc(64 * 32 * 4, 255) });
+  const costumeLayers = new Map([
+    ["funny_pumpkin/witch_costume_chestplate", { name: "fp_witch_costume_chestplate", layer: "humanoid", png: look }],
+    ["funny_pumpkin/witch_costume_leggings", { name: "fp_witch_costume_leggings", layer: "humanoid_leggings", png: look }],
+  ]);
+  const built = buildResourcePack({ items, modFiles, vanillaFiles, hatFiles: null, costumeLayers }).files;
+  assert.deepEqual(JSON.parse(built.get("assets/halloween/equipment/fp_witch_costume_chestplate.json")), { layers: { humanoid: [{ texture: "halloween:fp_witch_costume_chestplate" }] } });
+  assert.ok(built.has("assets/halloween/textures/entity/equipment/humanoid/fp_witch_costume_chestplate.png"));
+  assert.deepEqual(JSON.parse(built.get("assets/halloween/equipment/fp_witch_costume_leggings.json")), { layers: { humanoid_leggings: [{ texture: "halloween:fp_witch_costume_leggings" }] } });
+  assert.ok(built.has("assets/halloween/textures/entity/equipment/humanoid_leggings/fp_witch_costume_leggings.png"));
+});

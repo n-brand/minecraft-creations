@@ -44,7 +44,7 @@ export function isModel3d(files, ns, id) {
   return false;
 }
 
-export function buildResourcePack({ items, modFiles, vanillaFiles, hatFiles }) {
+export function buildResourcePack({ items, modFiles, vanillaFiles, hatFiles, costumeLayers = new Map() }) {
   const out = new Map();
   const copied = new Set();
 
@@ -121,6 +121,12 @@ export function buildResourcePack({ items, modFiles, vanillaFiles, hatFiles }) {
     out.set(`assets/halloween/textures/entity/equipment/humanoid/${eq.name}.png`, l1);
     out.set(`assets/halloween/textures/entity/equipment/humanoid_leggings/${eq.name}.png`, l2);
     out.set(`assets/halloween/equipment/${eq.name}.json`, { layers: { humanoid: [{ texture: eq.asset }], humanoid_leggings: [{ texture: eq.asset }] } });
+  }
+
+  /* --- Kostüme, deren Optik aus dem Mod-Modell erzeugt wurde --- */
+  for (const { name, layer, png } of costumeLayers.values()) {
+    out.set(`assets/halloween/textures/entity/equipment/${layer}/${name}.png`, png);
+    out.set(`assets/halloween/equipment/${name}.json`, { layers: { [layer]: [{ texture: `halloween:${name}` }] } });
   }
 
   /* --- Weihnachtsmütze (Reijvi) --- */

@@ -9,6 +9,8 @@ import { checkPack } from "./check.mjs";
 import { buildDatapack } from "./datapack.mjs";
 import { renderIcon } from "./icons.mjs";
 import { entrySource, insertEntry } from "./site-entry.mjs";
+import { armorLayer, costumePieces } from "./costumes.mjs";
+import { readModel } from "./lib/javamodel.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.dirname(here);
@@ -24,7 +26,24 @@ const lang = Object.fromEntries(Object.keys(sources.mods).map((mod) => [mod, JSO
 
 /* --- Bauen und prüfen --- */
 const selected = buildItemList({ selection, lang, is3d: (mod, id) => isModel3d(modFiles[mod], NAMESPACE[mod], id) });
-const { files, items } = buildResourcePack({ items: selected, modFiles, vanillaFiles, hatFiles });
+/* --- Kostüm-Optik aus den Mod-Modellen (Funny Pumpkin) --- */
+const fpClasses = readZip(fs.readFileSync(sources.mods.funny_pumpkin), (n) => /\/(item|client\/model)\/[^/]+\.class$/.test(n));
+const pieces = costumePieces(fpClasses);
+const costumeLayers = new Map();
+for (const item of selected) {
+  if (item.mod !== "funny_pumpkin" || !item.slot || item.equipment) continue;
+  const piece = pieces.get(item.id);
+  const modelClass = piece && [...fpClasses.keys()].find((k) => k.endsWith(`/client/model/${piece.model}.class`));
+  const png = piece && modFiles.funny_pumpkin.get(piece.texture);
+  if (!modelClass || !png) continue;
+  const layer = armorLayer(readModel(fpClasses.get(modelClass)), png, item.slot);
+  if (!layer) continue;
+  const name = `fp_${item.id}`;
+  costumeLayers.set(item.key, { name, layer: item.slot === "legs" ? "humanoid_leggings" : "humanoid", png: layer });
+  item.equipment = `halloween:${name}`;
+}
+
+const { files, items } = buildResourcePack({ items: selected, modFiles, vanillaFiles, hatFiles, costumeLayers });
 const problems = checkPack(files);
 const caseCount = [...files.keys()].filter((p) => p.startsWith("assets/minecraft/items/")).reduce((n, p) => n + JSON.parse(files.get(p)).model.cases.length, 0);
 console.log(`${caseCount} Item-Modelle geprüft, ${problems.length} Probleme`);
@@ -58,6 +77,7 @@ const itemsJs = path.join(repo, "data", "items.js");
 fs.writeFileSync(itemsJs, insertEntry(fs.readFileSync(itemsJs, "utf8"), entrySource(items)));
 
 const count = (k) => items.filter((i) => i.kind === k).length;
+console.log(`Kostüm-Optik aus Mod-Modellen: ${costumeLayers.size} Teile (${[...costumeLayers.keys()].map((k) => k.split("/")[1]).join(", ")})`);
 console.log(`${items.length} Items (Kostüme ${count("costume")}, Deko ${count("deco")}, Essen ${count("food")}), ${icons} Icons, Datapack ${datapack.size} Dateien`);
 console.log(`Resource Pack → ${sources.resourcepackOut}`);
 console.log(`Datapack → ${sources.datapackOut}`);
