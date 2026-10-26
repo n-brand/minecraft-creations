@@ -128,3 +128,12 @@ test("3D hats: head context shows the hat model, everything else the icon", () =
   assert.ok(built.has("assets/halloween/textures/item/hx/costume/witch_hat.png"));
   assert.deepEqual(checkPack(built), []);
 });
+
+test("3D block hats get a head placement wrapper without own texture", () => {
+  const hatItems = buildItemList({ selection: ["funny_pumpkin/statue"], lang: {}, is3d: () => true });
+  hatItems[0].hat = { model: { parent: "funny_pumpkin:item/statue", display: { head: { rotation: [0, 0, 0], translation: [0, 14.4, 0], scale: [1, 1, 1] } } }, texture: null };
+  const built = buildResourcePack({ items: hatItems, modFiles, vanillaFiles, hatFiles: null }).files;
+  assert.deepEqual(JSON.parse(built.get("assets/halloween/models/item/hat/funny_pumpkin_statue.json")).display.head.translation, [0, 14.4, 0]);
+  assert.ok(![...built.keys()].some((k) => k.includes("textures/item/hx/costume/")));
+  assert.deepEqual(checkPack(built), []);
+});

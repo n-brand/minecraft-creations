@@ -65,3 +65,8 @@ test("real witch hat becomes a 3D model with all its pieces", { skip: !fs.exists
   assert.equal(m.elements.length, 6);
   for (const e of m.elements) for (const v of [...e.from, ...e.to]) assert.ok(v >= -16 && v <= 32, String(v));
 });
+
+test("blockHat puts a block model on top of the head", async () => {
+  const { blockHat } = await import("../hats.mjs");
+  assert.deepEqual(blockHat("decoween:item/witch_hat"), { parent: "decoween:item/witch_hat", display: { head: { rotation: [0, 0, 0], translation: [0, 14.4, 0], scale: [1, 1, 1] } } });
+});

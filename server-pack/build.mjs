@@ -11,7 +11,7 @@ import { renderIcon } from "./icons.mjs";
 import { entrySource, insertEntry } from "./site-entry.mjs";
 import { armorLayer, costumePieces } from "./costumes.mjs";
 import { readModel } from "./lib/javamodel.mjs";
-import { hatModel } from "./hats.mjs";
+import { blockHat, hatModel } from "./hats.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.dirname(here);
@@ -59,6 +59,9 @@ for (const item of selected) {
   costumeLayers.set(item.key, { name, layer: item.slot === "legs" ? "humanoid_leggings" : "humanoid", png: layer });
   item.equipment = `halloween:${name}`;
 }
+
+/* --- Kopfteile, die in der Mod 3D-Blöcke sind (z.B. Hexenhut): auf den Kopf setzen --- */
+for (const item of selected) if (item.slot === "head" && !item.hat && !item.equipment && isModel3d(modFiles[item.mod], item.ns, item.id)) item.hat = { model: blockHat(item.model), texture: null };
 
 const { files, items } = buildResourcePack({ items: selected, modFiles, vanillaFiles, hatFiles, costumeLayers });
 const problems = checkPack(files);
