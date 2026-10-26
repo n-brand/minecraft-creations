@@ -70,3 +70,10 @@ test("blockHat puts a block model on top of the head", async () => {
   const { blockHat } = await import("../hats.mjs");
   assert.deepEqual(blockHat("decoween:item/witch_hat"), { parent: "decoween:item/witch_hat", display: { head: { rotation: [0, 0, 0], translation: [0, 14.4, 0], scale: [1, 1, 1] } } });
 });
+
+test("blockHat keeps the brim on the head when scaled", async () => {
+  const { blockHat } = await import("../hats.mjs");
+  const h = blockHat("m", 1.3).display.head;
+  assert.deepEqual(h.scale, [1.3, 1.3, 1.3]);
+  assert.ok(Math.abs(h.translation[1] - 16.8) < 1e-9);
+});

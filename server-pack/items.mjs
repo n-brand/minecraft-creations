@@ -101,6 +101,8 @@ export function oggSeconds(buf) {
 export function applySizes(items, sizes) {
   const unknown = [];
   for (const [name, factor] of Object.entries(sizes)) {
+    const head = items.find((i) => i.name === name && i.slot === "head");
+    if (head) { head.headScale = factor; continue; }
     const item = items.find((i) => i.name === name && i.kind === "deco");
     if (!item) { unknown.push(name); continue; }
     item.scale = Math.round((item.scale ?? 1) * factor * 1000) / 1000;

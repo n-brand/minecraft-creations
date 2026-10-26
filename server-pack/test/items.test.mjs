@@ -98,3 +98,10 @@ test("size list multiplies the placed deco size by name", async () => {
   assert.equal(list[2].scale, undefined);
   assert.deepEqual(unknown, ["Gibt Es Nicht"]);
 });
+
+test("size list also scales head pieces", async () => {
+  const { applySizes } = await import("../items.mjs");
+  const list = [{ name: "Witch Hat", kind: "costume", slot: "head" }];
+  assert.deepEqual(applySizes(list, { "Witch Hat": 1.3 }), []);
+  assert.equal(list[0].headScale, 1.3);
+});

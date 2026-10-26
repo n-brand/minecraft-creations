@@ -89,6 +89,6 @@ export function hatModel(model, texture) {
 /* --- Block-Hüte (z.B. Hexenhut-Block): Modell unverändert, nur auf den Kopf setzen --- */
 // Kopf-Ebene: java_y = -0.625·(y' − 8) − 4 mit y' = 8 + (y − 8)·k + t.
 // Unterkante (y = 0) soll auf der Kopf-Oberseite (java_y = −8) sitzen → t = 6.4 + 8k; k = 1.
-export function blockHat(model) {
-  return { parent: model, display: { head: { rotation: [0, 0, 0], translation: [0, 14.4, 0], scale: [1, 1, 1] } } };
+export function blockHat(model, k = 1) {
+  return { parent: model, display: { head: { rotation: [0, 0, 0], translation: [0, Math.round((6.4 + 8 * k) * 1000) / 1000, 0], scale: [k, k, k] } } };
 }
