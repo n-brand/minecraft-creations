@@ -57,7 +57,10 @@ export function buildDatapack({ items }) {
     }));
     fn(`deco/placed/${item.icon}`, [
       `advancement revoke @s only ${NS}:deco/${item.icon}`,
-      `function ${NS}:deco/${item.base}/place {name:"${quote(item.name)}"}`,
+      // erst im nächsten Tick suchen: dann steht der Block sicher und die Blickrichtung ist aktuell
+      `data modify storage ${NS}:tmp name set value "${quote(item.name)}"`,
+      "tag @s add sp26.placer",
+      `schedule function ${NS}:deco/${item.base}/later 1t`,
     ]);
   }
 
@@ -79,6 +82,10 @@ export function buildDatapack({ items }) {
       "scoreboard players set #found sp26 0",
       `execute anchored eyes positioned ^ ^ ^ run function ${NS}:deco/${base}/ray`,
       'execute if score #found sp26 matches 0 run title @s actionbar {"text":"Deko nicht gefunden – beim Platzieren direkt auf die Stelle schauen","color":"red"}',
+    ]);
+    fn(`deco/${base}/later`, [
+      `execute as @a[tag=sp26.placer] at @s run function ${NS}:deco/${base}/place with storage ${NS}:tmp`,
+      "tag @a remove sp26.placer",
     ]);
     fn(`deco/${base}/ray`, [
       "scoreboard players add #steps sp26 1",

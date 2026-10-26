@@ -82,7 +82,9 @@ test("one placed_block advancement per pressure-plate item with exact name", () 
 test("reward revokes exactly its own advancement and passes the name", () => {
   const f = fn("deco/placed/decoween_haunted_fountain");
   assert.ok(f.includes("advancement revoke @s only server_pack_2026:deco/decoween_haunted_fountain"));
-  assert.ok(f.includes('function server_pack_2026:deco/spruce_pressure_plate/place {name:"Haunted Fountain"}'));
+  assert.ok(f.includes('data modify storage server_pack_2026:tmp name set value "Haunted Fountain"'));
+  assert.ok(f.includes("tag @s add sp26.placer"));
+  assert.ok(f.includes("schedule function server_pack_2026:deco/spruce_pressure_plate/later 1t"));
 });
 
 test("raycast only converts a pressure plate without existing deco", () => {
@@ -135,7 +137,7 @@ test("hanging deco on lanterns is placeable too", () => {
     { type: "minecraft:match_block", blocks: "minecraft:lantern" },
     { type: "minecraft:match_tool", predicate: { items: "minecraft:lantern", components: { "minecraft:custom_name": "Hanged Corpse" } } },
   ]);
-  assert.ok(fn("deco/placed/funny_pumpkin_hanged_corpse").includes('function server_pack_2026:deco/lantern/place {name:"Hanged Corpse"}'));
+  assert.ok(fn("deco/placed/funny_pumpkin_hanged_corpse").includes("schedule function server_pack_2026:deco/lantern/later 1t"));
   assert.ok(fn("deco/lantern/ray").includes("execute if block ~ ~ ~ minecraft:lantern unless block ^ ^ ^0.05 #minecraft:replaceable unless block ^ ^ ^0.05 minecraft:lantern "));
   assert.ok(fn("deco/lantern/spawn").includes('item:{id:"minecraft:lantern",count:1,components:{"minecraft:custom_name":"$(name)"}}'));
 });
@@ -143,4 +145,10 @@ test("hanging deco on lanterns is placeable too", () => {
 test("no oak pressure plates anywhere", () => {
   for (const [, c] of files) assert.ok(!String(c).includes("oak_pressure_plate") || String(c).includes("spruce_pressure_plate"));
   for (const [, c] of files) assert.ok(!/minecraft:oak_pressure_plate/.test(String(c)));
+});
+
+test("search runs one tick after placing, as the placing player", () => {
+  const f = fn("deco/spruce_pressure_plate/later");
+  assert.ok(f.includes("execute as @a[tag=sp26.placer] at @s run function server_pack_2026:deco/spruce_pressure_plate/place with storage server_pack_2026:tmp"));
+  assert.ok(f.includes("tag @a remove sp26.placer"));
 });
