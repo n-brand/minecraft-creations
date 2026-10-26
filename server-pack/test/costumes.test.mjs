@@ -47,3 +47,18 @@ test("costume pieces are found per item id in the mod", { skip: !fs.existsSync(F
   assert.deepEqual(pieces.get("witch_costume_leggings"), { model: "ModelCostume_Legs", texture: "assets/funny_pumpkin/textures/entities/witch_leggings.png" });
   assert.ok(pieces.has("vampire_costume_1_boots"));
 });
+
+test("curios accessories (vampire eyes) are found via their renderer", { skip: !fs.existsSync(FP) }, () => {
+  const pieces = costumePieces(readZip(fs.readFileSync(FP)));
+  assert.deepEqual(pieces.get("vampire_eyes_1"), { model: "ModelVampire_Eyes", texture: "assets/funny_pumpkin/textures/entities/vampire_eyes.png" });
+  assert.deepEqual(pieces.get("vampire_eyes_3"), { model: "ModelVampire_Eyes", texture: "assets/funny_pumpkin/textures/entities/vampire_eyes_3.png" });
+});
+
+test("face overlays: vampire fangs become a thin layer over the head", async () => {
+  const { FACE_OVERLAYS, faceOverlayModel } = await import("../costumes.mjs");
+  assert.equal(FACE_OVERLAYS.vampire_fangs, "assets/funny_pumpkin/textures/entities/mob_vampire_fangs.png");
+  const m = faceOverlayModel();
+  assert.equal(m.texW, 64);
+  assert.deepEqual(m.parts[0].cubes[0], { from: [-4, -8, -4], size: [8, 8, 8], uv: [0, 0], inflate: 0.05, mirror: false });
+  assert.equal(m.parts[0].name, "head");
+});

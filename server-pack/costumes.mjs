@@ -17,6 +17,17 @@ export function costumePieces(files) {
     if (texture) entry.texture ||= `assets/funny_pumpkin/${texture}`;
     found.set(id, entry);
   }
+  // Curios-Zubehör (z.B. VampireEyes1Renderer): Modell und Textur stehen im Renderer
+  for (const [name, buf] of files) {
+    const m = name.match(/\/client\/renderer\/([A-Za-z0-9]+)Renderer\.class$/);
+    if (!m) continue;
+    const s = buf.toString("latin1");
+    if (!s.includes("ICurioRenderer")) continue;
+    const model = (s.match(/client\/model\/(Model[A-Za-z0-9_]+)/) || [])[1];
+    const texture = (s.match(/textures\/entities\/[a-z0-9_]+\.png/) || [])[0];
+    const id = m[1].replace(/([a-z])([A-Z0-9])/g, "$1_$2").toLowerCase();
+    if (model && texture && !found.has(id)) found.set(id, { model, texture: `assets/funny_pumpkin/${texture}` });
+  }
   const pieces = new Map();
   for (const [id, e] of found) if (e.model && e.texture) pieces.set(id, { model: e.model, texture: e.texture });
   return pieces;
@@ -78,4 +89,11 @@ export function armorLayer(model, png, slot) {
     }
   }
   return used ? encodePng({ w: 64, h: 32, data: out }) : null;
+}
+
+/* --- Gesichts-Schichten ohne eigenes Modell (z.B. Vampirzähne): Textur im Kopf-Layout --- */
+export const FACE_OVERLAYS = { vampire_fangs: "assets/funny_pumpkin/textures/entities/mob_vampire_fangs.png" };
+
+export function faceOverlayModel() {
+  return { texW: 64, texH: 64, parts: [{ name: "head", parent: "root", pose: { x: 0, y: 0, z: 0, rx: 0, ry: 0, rz: 0 }, cubes: [{ from: [-4, -8, -4], size: [8, 8, 8], uv: [0, 0], inflate: 0.05, mirror: false }] }] };
 }

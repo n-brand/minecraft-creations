@@ -9,7 +9,7 @@ import { checkPack } from "./check.mjs";
 import { buildDatapack } from "./datapack.mjs";
 import { renderIcon } from "./icons.mjs";
 import { entrySource, insertEntry } from "./site-entry.mjs";
-import { armorLayer, costumePieces } from "./costumes.mjs";
+import { FACE_OVERLAYS, armorLayer, costumePieces, faceOverlayModel } from "./costumes.mjs";
 import { readModel } from "./lib/javamodel.mjs";
 import { blockHat, hatModel } from "./hats.mjs";
 
@@ -37,11 +37,17 @@ if (unknownSizes.length) console.log(` - groessen.json: unbekannte Namen: ${unkn
 const scaled = selected.filter((i) => i.scale && i.scale !== 1);
 
 /* --- Kostüm-Optik aus den Mod-Modellen (Funny Pumpkin) --- */
-const fpClasses = readZip(fs.readFileSync(sources.mods.funny_pumpkin), (n) => /\/(item|client\/model)\/[^/]+\.class$/.test(n));
+const fpClasses = readZip(fs.readFileSync(sources.mods.funny_pumpkin), (n) => /\/(item|client\/model|client\/renderer)\/[^/]+\.class$/.test(n));
 const pieces = costumePieces(fpClasses);
 const costumeLayers = new Map();
 for (const item of selected) {
   if (item.mod !== "funny_pumpkin" || !item.slot || item.equipment) continue;
+  // Gesichts-Schicht ohne Mod-Modell (Vampirzähne)
+  if (FACE_OVERLAYS[item.id] && modFiles.funny_pumpkin.has(FACE_OVERLAYS[item.id])) {
+    const textureName = FACE_OVERLAYS[item.id].split("/").pop().replace(".png", "");
+    item.hat = { model: hatModel(faceOverlayModel(), `halloween:item/hx/costume/${textureName}`), texture: modFiles.funny_pumpkin.get(FACE_OVERLAYS[item.id]), textureName };
+    continue;
+  }
   const piece = pieces.get(item.id);
   const modelClass = piece && [...fpClasses.keys()].find((k) => k.endsWith(`/client/model/${piece.model}.class`));
   const png = piece && modFiles.funny_pumpkin.get(piece.texture);
