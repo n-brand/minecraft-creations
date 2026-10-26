@@ -87,3 +87,18 @@ test("generated costume looks become equipment assets", () => {
   assert.deepEqual(JSON.parse(built.get("assets/halloween/equipment/fp_witch_costume_leggings.json")), { layers: { humanoid_leggings: [{ texture: "halloween:fp_witch_costume_leggings" }] } });
   assert.ok(built.has("assets/halloween/textures/entity/equipment/humanoid_leggings/fp_witch_costume_leggings.png"));
 });
+
+test("decoScale finds how much the mod shrank a multi-block item", async () => {
+  const { decoScale } = await import("../resourcepack.mjs");
+  const el = (from, to) => ({ from, to, faces: {} });
+  const files = new Map([
+    ["assets/d/blockstates/throne.json", json({ variants: { "facing=north,part=0": { model: "d:block/throne_p0" }, "facing=east,part=0": { model: "d:block/throne_p0", y: 90 }, "facing=north,part=1": { model: "d:block/throne_p1" } } })],
+    ["assets/d/models/block/throne_p0.json", json({ elements: [el([0, 0, 0], [16, 16, 16])] })],
+    ["assets/d/models/block/throne_p1.json", json({ elements: [el([2, 0, 2], [14, 8, 14])] })],
+    ["assets/d/models/item/throne.json", json({ elements: [el([4, 0, 4], [12, 8, 12]), el([5, 8, 5], [11, 12, 11])] })],
+    ["assets/d/blockstates/lamp.json", json({ variants: { "": { model: "d:block/lamp" } } })],
+  ]);
+  assert.equal(decoScale(files, "d", "throne"), 2);
+  assert.equal(decoScale(files, "d", "lamp"), 1);
+  assert.equal(decoScale(files, "d", "missing"), 1);
+});

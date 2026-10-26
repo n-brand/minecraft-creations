@@ -166,3 +166,12 @@ test("when the placed block is not found, the named item comes back (not in crea
   assert.ok(f.includes('$execute if score #found sp26 matches 0 if entity @s[gamemode=!creative] run give @s minecraft:spruce_pressure_plate[minecraft:custom_name="$(name)"]'));
   assert.ok(fn("deco/lantern/place").includes('run give @s minecraft:lantern[minecraft:custom_name="$(name)"]'));
 });
+
+test("placed deco is scaled back to its real size and stands on the floor", () => {
+  const big = buildDatapack({ items: [item({ key: "decoween-neoforge/gothic_throne", mod: "decoween-neoforge", ns: "decoween", id: "gothic_throne", name: "Gothic Throne", base: "spruce_pressure_plate", slot: null, equipment: null, kind: "deco", scale: 2 })] });
+  const placed = big.get("data/server_pack_2026/function/deco/placed/decoween_gothic_throne.mcfunction");
+  assert.ok(placed.includes("data modify storage server_pack_2026:tmp scale set value 2f"));
+  assert.ok(placed.includes("data modify storage server_pack_2026:tmp ty set value 0.5f"));
+  assert.ok(fn("deco/placed/decoween_haunted_fountain").includes("data modify storage server_pack_2026:tmp scale set value 1f"));
+  assert.ok(fn("deco/spruce_pressure_plate/spawn").includes("transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,$(ty)f,0f],scale:[$(scale)f,$(scale)f,$(scale)f]}"));
+});

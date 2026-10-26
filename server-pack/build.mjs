@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readZip, writeZip } from "./lib/zip.mjs";
 import { NAMESPACE, buildItemList, giveCommand } from "./items.mjs";
-import { buildResourcePack, isModel3d } from "./resourcepack.mjs";
+import { buildResourcePack, decoScale, isModel3d } from "./resourcepack.mjs";
 import { checkPack } from "./check.mjs";
 import { buildDatapack } from "./datapack.mjs";
 import { renderIcon } from "./icons.mjs";
@@ -26,6 +26,10 @@ const lang = Object.fromEntries(Object.keys(sources.mods).map((mod) => [mod, JSO
 
 /* --- Bauen und prüfen --- */
 const selected = buildItemList({ selection, lang, is3d: (mod, id) => isModel3d(modFiles[mod], NAMESPACE[mod], id) });
+/* --- Mehrblock-Deko: echte Grösse beim Platzieren --- */
+for (const item of selected) if (item.kind === "deco") item.scale = decoScale(modFiles[item.mod], item.ns, item.id);
+const scaled = selected.filter((i) => i.scale && i.scale !== 1);
+
 /* --- Kostüm-Optik aus den Mod-Modellen (Funny Pumpkin) --- */
 const fpClasses = readZip(fs.readFileSync(sources.mods.funny_pumpkin), (n) => /\/(item|client\/model)\/[^/]+\.class$/.test(n));
 const pieces = costumePieces(fpClasses);
@@ -77,6 +81,7 @@ const itemsJs = path.join(repo, "data", "items.js");
 fs.writeFileSync(itemsJs, insertEntry(fs.readFileSync(itemsJs, "utf8"), entrySource(items)));
 
 const count = (k) => items.filter((i) => i.kind === k).length;
+console.log(`Mehrblock-Deko vergrössert: ${scaled.map((i) => `${i.name} ×${i.scale}`).join(", ")}`);
 console.log(`Kostüm-Optik aus Mod-Modellen: ${costumeLayers.size} Teile (${[...costumeLayers.keys()].map((k) => k.split("/")[1]).join(", ")})`);
 console.log(`${items.length} Items (Kostüme ${count("costume")}, Deko ${count("deco")}, Essen ${count("food")}), ${icons} Icons, Datapack ${datapack.size} Dateien`);
 console.log(`Resource Pack → ${sources.resourcepackOut}`);

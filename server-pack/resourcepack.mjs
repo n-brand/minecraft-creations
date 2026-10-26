@@ -44,6 +44,30 @@ export function isModel3d(files, ns, id) {
   return false;
 }
 
+/* --- Mehrblock-Deko: wie stark hat die Mod das Inventar-Modell verkleinert? --- */
+// Das Item-Modell besteht aus den Elementen aller Teile (part=0, 1, …), nur verkleinert.
+export function decoScale(files, ns, id) {
+  const bs = files.get(`assets/${ns}/blockstates/${id}.json`);
+  if (!bs) return 1;
+  const byPart = new Map();
+  for (const [key, v] of Object.entries(JSON.parse(bs).variants || {})) {
+    const part = (key.match(/part=(\d+)/) || [])[1];
+    if (part !== undefined && !v.y && !byPart.has(+part)) byPart.set(+part, v.model);
+  }
+  if (byPart.size < 2) return 1;
+  const elementsOf = (id) => { const [mns, p] = split(id); const f = files.get(modelPath(mns, p)); return f ? JSON.parse(f).elements || [] : []; };
+  const parts = [...byPart.keys()].sort((a, b) => a - b).flatMap((p) => elementsOf(byPart.get(p)));
+  const item = elementsOf(`${ns}:item/${id}`);
+  const ratios = [];
+  item.forEach((e, i) => {
+    const p = parts[i];
+    if (p) for (let a = 0; a < 3; a++) if (p.to[a] - p.from[a] > 0.5) ratios.push((e.to[a] - e.from[a]) / (p.to[a] - p.from[a]));
+  });
+  if (!ratios.length) return 1;
+  ratios.sort((a, b) => a - b);
+  return Math.round(1000 / ratios[ratios.length >> 1]) / 1000;
+}
+
 export function buildResourcePack({ items, modFiles, vanillaFiles, hatFiles, costumeLayers = new Map() }) {
   const out = new Map();
   const copied = new Set();

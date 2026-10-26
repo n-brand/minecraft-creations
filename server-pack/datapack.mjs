@@ -59,6 +59,9 @@ export function buildDatapack({ items }) {
       `advancement revoke @s only ${NS}:deco/${item.icon}`,
       // erst im nächsten Tick suchen: dann steht der Block sicher und die Blickrichtung ist aktuell
       `data modify storage ${NS}:tmp name set value "${quote(item.name)}"`,
+      // Mehrblock-Deko wieder auf echte Grösse bringen, Unterkante bleibt am Boden
+      `data modify storage ${NS}:tmp scale set value ${item.scale ?? 1}f`,
+      `data modify storage ${NS}:tmp ty set value ${((item.scale ?? 1) - 1) / 2}f`,
       "tag @s add sp26.placer",
       `schedule function ${NS}:deco/${item.base}/later 1t`,
     ]);
@@ -100,7 +103,7 @@ export function buildDatapack({ items }) {
     const at = (y) => `~ ~${y === 0 ? "" : y} ~`;
     fn(`deco/${base}/spawn`, [
       "setblock ~ ~ ~ minecraft:air",
-      `$summon minecraft:item_display ${at(dy)} {Tags:["sp26.deco"],item_display:"none",Rotation:[$(yaw)f,0f],item:{id:"${block}",count:1,components:{"minecraft:custom_name":"$(name)"}}}`,
+      `$summon minecraft:item_display ${at(dy)} {Tags:["sp26.deco"],item_display:"none",Rotation:[$(yaw)f,0f],transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,$(ty)f,0f],scale:[$(scale)f,$(scale)f,$(scale)f]},item:{id:"${block}",count:1,components:{"minecraft:custom_name":"$(name)"}}}`,
       `summon minecraft:interaction ${at(dy - 0.5)} {Tags:["sp26.deco"],width:1f,height:1f}`,
       "scoreboard players set #found sp26 1",
     ]);
