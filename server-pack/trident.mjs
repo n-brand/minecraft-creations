@@ -43,7 +43,7 @@ export function tridentModels(geometry, texture) {
 // Modell = (Java-z, Java-x, Java-y), Spitze zeigt nach −z. Halb so gross gebaut (Grenzen −16..32),
 // das Display skaliert mit FLY_SCALE zurück. Jeder Würfel ist etwas dicker, damit er den Vanilla-Dreizack verdeckt.
 export const FLY_SCALE = 2;
-const FLY_INFLATE = 0.25;
+const FLY_INFLATE = 0.3;
 export function tridentFlyingModel(geometry, texture) {
   const elements = [];
   for (const part of geometry.parts) {

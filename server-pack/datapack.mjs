@@ -154,8 +154,17 @@ export function buildDatapack({ items }) {
     // Gieren (Rotation[0]) um y, Nicken (Rotation[1], beim Wurf-Objekt positiv = aufwärts) um x, in Bogenmass.
     // Der Passagier sitzt 0,5 Blöcke über dem Dreizack: translation schiebt ihn zurück.
     fn("trident/turn", [
+      // steckt er fest, kennt das Spiel nur die gerundete Drehung (Schritte von 360/256°, abgerundet): genauso runden
+      `execute if entity @s[nbt={inGround:1b}] run return run function ${NS}:trident/turn_ground`,
       `execute store result storage ${NS}:tmp fly.left_rotation.angle float 0.0000174533 run data get entity @s Rotation[0] 1000`,
       `execute store result storage ${NS}:tmp fly.right_rotation.angle float -0.0000174533 run data get entity @s Rotation[1] 1000`,
+      `execute on passengers if entity @s[tag=sp26.fly] run function ${NS}:trident/apply`,
+    ]);
+    fn("trident/turn_ground", [
+      "execute store result score #y sp26 run data get entity @s Rotation[0] 0.7111111",
+      "execute store result score #x sp26 run data get entity @s Rotation[1] 0.7111111",
+      `execute store result storage ${NS}:tmp fly.left_rotation.angle float 0.0245436926 run scoreboard players get #y sp26`,
+      `execute store result storage ${NS}:tmp fly.right_rotation.angle float -0.0245436926 run scoreboard players get #x sp26`,
       `execute on passengers if entity @s[tag=sp26.fly] run function ${NS}:trident/apply`,
     ]);
     fn("trident/apply", [`data modify entity @s transformation merge from storage ${NS}:tmp fly`, "data merge entity @s {start_interpolation:0}"]);

@@ -72,8 +72,8 @@ test("flying model: tip points to −z, slightly thicker than vanilla, inside th
   const e = m.elements[0];
   for (const v of [...e.from, ...e.to]) assert.ok(v >= -16 && v <= 32, String(v));
   // Java-y (Länge) → Modell-z, Spitze (Java −y) vorne bei kleinem z; Mittelpunkt 8 = Wurf-Objekt
-  assert.ok(Math.abs((8 - e.from[2]) * FLY_SCALE - (4 + 0.25)) < 1e-9);
-  assert.ok(Math.abs((e.to[2] - 8) * FLY_SCALE - (27 + 0.25)) < 1e-9);
+  assert.ok(Math.abs((8 - e.from[2]) * FLY_SCALE - (4 + 0.3)) < 1e-9);
+  assert.ok(Math.abs((e.to[2] - 8) * FLY_SCALE - (27 + 0.3)) < 1e-9);
   assert.ok((e.to[0] - e.from[0]) * FLY_SCALE > 1);
 });
 
@@ -85,5 +85,7 @@ test("datapack hangs a red model on thrown red tridents and turns it with the tr
   assert.match(get("trident/new"), /contents minecraft:trident\[minecraft:custom_name="Red Trident"\]/);
   assert.match(get("trident/attach/halloween_red_trident"), /"minecraft:item_model":"halloween:red_trident_flying"/);
   assert.match(get("trident/turn"), /left_rotation\.angle float 0\.0000174533 run data get entity @s Rotation\[0\] 1000/);
+  assert.match(get("trident/turn"), /inGround:1b.*turn_ground/);
+  assert.match(get("trident/turn_ground"), /Rotation\[0\] 0\.7111111/);
   assert.match(get("trident/turn"), /right_rotation\.angle float -0\.0000174533 run data get entity @s Rotation\[1\] 1000/);
 });
