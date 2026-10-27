@@ -38,7 +38,8 @@ export function entrySource(items) {
   const costumes = items.filter((i) => i.kind === "costume" || i.base === "carved_pumpkin");
   const sets = [...new Set(costumes.map(costumeSet))].sort((a, b) => a.localeCompare(b, "de"));
   for (const set of sets) {
-    const rows = costumes.filter((i) => costumeSet(i) === set).sort((a, b) => a.name.localeCompare(b.name));
+    const SLOT_ORDER = { head: 0, chest: 1, legs: 2, feet: 3 };
+    const rows = costumes.filter((i) => costumeSet(i) === set).sort((a, b) => (SLOT_ORDER[a.slot] ?? 4) - (SLOT_ORDER[b.slot] ?? 4) || a.name.localeCompare(b.name));
     const mods = [...new Set(rows.map((i) => MODS[i.mod]))].join(", ");
     groups.push({ id: rows[0].base, item: set, itemEn: `Kostüm · ${mods}`, names: rows.map((i) => [i.name, i.icon, giveCommand(i)]) });
   }

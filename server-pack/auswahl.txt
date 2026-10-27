@@ -68,6 +68,7 @@ funny_pumpkin/lay_torn_corpse
 funny_pumpkin/light_blue_candy
 funny_pumpkin/light_gray_candy
 funny_pumpkin/lime_candy
+funny_pumpkin/living_bark_armor_boots
 funny_pumpkin/living_bark_armor_chestplate
 funny_pumpkin/living_bark_armor_helmet
 funny_pumpkin/living_bark_armor_leggings
@@ -98,6 +99,7 @@ funny_pumpkin/princess_costume_leggings
 funny_pumpkin/pumpkin_armor_boots
 funny_pumpkin/pumpkin_armor_chestplate
 funny_pumpkin/pumpkin_armor_helmet
+funny_pumpkin/pumpkin_armor_leggings
 funny_pumpkin/pumpkin_candle
 funny_pumpkin/pumpkin_caster_cloak_chestplate
 funny_pumpkin/pumpkin_lollipop
@@ -119,6 +121,7 @@ funny_pumpkin/vampire_costume_1_boots
 funny_pumpkin/vampire_costume_1_chestplate
 funny_pumpkin/vampire_costume_1_helmet
 funny_pumpkin/vampire_costume_1_leggings
+funny_pumpkin/vampire_costume_2_chestplate
 funny_pumpkin/vampire_eyes_1
 funny_pumpkin/vampire_eyes_2
 funny_pumpkin/vampire_eyes_3
@@ -158,6 +161,8 @@ happyhallows/lime_candelabra
 happyhallows/lime_skull_candle
 happyhallows/magenta_candelabra
 happyhallows/magenta_skull_candle
+happyhallows/mermaid_body
+happyhallows/mermaid_fins
 happyhallows/mermaid_mask
 happyhallows/mermaid_tail
 happyhallows/merman_body

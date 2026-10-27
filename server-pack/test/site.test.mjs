@@ -55,3 +55,10 @@ test("costumes are grouped by set (vampire, devil, …) with their own give comm
   assert.ok(src.includes('["Vampire Hat", "fp_vh", "/give @s leather_helmet[custom_name=\\"Vampire Hat\\"]"]'));
   assert.ok(src.includes("Diamant"));
 });
+
+test("pieces inside a set are ordered helmet, chestplate, pants, shoes", () => {
+  const mk = (id, name, slot, base) => ({ key: `happyhallows/${id}`, mod: "happyhallows", id, name, base, slot, equipment: null, kind: "costume", icon: id });
+  const src = entrySource([mk("bride_boots", "Bride Boots", "feet", "leather_boots"), mk("bride_body", "Bride Body", "chest", "leather_chestplate"), mk("bride_mask", "Bride Mask", "head", "leather_helmet"), mk("bride_breeches", "Bride Breeches", "legs", "leather_leggings")]);
+  const order = ["Bride Mask", "Bride Body", "Bride Breeches", "Bride Boots"].map((n) => src.indexOf(`["${n}"`));
+  assert.deepEqual([...order].sort((a, b) => a - b), order);
+});
