@@ -121,3 +121,15 @@ export function mergeHats(sources) {
   });
   return { textures, elements, display: sources[0].model.display };
 }
+
+/* --- Verschiedene Hut-Modelle zu einem kombinieren (z.B. Vampirhut + Vampiraugen) --- */
+export function combineHats(models) {
+  const textures = {};
+  const elements = [];
+  models.forEach((m, i) => {
+    textures[i] = m.textures[0];
+    for (const el of m.elements) elements.push({ ...el, faces: Object.fromEntries(Object.entries(el.faces).map(([dir, f]) => [dir, { ...f, texture: `#${i}` }])) });
+  });
+  textures.particle = models[0].textures[0];
+  return { textures, elements, display: models[0].display };
+}

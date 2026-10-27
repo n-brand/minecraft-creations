@@ -91,3 +91,15 @@ test("mergeHats keeps each piece from the texture where it is painted", async ()
   assert.equal(merged.elements[0].faces.north.texture, "#0");
   assert.equal(merged.elements[1].faces.north.texture, "#1");
 });
+
+test("combineHats puts different hat models together, each with its own texture", async () => {
+  const { combineHats } = await import("../hats.mjs");
+  const hat = { textures: { 0: "x:hat", particle: "x:hat" }, elements: [{ from: [4, 12, 4], to: [12, 20, 12], faces: { up: { uv: [0, 0, 1, 1], texture: "#0" } } }], display: { head: { scale: [1.6, 1.6, 1.6] } } };
+  const eyes = { textures: { 0: "x:eyes", particle: "x:eyes" }, elements: [{ from: [3.95, 3.95, 3.95], to: [12.05, 12.05, 12.05], faces: { north: { uv: [0, 0, 1, 1], texture: "#0" } } }], display: { head: { scale: [1.6, 1.6, 1.6] } } };
+  const m = combineHats([hat, eyes]);
+  assert.deepEqual(m.textures, { 0: "x:hat", 1: "x:eyes", particle: "x:hat" });
+  assert.equal(m.elements.length, 2);
+  assert.equal(m.elements[0].faces.up.texture, "#0");
+  assert.equal(m.elements[1].faces.north.texture, "#1");
+  assert.deepEqual(m.display, hat.display);
+});

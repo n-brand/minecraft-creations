@@ -11,7 +11,7 @@ import { renderIcon } from "./icons.mjs";
 import { entrySource, insertEntry } from "./site-entry.mjs";
 import { FACE_OVERLAYS, armorLayer, costumePieces, faceOverlayModel } from "./costumes.mjs";
 import { readModel } from "./lib/javamodel.mjs";
-import { blockHat, hatModel, mergeHats } from "./hats.mjs";
+import { blockHat, combineHats, hatModel, mergeHats } from "./hats.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.dirname(here);
@@ -82,6 +82,20 @@ for (const item of selected) {
       { model: wig.hat.model, png: wig.hat.texture, texture: `halloween:item/hx/costume/${wig.hat.textureName}` },
     ]);
     wig.hat.extra = [{ name: noseName, png: nosePng }];
+  }
+}
+
+/* --- Vampirhut zusammen mit je einer Augen-Variante: 3 zusätzliche Items --- */
+{
+  const hat = selected.find((i) => i.key === "funny_pumpkin/vampire_costume_1_helmet");
+  for (const n of [1, 2, 3]) {
+    const eyes = selected.find((i) => i.key === `funny_pumpkin/vampire_eyes_${n}`);
+    if (!hat?.hat?.texture || !eyes?.hat?.texture) continue;
+    selected.push({
+      ...hat,
+      key: `funny_pumpkin/vampire_hat_eyes_${n}`, id: `vampire_hat_eyes_${n}`, name: `Vampire Hat Eyes ${n}`, icon: `funny_pumpkin_vampire_hat_eyes_${n}`,
+      hat: { model: combineHats([hat.hat.model, eyes.hat.model]), texture: hat.hat.texture, textureName: hat.hat.textureName, extra: [{ name: eyes.hat.textureName, png: eyes.hat.texture }] },
+    });
   }
 }
 
