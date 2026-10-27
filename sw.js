@@ -212,7 +212,6 @@ const PRECACHE = [
     './images/server-pack-2026/funny_pumpkin_vampire_eyes_1.png',
     './images/server-pack-2026/funny_pumpkin_vampire_eyes_2.png',
     './images/server-pack-2026/funny_pumpkin_vampire_eyes_3.png',
-    './images/server-pack-2026/funny_pumpkin_vampire_fangs.png',
     './images/server-pack-2026/funny_pumpkin_vampire_hat_eyes_1.png',
     './images/server-pack-2026/funny_pumpkin_vampire_hat_eyes_2.png',
     './images/server-pack-2026/funny_pumpkin_vampire_hat_eyes_3.png',

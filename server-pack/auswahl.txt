@@ -128,7 +128,6 @@ funny_pumpkin/vampire_costume_1_leggings
 funny_pumpkin/vampire_eyes_1
 funny_pumpkin/vampire_eyes_2
 funny_pumpkin/vampire_eyes_3
-funny_pumpkin/vampire_fangs
 funny_pumpkin/white_candy
 funny_pumpkin/witch_costume_boots
 funny_pumpkin/witch_costume_chestplate
