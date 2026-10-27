@@ -1,6 +1,6 @@
 // Datapack: Kostüme anziehbar machen, Deko platzierbar machen. Läuft nur auf dem Server.
 
-import { DECO_BASES } from "./items.mjs";
+import { DECO_BASES, armorBases } from "./items.mjs";
 
 const NS = "server_pack_2026";
 const json = (o) => JSON.stringify(o, null, 2);
@@ -30,7 +30,7 @@ export function buildDatapack({ items }) {
     const equippable = item.equipment ? { slot: item.slot, asset_id: item.equipment } : { slot: item.slot };
     // Marker mit Namen: wird das Teil später auf ein anderes Kostüm umbenannt, greift dessen Zeile wieder
     files.set(`data/${NS}/item_modifier/costume/${item.icon}.json`, json({ type: "minecraft:set_components", components: { "minecraft:equippable": equippable, "minecraft:custom_data": { sp26: item.name } } }));
-    check.push(`execute if items entity @s ${slot} minecraft:${item.base}[minecraft:custom_name="${quote(item.name)}"] unless items entity @s ${slot} *[minecraft:custom_data~{sp26:"${quote(item.name)}"}] run item modify entity @s ${slot} ${NS}:costume/${item.icon}`);
+    for (const base of armorBases(item.base)) check.push(`execute if items entity @s ${slot} minecraft:${base}[minecraft:custom_name="${quote(item.name)}"] unless items entity @s ${slot} *[minecraft:custom_data~{sp26:"${quote(item.name)}"}] run item modify entity @s ${slot} ${NS}:costume/${item.icon}`);
   }
   fn("costume/check", check);
 

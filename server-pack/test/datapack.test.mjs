@@ -189,3 +189,10 @@ test("renamed discs play the mod song", () => {
   }
   assert.ok(dp.get("data/server_pack_2026/function/second.mcfunction").includes("execute as @a run function server_pack_2026:disc/check"));
 });
+
+test("costume check also converts diamond, iron, netherite and copper armor", () => {
+  const check = fn("costume/check");
+  for (const m of ["leather", "diamond", "iron", "netherite", "copper"]) {
+    assert.ok(check.includes(`execute if items entity @s armor.head minecraft:${m}_helmet[minecraft:custom_name="Bride Mask"] unless items entity @s armor.head *[minecraft:custom_data~{sp26:"Bride Mask"}] run item modify entity @s armor.head server_pack_2026:costume/happyhallows_bride_mask`), m);
+  }
+});

@@ -20,11 +20,31 @@ const BASES = {
 const MODS = { christmas_hats: "Weihnachtsmützen", "decoween-neoforge": "Decoween", funny_pumpkin: "Funny Pumpkin", happyhallows: "Happy Hallows", spookify: "Spookify" };
 const q = (s) => JSON.stringify(s);
 
+/* --- Kostüm-Sets (Gruppen auf der Seite) --- */
+const SETS = [
+  [/^dark_mummy_/, "Dunkle Mumie"], [/^depth_monster_/, "Tiefenmonster"], [/^living_bark_/, "Baumrinde"], [/^pumpkin_caster_/, "Kürbis-Magier"],
+  [/^vampire_/, "Vampir"], [/^demon_/, "Teufel"], [/^angel_/, "Engel"], [/^witch_/, "Hexe"], [/^cultist_/, "Kultist"], [/^death_/, "Tod"],
+  [/^ghost_/, "Geist"], [/^mummy_/, "Mumie"], [/^nightmare_/, "Albtraum"], [/^princess_/, "Prinzessin"], [/^scarecrow_/, "Vogelscheuche"],
+  [/^automaton_/, "Automat"], [/^clown_/, "Clown"], [/^pumpkin_/, "Kürbis"], [/^bride_/, "Braut"], [/^frankenstein_/, "Frankenstein"],
+  [/^mermaid_/, "Meerjungfrau"], [/^merman_/, "Wassermann"], [/^pirate_/, "Pirat"], [/^christmas_hat/, "Weihnachten"],
+];
+export function costumeSet(item) {
+  return (SETS.find(([re]) => re.test(item.id)) || [null, "Sonstiges"])[1];
+}
+
 export function entrySource(items) {
   const groups = [];
+  // Kostüme nach Set, jedes Teil mit eigenem /give (ein Set hat verschiedene Grund-Items)
+  const costumes = items.filter((i) => i.kind === "costume" || i.base === "carved_pumpkin");
+  const sets = [...new Set(costumes.map(costumeSet))].sort((a, b) => a.localeCompare(b, "de"));
+  for (const set of sets) {
+    const rows = costumes.filter((i) => costumeSet(i) === set).sort((a, b) => a.name.localeCompare(b.name));
+    const mods = [...new Set(rows.map((i) => MODS[i.mod]))].join(", ");
+    groups.push({ id: rows[0].base, item: set, itemEn: `Kostüm · ${mods}`, names: rows.map((i) => [i.name, i.icon, giveCommand(i)]) });
+  }
   for (const base of Object.keys(BASES)) {
     for (const mod of Object.keys(MODS)) {
-      const rows = items.filter((i) => i.base === base && i.mod === mod).sort((a, b) => a.name.localeCompare(b.name));
+      const rows = items.filter((i) => i.base === base && i.mod === mod && !costumes.includes(i)).sort((a, b) => a.name.localeCompare(b.name));
       if (!rows.length) continue;
       groups.push({ id: base, item: BASES[base][0], itemEn: `${BASES[base][1]} · ${MODS[mod]}`, names: rows.map((i) => (i.equipment ? [i.name, i.icon, giveCommand(i)] : [i.name, i.icon])) });
     }
@@ -47,7 +67,8 @@ export function entrySource(items) {
     features: [
       "Deko in 3D: Kerzenleuchter, Totenkopf-Kerzen, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr – hinstellen und per Linksklick wieder abbauen.",
       "Kostüme: Braut, Frankenstein, Meerjungfrau, Pirat, Mumie, Vampir, Hexe, Clown und viele mehr.",
-      "Echte Optik beim Anziehen: Braut, Frankenstein, Meerjungfrau, Wassermann, Mumie, Pirat, Kürbis- und Baumrinden-Rüstung. Einfach umbenennen und anziehen.",
+      "Echte Optik beim Anziehen: Roben, Hosen und Schuhe wie in der Mod, Hüte, Masken, Hörner und Vampiraugen als 3D-Modell auf dem Kopf.",
+      "Kostüme gehen auch mit Diamant-, Eisen-, Netherit- und Kupfer-Rüstung: Rüstung umbenennen, dann sieht sie aus wie das Kostüm und schützt trotzdem wie vorher.",
       "Weihnachtsmütze: Geschnitzten Kürbis „Christmas Hat“ nennen und aufsetzen – mit freier Sicht.",
       "Süssigkeiten, Muffin und Lollis liegen auf dem Brot und sind essbar.",
       "Hängende Deko (Leichen am Seil) liegt auf der Laterne: an die Decke hängen, dann erscheint das Modell.",

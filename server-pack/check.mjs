@@ -21,8 +21,8 @@ export function checkPack(files) {
     return out;
   }
 
-  const names = new Set();
   for (const path of [...files.keys()].filter((p) => p.startsWith("assets/minecraft/items/"))) {
+    const names = new Set(); // derselbe Name darf auf mehreren Grund-Items liegen (z.B. Leder- und Diamanthelm)
     for (const c of read(path).model.cases || []) {
       if (names.has(c.when)) problems.push(`${c.when}: Name doppelt`);
       names.add(c.when);

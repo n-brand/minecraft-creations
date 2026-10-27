@@ -37,3 +37,21 @@ test("renderIcon draws a one-cube model as 64x64 PNG", () => {
   assert.equal(img.w, 64);
   assert.equal(img.data[(32 * 64 + 32) * 4 + 3], 255);
 });
+
+test("costumes are grouped by set (vampire, devil, …) with their own give commands", async () => {
+  const { costumeSet } = await import("../site-entry.mjs");
+  assert.equal(costumeSet({ mod: "funny_pumpkin", id: "vampire_costume_1_helmet" }), "Vampir");
+  assert.equal(costumeSet({ mod: "funny_pumpkin", id: "vampire_eyes_2" }), "Vampir");
+  assert.equal(costumeSet({ mod: "funny_pumpkin", id: "demon_costume_chestplate" }), "Teufel");
+  assert.equal(costumeSet({ mod: "funny_pumpkin", id: "dark_mummy_costume_boots" }), "Dunkle Mumie");
+  assert.equal(costumeSet({ mod: "happyhallows", id: "bride_mask" }), "Braut");
+  assert.equal(costumeSet({ mod: "christmas_hats", id: "christmas_hat" }), "Weihnachten");
+  const list = [
+    { key: "funny_pumpkin/vampire_costume_1_helmet", mod: "funny_pumpkin", id: "vampire_costume_1_helmet", name: "Vampire Hat", base: "leather_helmet", slot: "head", equipment: null, kind: "costume", icon: "fp_vh" },
+    { key: "funny_pumpkin/vampire_cloak", mod: "funny_pumpkin", id: "vampire_cloak", name: "Vampire Cloak", base: "leather_chestplate", slot: "chest", equipment: "halloween:fp_vampire_cloak", kind: "costume", icon: "fp_vc" },
+  ];
+  const src = entrySource(list);
+  assert.ok(src.includes('item: "Vampir"'));
+  assert.ok(src.includes('["Vampire Hat", "fp_vh", "/give @s leather_helmet[custom_name=\\"Vampire Hat\\"]"]'));
+  assert.ok(src.includes("Diamant"));
+});

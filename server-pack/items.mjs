@@ -109,3 +109,10 @@ export function applySizes(items, sizes) {
   }
   return unknown;
 }
+
+/* --- Kostüme gehen auch auf Diamant-, Eisen-, Netherit- und Kupfer-Rüstung --- */
+export const ARMOR_MATERIALS = ["leather", "diamond", "iron", "netherite", "copper"];
+export function armorBases(base) {
+  const m = base.match(/^leather_(helmet|chestplate|leggings|boots)$/);
+  return m ? ARMOR_MATERIALS.map((mat) => `${mat}_${m[1]}`) : [base];
+}

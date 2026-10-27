@@ -137,3 +137,17 @@ test("3D block hats get a head placement wrapper without own texture", () => {
   assert.ok(![...built.keys()].some((k) => k.includes("textures/item/hx/costume/")));
   assert.deepEqual(checkPack(built), []);
 });
+
+test("costume names also work on diamond, iron, netherite and copper armor", () => {
+  const mats = ["leather", "diamond", "iron", "netherite", "copper"];
+  const v = new Map([...vanillaFiles, ...mats.map((m) => [`assets/minecraft/items/${m}_helmet.json`, json({ model: { type: "minecraft:model", model: `minecraft:item/${m}_helmet` } })])]);
+  const mods = { funny_pumpkin: new Map([...modFiles.funny_pumpkin, ["assets/funny_pumpkin/models/item/witch_costume_helmet.json", json({ parent: "item/generated", textures: { layer0: "funny_pumpkin:block/x" } })]]) };
+  const list = buildItemList({ selection: ["funny_pumpkin/witch_costume_helmet"], lang: { funny_pumpkin: { "item.funny_pumpkin.witch_costume_helmet": "Witch Hat" } }, is3d: () => false });
+  const built = buildResourcePack({ items: list, modFiles: mods, vanillaFiles: v, hatFiles: null }).files;
+  for (const m of mats) {
+    const def = JSON.parse(built.get(`assets/minecraft/items/${m}_helmet.json`)).model;
+    assert.equal(def.cases[0].when, "Witch Hat", m);
+    assert.deepEqual(def.fallback, { type: "minecraft:model", model: `minecraft:item/${m}_helmet` });
+  }
+  assert.deepEqual(checkPack(built), []);
+});

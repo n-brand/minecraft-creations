@@ -1,5 +1,5 @@
 // Resource Pack: Modelle und Texturen aus den Mods kopieren, Item-Definitionen pro Grund-Item bauen.
-import { equipmentFor } from "./items.mjs";
+import { armorBases, equipmentFor } from "./items.mjs";
 import { decodePng, encodePng } from "./lib/png.mjs";
 
 /* --- Flügel-Textur auf Elytren-Form (64×32) umbauen --- */
@@ -190,7 +190,7 @@ export function buildResourcePack({ items, modFiles, vanillaFiles, hatFiles, cos
     : { type: "minecraft:model", model: item.model };
 
   const byBase = {};
-  for (const item of all) (byBase[item.base] ||= []).push({ when: item.name, model: itemModel(item) });
+  for (const item of all) for (const base of armorBases(item.base)) (byBase[base] ||= []).push({ when: item.name, model: itemModel(item) });
   for (const [base, cases] of Object.entries(byBase)) {
     const vanilla = JSON.parse(vanillaFiles.get(`assets/minecraft/items/${base}.json`)).model;
     out.set(`assets/minecraft/items/${base}.json`, { model: { type: "minecraft:select", property: "minecraft:component", component: "minecraft:custom_name", cases, fallback: vanilla } });
