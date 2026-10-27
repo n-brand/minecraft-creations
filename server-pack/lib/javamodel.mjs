@@ -44,7 +44,7 @@ const argCount = (desc) => (desc.slice(1, desc.indexOf(")")).match(/\[*(L[^;]+;|
 
 export function readModel(buf) {
   const cls = parseClass(buf);
-  const key = Object.keys(cls.methods).find((k) => k.startsWith("createBodyLayer"));
+  const key = Object.keys(cls.methods).find((k) => /^create(Body)?Layer()/.test(k));
   if (!key) throw new Error("no createBodyLayer");
   const code = cls.methods[key];
   const stack = [], locals = [], parts = [];

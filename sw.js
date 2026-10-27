@@ -219,6 +219,7 @@ const PRECACHE = [
     './images/server-pack-2026/funny_pumpkin_witch_costume_leggings.png',
     './images/server-pack-2026/funny_pumpkin_yellow_candy.png',
     './images/server-pack-2026/halloween_christmas_hat.png',
+    './images/server-pack-2026/halloween_red_trident.png',
     './images/server-pack-2026/happyhallows_black_candelabra.png',
     './images/server-pack-2026/happyhallows_black_skull_candle.png',
     './images/server-pack-2026/happyhallows_blue_candelabra.png',

@@ -28,7 +28,7 @@ export function checkPack(files) {
       names.add(c.when);
       // verschachtelte Auswahl (z.B. 3D-Hut nur auf dem Kopf): jedes Modell einzeln prüfen
       const ids = [];
-      const collect = (m) => { if (!m) return; if (m.model) ids.push(m.model); (m.cases || []).forEach((x) => collect(x.model)); collect(m.fallback); };
+      const collect = (m) => { if (!m) return; if (typeof m.model === "string") ids.push(m.model); (m.cases || []).forEach((x) => collect(x.model)); collect(m.fallback); collect(m.on_true); collect(m.on_false); };
       collect(c.model);
       for (const id of ids) checkModel(c.when, id);
     }

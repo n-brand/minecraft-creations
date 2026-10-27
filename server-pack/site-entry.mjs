@@ -16,8 +16,9 @@ const BASES = {
   bread: ["Brot", "Bread"],
   paper: ["Papier", "Paper"],
   music_disc_13: ["Schallplatte „13“", "Music Disc 13"],
+  trident: ["Dreizack", "Trident"],
 };
-const MODS = { christmas_hats: "Weihnachtsmützen", "decoween-neoforge": "Decoween", funny_pumpkin: "Funny Pumpkin", happyhallows: "Happy Hallows", spookify: "Spookify" };
+const MODS = { halloween: "Eigenes", christmas_hats: "Weihnachtsmützen", "decoween-neoforge": "Decoween", funny_pumpkin: "Funny Pumpkin", happyhallows: "Happy Hallows", spookify: "Spookify" };
 const q = (s) => JSON.stringify(s);
 
 /* --- Kostüm-Sets (Gruppen auf der Seite) --- */

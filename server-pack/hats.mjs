@@ -28,7 +28,7 @@ function eulerXYZ(m) {
 }
 
 /* --- UV einer Box im Textur-Netz (in 16tel der Textur) --- */
-function boxFaces(c, texW, texH, tex) {
+export function boxFaces(c, texW, texH, tex) {
   const [u, v] = c.uv, [w, h, d] = c.size;
   const U = (x) => r6((x * 16) / texW), V = (y) => r6((y * 16) / texH);
   const rect = (x0, y0, x1, y1) => ({ uv: [U(x0), V(y0), U(x1), V(y1)], texture: tex });

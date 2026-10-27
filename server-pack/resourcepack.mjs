@@ -127,8 +127,10 @@ export function buildResourcePack({ items, modFiles, vanillaFiles, hatFiles, cos
     for (const e of owner?.elements || []) for (const dir of Object.keys(e.faces || {})) if (!resolve((e.faces[dir].texture || "").replace(/^#/, ""))) delete e.faces[dir];
   }
 
-  for (const item of items) copyModel(modFiles[item.mod], item.model);
-  for (const item of items) fixFaces(item.model);
+  for (const item of items) if (modFiles[item.mod]) copyModel(modFiles[item.mod], item.model);
+  for (const item of items) if (modFiles[item.mod]) fixFaces(item.model);
+  // eigene Items (z.B. roter Dreizack) bringen ihre Dateien selbst mit
+  for (const item of items) for (const [p, buf] of item.files || []) out.set(p, buf);
 
   /* --- Rüstungs-Optik der 8 Sets --- */
   const done = new Set();
@@ -185,7 +187,7 @@ export function buildResourcePack({ items, modFiles, vanillaFiles, hatFiles, cos
     for (const extra of item.hat.extra || []) out.set(`assets/halloween/textures/item/hx/costume/${extra.name}.png`, extra.png);
     out.set(`assets/halloween/models/item/hat/${item.icon}.json`, item.hat.model);
   }
-  const itemModel = (item) => item.hat
+  const itemModel = (item) => item.definition ? item.definition : item.hat
     ? { type: "minecraft:select", property: "minecraft:display_context", cases: [{ when: "head", model: { type: "minecraft:model", model: `halloween:item/hat/${item.icon}` } }], fallback: { type: "minecraft:model", model: item.model } }
     : { type: "minecraft:model", model: item.model };
 

@@ -1,0 +1,51 @@
+// Roter Dreizack: Kopie des goldenen Dreizacks aus „Mein Pack", rot eingefärbt, per Umbenennen.
+import { decodePng, encodePng } from "./lib/png.mjs";
+import { boxFaces } from "./hats.mjs";
+
+/* --- Farbe: Farbton auf Rot setzen, Sättigung und Helligkeit bleiben --- */
+export function recolorRed(png) {
+  const img = decodePng(png);
+  const d = img.data;
+  for (let i = 0; i < d.length; i += 4) {
+    if (!d[i + 3]) continue;
+    const r = d[i] / 255, g = d[i + 1] / 255, b = d[i + 2] / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    const v = max, s = max ? (max - min) / max : 0;
+    // Hue 0 (Rot): R = v, G = B = v·(1 − s)
+    d[i] = Math.round(v * 255);
+    d[i + 1] = d[i + 2] = Math.round(v * (1 - s) * 255);
+  }
+  return encodePng(img);
+}
+
+/* --- 3D-Modelle für Hand und Wurf --- */
+// Der Spezial-Renderer zeichnet das Entity-Modell gespiegelt in y und z: item = (x, −y, −z).
+// Flächen dabei: Java-Vorderseite (−z) → Süden, Rückseite → Norden, rechte Seite (−x) → Westen.
+export function tridentModels(geometry, texture) {
+  const elements = [];
+  for (const part of geometry.parts) {
+    for (const c of part.cubes) {
+      const a = c.from.map((n) => n - c.inflate), b = c.from.map((n, i) => n + c.size[i] + c.inflate);
+      const from = [a[0], -b[1], -b[2]], to = [b[0], -a[1], -a[2]];
+      const f = boxFaces(c, geometry.texW, geometry.texH, "#0");
+      elements.push({ from, to, faces: { up: f.up, down: f.down, south: f.north, north: f.south, west: f.east, east: f.west } });
+    }
+  }
+  const model = (parent) => ({ parent, textures: { 0: texture, particle: texture }, elements });
+  return { inHand: model("minecraft:item/trident_in_hand"), throwing: model("minecraft:item/trident_throwing") };
+}
+
+/* --- Item-Definition wie beim Vanilla-Dreizack, nur mit eigenen Modellen --- */
+export function tridentDefinition(icon, inHand, throwing) {
+  return {
+    type: "minecraft:select",
+    property: "minecraft:display_context",
+    cases: [{ when: ["gui", "ground", "fixed", "on_shelf"], model: { type: "minecraft:model", model: icon } }],
+    fallback: {
+      type: "minecraft:condition",
+      property: "minecraft:using_item",
+      on_false: { type: "minecraft:model", model: inHand },
+      on_true: { type: "minecraft:model", model: throwing },
+    },
+  };
+}

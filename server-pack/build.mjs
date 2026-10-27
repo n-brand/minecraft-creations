@@ -12,6 +12,7 @@ import { entrySource, insertEntry } from "./site-entry.mjs";
 import { FACE_OVERLAYS, armorLayer, costumePieces, faceOverlayModel } from "./costumes.mjs";
 import { readModel } from "./lib/javamodel.mjs";
 import { blockHat, combineHats, hatModel, mergeHats, shiftHat, transformHat } from "./hats.mjs";
+import { recolorRed, tridentDefinition, tridentModels } from "./trident.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.dirname(here);
@@ -108,6 +109,24 @@ for (const item of selected) {
 
 /* --- Kopfteile, die in der Mod 3D-Blöcke sind (z.B. Hexenhut): auf den Kopf setzen --- */
 for (const item of selected) if (item.slot === "head" && !item.hat && !item.equipment && isModel3d(modFiles[item.mod], item.ns, item.id)) item.hat = { model: blockHat(item.model, item.headScale ?? 1), texture: null };
+
+/* --- Roter Dreizack: Kopie des goldenen aus „Mein Pack", rot eingefärbt --- */
+if (sources.goldenTrident && fs.existsSync(sources.goldenTrident.item) && fs.existsSync(sources.goldenTrident.entity)) {
+  const tridentClass = readZip(fs.readFileSync(sources.vanillaJar), (n) => n.endsWith("/projectile/TridentModel.class"));
+  const models = tridentModels(readModel([...tridentClass.values()][0]), "halloween:item/hx/red_trident_entity");
+  selected.push({
+    key: "halloween/red_trident", mod: "halloween", ns: "halloween", id: "red_trident", name: "Red Trident", base: "trident",
+    slot: null, equipment: null, kind: "other", model: "halloween:item/red_trident", icon: "halloween_red_trident",
+    definition: tridentDefinition("halloween:item/red_trident", "halloween:item/red_trident_in_hand", "halloween:item/red_trident_throwing"),
+    files: [
+      ["assets/halloween/textures/item/red_trident.png", recolorRed(fs.readFileSync(sources.goldenTrident.item))],
+      ["assets/halloween/textures/item/hx/red_trident_entity.png", recolorRed(fs.readFileSync(sources.goldenTrident.entity))],
+      ["assets/halloween/models/item/red_trident.json", Buffer.from(JSON.stringify({ parent: "minecraft:item/generated", textures: { layer0: "halloween:item/red_trident" } }, null, 2))],
+      ["assets/halloween/models/item/red_trident_in_hand.json", Buffer.from(JSON.stringify(models.inHand, null, 2))],
+      ["assets/halloween/models/item/red_trident_throwing.json", Buffer.from(JSON.stringify(models.throwing, null, 2))],
+    ],
+  });
+}
 
 /* --- Hüte verschieben (hut-versatz.json, in Kopf-Pixeln; minus = tiefer) --- */
 for (const [name, px] of Object.entries(hutVersatz)) {
