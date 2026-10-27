@@ -113,3 +113,13 @@ test("shiftHat moves a hat by head pixels (1 head pixel = 1.6 display units)", a
   shiftHat(b, 2);
   assert.ok(Math.abs(b.display.head.translation[1] - 17.6) < 1e-9);
 });
+
+test("transformHat scales hat pieces from the top of the head and moves them", async () => {
+  const { transformHat } = await import("../hats.mjs");
+  const m = { elements: [{ from: [4, 12, 4], to: [12, 20, 12], faces: {}, rotation: { origin: [8, 16, 8], x: 10, y: 0, z: 0 } }], display: { head: { translation: [0, 0, 0] } } };
+  transformHat(m, 1.5, -1);
+  assert.deepEqual(m.elements[0].from, [2, 11, 2]);   // y: 12 + (12-12)*1.5 - 1
+  assert.deepEqual(m.elements[0].to, [14, 23, 14]);   // y: 12 + (20-12)*1.5 - 1
+  assert.deepEqual(m.elements[0].rotation.origin, [8, 17, 8]);
+  assert.deepEqual(m.display.head.translation, [0, 0, 0]);
+});

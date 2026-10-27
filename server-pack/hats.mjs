@@ -141,3 +141,15 @@ export function shiftHat(model, px) {
   t[1] = Math.round((t[1] + px * 1.6) * 1000) / 1000;
   return model;
 }
+
+/* --- Hut-Teile direkt im Modell grösser/tiefer setzen (Kombis mit Augen bleiben unverändert) --- */
+// Skaliert um die Mitte der Kopf-Oberseite (8, 12, 8), damit der Hut auf dem Kopf bleibt; dy in Kopf-Pixeln.
+export function transformHat(model, k = 1, dy = 0) {
+  const p = (v) => [8 + (v[0] - 8) * k, 12 + (v[1] - 12) * k + dy, 8 + (v[2] - 8) * k].map((n) => Math.round(n * 1e6) / 1e6);
+  for (const e of model.elements) {
+    e.from = p(e.from);
+    e.to = p(e.to);
+    if (e.rotation) e.rotation.origin = p(e.rotation.origin);
+  }
+  return model;
+}

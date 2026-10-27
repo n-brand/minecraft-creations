@@ -11,7 +11,7 @@ import { renderIcon } from "./icons.mjs";
 import { entrySource, insertEntry } from "./site-entry.mjs";
 import { FACE_OVERLAYS, armorLayer, costumePieces, faceOverlayModel } from "./costumes.mjs";
 import { readModel } from "./lib/javamodel.mjs";
-import { blockHat, combineHats, hatModel, mergeHats, shiftHat } from "./hats.mjs";
+import { blockHat, combineHats, hatModel, mergeHats, shiftHat, transformHat } from "./hats.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.dirname(here);
@@ -36,6 +36,8 @@ const unknownSizes = applySizes(selected, JSON.parse(fs.readFileSync(path.join(h
 if (unknownSizes.length) console.log(` - groessen.json: unbekannte Namen: ${unknownSizes.join(", ")}`);
 const scaled = selected.filter((i) => i.scale && i.scale !== 1);
 
+const hutVersatz = JSON.parse(fs.readFileSync(path.join(here, "hut-versatz.json"), "utf8"));
+
 /* --- Kostüm-Optik aus den Mod-Modellen (Funny Pumpkin) --- */
 const fpClasses = readZip(fs.readFileSync(sources.mods.funny_pumpkin), (n) => /\/(item|client\/model|client\/renderer)\/[^/]+\.class$/.test(n));
 const pieces = costumePieces(fpClasses);
@@ -59,7 +61,12 @@ for (const item of selected) {
   if (item.slot === "head") {
     const textureName = piece.texture.split("/").pop().replace(".png", "");
     const hat = hatModel(javaModel, `halloween:item/hx/costume/${textureName}`);
-    if (hat.elements.length) { item.hat = { model: hat, texture: png, textureName }; continue; }
+    if (hat.elements.length) {
+      // Grösse (groessen.json) und Versatz (hut-versatz.json) direkt an den Hut-Teilen, damit Kombis mit Augen stimmen
+      transformHat(hat, item.headScale ?? 1, hutVersatz[item.name] ?? 0);
+      item.hat = { model: hat, texture: png, textureName, adjusted: true };
+      continue;
+    }
   }
   const layer = armorLayer(javaModel, png, item.slot);
   if (!layer) continue;
@@ -103,8 +110,9 @@ for (const item of selected) {
 for (const item of selected) if (item.slot === "head" && !item.hat && !item.equipment && isModel3d(modFiles[item.mod], item.ns, item.id)) item.hat = { model: blockHat(item.model, item.headScale ?? 1), texture: null };
 
 /* --- Hüte verschieben (hut-versatz.json, in Kopf-Pixeln; minus = tiefer) --- */
-for (const [name, px] of Object.entries(JSON.parse(fs.readFileSync(path.join(here, "hut-versatz.json"), "utf8")))) {
+for (const [name, px] of Object.entries(hutVersatz)) {
   const item = selected.find((i) => i.name === name && i.hat);
+  if (item?.hat.adjusted) continue;
   if (item) shiftHat(item.hat.model, px); else console.log(` - hut-versatz.json: unbekannter Hut: ${name}`);
 }
 
