@@ -38,6 +38,28 @@ export function tridentModels(geometry, texture) {
   return { inHand: model("minecraft:item/trident_in_hand"), throwing: model("minecraft:item/trident_throwing") };
 }
 
+/* --- Modell für den geworfenen Dreizack (item_display als Passagier, siehe datapack.mjs) --- */
+// Achsen so gedreht, dass die Display-Drehung (Gieren um y, Nicken um x) dem Wurf-Renderer entspricht:
+// Modell = (Java-z, Java-x, Java-y), Spitze zeigt nach −z. Halb so gross gebaut (Grenzen −16..32),
+// das Display skaliert mit FLY_SCALE zurück. Jeder Würfel ist etwas dicker, damit er den Vanilla-Dreizack verdeckt.
+export const FLY_SCALE = 2;
+const FLY_INFLATE = 0.25;
+export function tridentFlyingModel(geometry, texture) {
+  const elements = [];
+  for (const part of geometry.parts) {
+    for (const c of part.cubes) {
+      const grow = c.inflate + FLY_INFLATE;
+      const a = c.from.map((n) => n - grow), b = c.from.map((n, i) => n + c.size[i] + grow);
+      const m = (j) => 8 + j / FLY_SCALE;
+      const from = [m(a[2]), m(a[0]), m(a[1])], to = [m(b[2]), m(b[0]), m(b[1])];
+      const f = boxFaces(c, geometry.texW, geometry.texH, "#0");
+      const turned = (face) => ({ ...face, rotation: 90 });
+      elements.push({ from, to, faces: { north: turned(f.up), south: turned(f.down), west: turned(f.north), east: turned(f.south), down: f.east, up: f.west } });
+    }
+  }
+  return { textures: { 0: texture, particle: texture }, elements };
+}
+
 /* --- Item-Definition wie beim Vanilla-Dreizack, nur mit eigenen Modellen --- */
 export function tridentDefinition(icon, inHand, throwing) {
   return {

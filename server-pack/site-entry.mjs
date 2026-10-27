@@ -24,7 +24,7 @@ const q = (s) => JSON.stringify(s);
 /* --- Kostüm-Sets (Gruppen auf der Seite) --- */
 const SETS = [
   [/^dark_mummy_/, "Dunkle Mumie"], [/^depth_monster_/, "Tiefenmonster"], [/^living_bark_/, "Baumrinde"], [/^pumpkin_caster_/, "Kürbis-Magier"],
-  [/^vampire_/, "Vampir"], [/^demon_/, "Teufel"], [/^angel_/, "Engel"], [/^witch_/, "Hexe"], [/^cultist_/, "Kultist"], [/^death_/, "Tod"],
+  [/^vampire_/, "Vampir"], [/^(demon_|red_trident)/, "Teufel"], [/^angel_/, "Engel"], [/^witch_/, "Hexe"], [/^cultist_/, "Kultist"], [/^death_/, "Tod"],
   [/^ghost_/, "Geist"], [/^mummy_/, "Mumie"], [/^nightmare_/, "Albtraum"], [/^princess_/, "Prinzessin"], [/^scarecrow_/, "Vogelscheuche"],
   [/^automaton_/, "Automat"], [/^clown_/, "Clown"], [/^pumpkin_/, "Kürbis"], [/^bride_/, "Braut"], [/^frankenstein_/, "Frankenstein"],
   [/^mermaid_/, "Meerjungfrau"], [/^merman_/, "Wassermann"], [/^pirate_/, "Pirat"], [/^christmas_hat/, "Weihnachten"],
@@ -36,10 +36,11 @@ export function costumeSet(item) {
 export function entrySource(items) {
   const groups = [];
   // Kostüme nach Set, jedes Teil mit eigenem /give (ein Set hat verschiedene Grund-Items)
-  const costumes = items.filter((i) => i.kind === "costume" || i.base === "carved_pumpkin");
+  // der rote Dreizack gehört zum Teufel-Kostüm
+  const costumes = items.filter((i) => i.kind === "costume" || i.base === "carved_pumpkin" || i.id === "red_trident");
   const sets = [...new Set(costumes.map(costumeSet))].sort((a, b) => a.localeCompare(b, "de"));
   for (const set of sets) {
-    const SLOT_ORDER = { head: 0, chest: 1, legs: 2, feet: 3 };
+    const SLOT_ORDER = { head: 0, chest: 1, legs: 2, feet: 3 }; // ohne Slot (Dreizack) zuletzt
     const rows = costumes.filter((i) => costumeSet(i) === set).sort((a, b) => (SLOT_ORDER[a.slot] ?? 4) - (SLOT_ORDER[b.slot] ?? 4) || a.name.localeCompare(b.name));
     const mods = [...new Set(rows.map((i) => MODS[i.mod]))].join(", ");
     groups.push({ id: rows[0].base, item: set, itemEn: `Kostüm · ${mods}`, names: rows.map((i) => [i.name, i.icon, giveCommand(i)]) });
@@ -70,6 +71,7 @@ export function entrySource(items) {
       "Deko in 3D: Kerzenleuchter, Totenkopf-Kerzen, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr – hinstellen und per Linksklick wieder abbauen.",
       "Kostüme: Braut, Frankenstein, Meerjungfrau, Pirat, Mumie, Vampir, Hexe, Clown und viele mehr.",
       "Echte Optik beim Anziehen: Roben, Hosen und Schuhe wie in der Mod, Hüte, Masken, Hörner und Vampiraugen als 3D-Modell auf dem Kopf.",
+      "Roter Dreizack zum Teufel-Kostüm: Dreizack „Red Trident“ nennen – rot in der Hand und auch im Flug.",
       "Kostüme gehen auch mit Diamant-, Eisen-, Netherit- und Kupfer-Rüstung: Rüstung umbenennen, dann sieht sie aus wie das Kostüm und schützt trotzdem wie vorher.",
       "Weihnachtsmütze: Geschnitzten Kürbis „Christmas Hat“ nennen und aufsetzen – mit freier Sicht.",
       "Süssigkeiten, Muffin und Lollis liegen auf dem Brot und sind essbar.",

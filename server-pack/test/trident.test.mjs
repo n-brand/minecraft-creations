@@ -64,3 +64,26 @@ test("checkPack reports elements outside the -16..32 range", () => {
   ]);
   assert.ok(checkPack(files).some((p) => p.includes("ausserhalb")));
 });
+
+test("flying model: tip points to −z, slightly thicker than vanilla, inside the allowed range", async () => {
+  const { tridentFlyingModel, FLY_SCALE } = await import("../trident.mjs");
+  const real = { texW: 32, texH: 32, parts: [{ name: "pole", parent: "root", pose: { x: 0, y: 0, z: 0, rx: 0, ry: 0, rz: 0 }, cubes: [{ from: [-0.5, -4, -0.5], size: [1, 31, 1], uv: [0, 0], inflate: 0, mirror: false }] }] };
+  const m = tridentFlyingModel(real, "t");
+  const e = m.elements[0];
+  for (const v of [...e.from, ...e.to]) assert.ok(v >= -16 && v <= 32, String(v));
+  // Java-y (Länge) → Modell-z, Spitze (Java −y) vorne bei kleinem z; Mittelpunkt 8 = Wurf-Objekt
+  assert.ok(Math.abs((8 - e.from[2]) * FLY_SCALE - (4 + 0.25)) < 1e-9);
+  assert.ok(Math.abs((e.to[2] - 8) * FLY_SCALE - (27 + 0.25)) < 1e-9);
+  assert.ok((e.to[0] - e.from[0]) * FLY_SCALE > 1);
+});
+
+test("datapack hangs a red model on thrown red tridents and turns it with the trident", async () => {
+  const { buildDatapack } = await import("../datapack.mjs");
+  const files = buildDatapack({ items: [{ name: "Red Trident", base: "trident", kind: "other", icon: "halloween_red_trident", thrown: "halloween:red_trident_flying" }] });
+  const get = (n) => files.get(`data/server_pack_2026/function/${n}.mcfunction`);
+  assert.match(get("tick"), /@e\[type=minecraft:trident,tag=!sp26\.seen\]/);
+  assert.match(get("trident/new"), /contents minecraft:trident\[minecraft:custom_name="Red Trident"\]/);
+  assert.match(get("trident/attach/halloween_red_trident"), /"minecraft:item_model":"halloween:red_trident_flying"/);
+  assert.match(get("trident/turn"), /left_rotation\.angle float 0\.0000174533 run data get entity @s Rotation\[0\] 1000/);
+  assert.match(get("trident/turn"), /right_rotation\.angle float -0\.0000174533 run data get entity @s Rotation\[1\] 1000/);
+});

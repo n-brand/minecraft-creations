@@ -1,6 +1,7 @@
 // Datapack: Kostüme anziehbar machen, Deko platzierbar machen. Läuft nur auf dem Server.
 
 import { DECO_BASES, armorBases } from "./items.mjs";
+import { FLY_SCALE } from "./trident.mjs";
 
 const NS = "server_pack_2026";
 const json = (o) => JSON.stringify(o, null, 2);
@@ -14,13 +15,13 @@ export function buildDatapack({ items }) {
   files.set("data/minecraft/tags/function/load.json", json({ values: [`${NS}:load`] }));
   files.set("data/minecraft/tags/function/tick.json", json({ values: [`${NS}:tick`] }));
 
-  fn("load", [
+  const load = [
     "scoreboard objectives add sp26 dummy",
     "scoreboard players set #90 sp26 90",
     `schedule function ${NS}:second 20t`,
-  ]);
+  ];
   fn("second", [`execute as @a run function ${NS}:costume/check`, `execute as @a run function ${NS}:disc/check`, `schedule function ${NS}:second 20t`]);
-  fn("tick", [`execute as @e[type=interaction,tag=sp26.deco] if data entity @s attack at @s run function ${NS}:deco/break`]);
+  const tick = [`execute as @e[type=interaction,tag=sp26.deco] if data entity @s attack at @s run function ${NS}:deco/break`];
 
   /* --- Kostüme --- */
   const check = [];
@@ -120,6 +121,48 @@ export function buildDatapack({ items }) {
     ]);
   }
 
+  /* --- Geworfener Dreizack: rotes Modell fährt als Passagier mit (der Wurf selbst hat immer die Vanilla-Textur) --- */
+  const thrown = items.filter((i) => i.thrown);
+  if (thrown.length) {
+    tick.push(
+      `execute as @e[type=minecraft:trident,tag=!sp26.seen] run function ${NS}:trident/new`,
+      `execute as @e[type=minecraft:trident,tag=sp26.thrown] run function ${NS}:trident/turn`,
+      // aufgehoben oder verschwunden: Passagier bleibt sonst in der Luft stehen
+      `execute as @e[type=minecraft:item_display,tag=sp26.fly] unless function ${NS}:trident/rides run kill @s`,
+    );
+    fn("trident/new", [
+      "tag @s add sp26.seen",
+      ...thrown.map((i) => `execute if items entity @s contents minecraft:trident[minecraft:custom_name="${quote(i.name)}"] run function ${NS}:trident/attach/${i.icon}`),
+    ]);
+    for (const i of thrown) {
+      fn(`trident/attach/${i.icon}`, [
+        "tag @s add sp26.thrown",
+        "tag @s add sp26.cur",
+        `execute at @s summon minecraft:item_display run function ${NS}:trident/mount`,
+        `execute as @n[type=minecraft:item_display,tag=sp26.new] run data merge entity @s {item:{id:"minecraft:trident",count:1,components:{"minecraft:item_model":"${i.thrown}"}}}`,
+        "tag @e[type=minecraft:item_display,tag=sp26.new] remove sp26.new",
+        "tag @s remove sp26.cur",
+        `function ${NS}:trident/turn`,
+      ]);
+    }
+    fn("trident/mount", [
+      "tag @s add sp26.fly",
+      "tag @s add sp26.new",
+      "data merge entity @s {item_display:\"none\",interpolation_duration:1}",
+      "ride @s mount @e[type=minecraft:trident,tag=sp26.cur,limit=1]",
+    ]);
+    // Gieren (Rotation[0]) um y, Nicken (Rotation[1], beim Wurf-Objekt positiv = aufwärts) um x, in Bogenmass.
+    // Der Passagier sitzt 0,5 Blöcke über dem Dreizack: translation schiebt ihn zurück.
+    fn("trident/turn", [
+      `execute store result storage ${NS}:tmp fly.left_rotation.angle float 0.0000174533 run data get entity @s Rotation[0] 1000`,
+      `execute store result storage ${NS}:tmp fly.right_rotation.angle float -0.0000174533 run data get entity @s Rotation[1] 1000`,
+      `execute on passengers if entity @s[tag=sp26.fly] run function ${NS}:trident/apply`,
+    ]);
+    fn("trident/apply", [`data modify entity @s transformation merge from storage ${NS}:tmp fly`, "data merge entity @s {start_interpolation:0}"]);
+    fn("trident/rides", ["execute on vehicle run return 1", "return 0"]);
+    load.push(`data modify storage ${NS}:tmp fly set value {left_rotation:{angle:0f,axis:[0f,1f,0f]},right_rotation:{angle:0f,axis:[1f,0f,0f]},translation:[0f,-0.5f,0f],scale:[${FLY_SCALE}f,${FLY_SCALE}f,${FLY_SCALE}f]}`);
+  }
+
   /* --- Deko abbauen (Linksklick aufs Modell) --- */
   fn("deco/break", [
     'execute on attacker if entity @s[gamemode=!creative] at @s run tag @s add sp26.breaker',
@@ -131,5 +174,7 @@ export function buildDatapack({ items }) {
     "kill @s",
   ]);
 
+  fn("load", load);
+  fn("tick", tick);
   return files;
 }

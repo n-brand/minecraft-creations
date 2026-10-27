@@ -12,7 +12,7 @@ import { entrySource, insertEntry } from "./site-entry.mjs";
 import { FACE_OVERLAYS, armorLayer, costumePieces, faceOverlayModel } from "./costumes.mjs";
 import { readModel } from "./lib/javamodel.mjs";
 import { blockHat, combineHats, hatModel, mergeHats, shiftHat, transformHat } from "./hats.mjs";
-import { recolorRed, tridentDefinition, tridentModels } from "./trident.mjs";
+import { recolorRed, tridentDefinition, tridentFlyingModel, tridentModels } from "./trident.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.dirname(here);
@@ -113,10 +113,11 @@ for (const item of selected) if (item.slot === "head" && !item.hat && !item.equi
 /* --- Roter Dreizack: Kopie des goldenen aus „Mein Pack", rot eingefärbt --- */
 if (sources.goldenTrident && fs.existsSync(sources.goldenTrident.item) && fs.existsSync(sources.goldenTrident.entity)) {
   const tridentClass = readZip(fs.readFileSync(sources.vanillaJar), (n) => n.endsWith("/projectile/TridentModel.class"));
-  const models = tridentModels(readModel([...tridentClass.values()][0]), "halloween:item/hx/red_trident_entity");
+  const geometry = readModel([...tridentClass.values()][0]);
+  const models = tridentModels(geometry, "halloween:item/hx/red_trident_entity");
   selected.push({
     key: "halloween/red_trident", mod: "halloween", ns: "halloween", id: "red_trident", name: "Red Trident", base: "trident",
-    slot: null, equipment: null, kind: "other", model: "halloween:item/red_trident", icon: "halloween_red_trident",
+    slot: null, equipment: null, kind: "other", model: "halloween:item/red_trident", icon: "halloween_red_trident", thrown: "halloween:red_trident_flying",
     definition: tridentDefinition("halloween:item/red_trident", "halloween:item/red_trident_in_hand", "halloween:item/red_trident_throwing"),
     files: [
       ["assets/halloween/textures/item/red_trident.png", recolorRed(fs.readFileSync(sources.goldenTrident.item))],
@@ -124,6 +125,9 @@ if (sources.goldenTrident && fs.existsSync(sources.goldenTrident.item) && fs.exi
       ["assets/halloween/models/item/red_trident.json", Buffer.from(JSON.stringify({ parent: "minecraft:item/generated", textures: { layer0: "halloween:item/red_trident" } }, null, 2))],
       ["assets/halloween/models/item/red_trident_in_hand.json", Buffer.from(JSON.stringify(models.inHand, null, 2))],
       ["assets/halloween/models/item/red_trident_throwing.json", Buffer.from(JSON.stringify(models.throwing, null, 2))],
+      // geworfen: Modell für das mitfliegende item_display (Datapack)
+      ["assets/halloween/models/item/red_trident_flying.json", Buffer.from(JSON.stringify(tridentFlyingModel(geometry, "halloween:item/hx/red_trident_entity"), null, 2))],
+      ["assets/halloween/items/red_trident_flying.json", Buffer.from(JSON.stringify({ model: { type: "minecraft:model", model: "halloween:item/red_trident_flying" } }, null, 2))],
     ],
   });
 }
