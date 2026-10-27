@@ -80,3 +80,9 @@ test("an empty right part falls back to the left one", () => {
   const img = decodePng(armorLayer(model, red, "legs"));
   assert.deepEqual(px(img, 4, 25), [220, 20, 20, 255]);
 });
+
+test("a wider cape box is squeezed onto the body when nothing fits exactly", () => {
+  const model = { texW: 64, texH: 64, parts: [part("body", [cube([-8, 0, -2], [16, 17, 4])])] };
+  const img = decodePng(armorLayer(model, red, "chest"));
+  assert.deepEqual(px(img, 20, 20), [220, 20, 20, 255]);
+});

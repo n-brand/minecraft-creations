@@ -77,3 +77,17 @@ test("blockHat keeps the brim on the head when scaled", async () => {
   assert.deepEqual(h.scale, [1.3, 1.3, 1.3]);
   assert.ok(Math.abs(h.translation[1] - 16.8) < 1e-9);
 });
+
+test("mergeHats keeps each piece from the texture where it is painted", async () => {
+  const { mergeHats } = await import("../hats.mjs");
+  const { encodePng } = await import("../lib/png.mjs");
+  // 16x16 textures: nose painted at the top-left, wig painted at the bottom-right
+  const paint = (x0, y0) => encodePng({ w: 16, h: 16, data: Buffer.alloc(16 * 16 * 4).map((_, i) => { const p = Math.floor(i / 4), x = p % 16, y = Math.floor(p / 16); return x >= x0 && x < x0 + 8 && y >= y0 && y < y0 + 8 ? 255 : 0; }) });
+  const el = (u) => ({ from: [0, 0, 0], to: [1, 1, 1], faces: { north: { uv: [u, u, u + 8, u + 8], texture: "#0" } } });
+  const shape = { textures: { 0: "a" }, elements: [{ ...el(0), from: [7, 5, 1] }, { ...el(8), from: [2, 6, 6] }], display: { head: { scale: [1.6, 1.6, 1.6] } } };
+  const merged = mergeHats([{ model: shape, png: paint(0, 0), texture: "x:nose" }, { model: shape, png: paint(8, 8), texture: "x:wig" }]);
+  assert.deepEqual(merged.textures, { 0: "x:nose", 1: "x:wig", particle: "x:wig" });
+  assert.equal(merged.elements.length, 2);
+  assert.equal(merged.elements[0].faces.north.texture, "#0");
+  assert.equal(merged.elements[1].faces.north.texture, "#1");
+});

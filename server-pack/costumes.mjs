@@ -62,7 +62,10 @@ export function armorLayer(model, png, slot) {
     const box = BOX[boxName];
     // nur Würfel in Rüstungs-Grundform; innere Schicht zuerst, äussere darüber.
     // Erstes Teil mit passenden Würfeln nehmen (z.B. ist beim Clown das rechte Bein leer).
-    const fits = (p) => p.cubes.filter((c) => c.size[0] === box.w && c.size[2] === box.d && c.size[1] > 0).sort((a, b) => a.inflate - b.inflate);
+    const exact = (p) => p.cubes.filter((c) => c.size[0] === box.w && c.size[2] === box.d && c.size[1] > 0);
+    // sonst breitere Würfel (z.B. Umhang) auf Rüstungsbreite stauchen
+    const wider = (p) => p.cubes.filter((c) => c.size[0] > box.w && c.size[2] === box.d && c.size[1] > 0);
+    const fits = (p) => (exact(p).length ? exact(p) : wider(p)).sort((a, b) => a.inflate - b.inflate);
     const part = box.bone.map((b) => model.parts.find((p) => p.name === b)).find((p) => p && fits(p).length);
     if (!part) continue;
     const cubes = fits(part);

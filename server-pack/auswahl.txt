@@ -31,7 +31,6 @@ funny_pumpkin/caramel_key
 funny_pumpkin/clown_costume_boots
 funny_pumpkin/clown_costume_chestplate
 funny_pumpkin/clown_costume_leggings
-funny_pumpkin/clown_nose
 funny_pumpkin/clown_wig
 funny_pumpkin/cultist_costume_chestplate
 funny_pumpkin/cultist_costume_helmet
@@ -122,7 +121,6 @@ funny_pumpkin/seat_torn_corpse
 funny_pumpkin/sewing_table
 funny_pumpkin/skeleton_grave
 funny_pumpkin/vampire_cloak
-funny_pumpkin/vampire_cloak_entity_chestplate
 funny_pumpkin/vampire_costume_1_boots
 funny_pumpkin/vampire_costume_1_chestplate
 funny_pumpkin/vampire_costume_1_helmet

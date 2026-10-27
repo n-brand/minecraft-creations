@@ -1,3 +1,5 @@
+import { decodePng } from "./lib/png.mjs";
+
 // 3D-Hüte: Kopf-Teil eines Mod-Modells (Java-Würfel) als Minecraft-Item-Modell für den Kopf.
 //
 // Kopf-Item-Ebene (CustomHeadLayer) auf das Java-Modell umgerechnet, mit display.head scale 1.6:
@@ -91,4 +93,31 @@ export function hatModel(model, texture) {
 // Unterkante (y = 0) soll auf der Kopf-Oberseite (java_y = −8) sitzen → t = 6.4 + 8k; k = 1.
 export function blockHat(model, k = 1) {
   return { parent: model, display: { head: { rotation: [0, 0, 0], translation: [0, Math.round((6.4 + 8 * k) * 1000) / 1000, 0], scale: [k, k, k] } } };
+}
+
+/* --- Mehrere Hüte mit gleicher Form zu einem verbinden (z.B. Clown-Nase + Perücke) --- */
+// Jeder Würfel kommt von der Textur, auf der er am meisten bemalt ist.
+
+function painted(img, faces) {
+  let n = 0;
+  for (const f of Object.values(faces)) {
+    const [u0, v0, u1, v1] = f.uv.map((x, i) => Math.floor((x / 16) * (i % 2 ? img.h : img.w)));
+    for (let y = Math.min(v0, v1); y < Math.max(v0, v1); y++) for (let x = Math.min(u0, u1); x < Math.max(u0, u1); x++) if (img.data[(y * img.w + x) * 4 + 3]) n++;
+  }
+  return n;
+}
+
+export function mergeHats(sources) {
+  const imgs = sources.map((s) => decodePng(s.png));
+  const textures = {};
+  sources.forEach((s, i) => (textures[i] = s.texture));
+  textures.particle = sources[sources.length - 1].texture;
+  const elements = sources[0].model.elements.map((el, k) => {
+    let best = 0, score = -1;
+    sources.forEach((s, i) => { const p = painted(imgs[i], s.model.elements[k].faces); if (p > score) { score = p; best = i; } });
+    const chosen = sources[best].model.elements[k];
+    const faces = Object.fromEntries(Object.entries(chosen.faces).map(([dir, f]) => [dir, { ...f, texture: `#${best}` }]));
+    return { ...chosen, faces };
+  });
+  return { textures, elements, display: sources[0].model.display };
 }

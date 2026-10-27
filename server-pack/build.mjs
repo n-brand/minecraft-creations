@@ -11,7 +11,7 @@ import { renderIcon } from "./icons.mjs";
 import { entrySource, insertEntry } from "./site-entry.mjs";
 import { FACE_OVERLAYS, armorLayer, costumePieces, faceOverlayModel } from "./costumes.mjs";
 import { readModel } from "./lib/javamodel.mjs";
-import { blockHat, hatModel } from "./hats.mjs";
+import { blockHat, hatModel, mergeHats } from "./hats.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.dirname(here);
@@ -48,7 +48,9 @@ for (const item of selected) {
     item.hat = { model: hatModel(faceOverlayModel(), `halloween:item/hx/costume/${textureName}`), texture: modFiles.funny_pumpkin.get(FACE_OVERLAYS[item.id]), textureName };
     continue;
   }
-  const piece = pieces.get(item.id);
+  // Item-IDs, die in der Mod anders heissen als die Kostüm-Klasse
+  const PIECE_ALIASES = { vampire_cloak: "vampire_cloak_chestplate" };
+  const piece = pieces.get(PIECE_ALIASES[item.id] || item.id);
   const modelClass = piece && [...fpClasses.keys()].find((k) => k.endsWith(`/client/model/${piece.model}.class`));
   const png = piece && modFiles.funny_pumpkin.get(piece.texture);
   if (!modelClass || !png) continue;
@@ -64,6 +66,23 @@ for (const item of selected) {
   const name = `fp_${item.id}`;
   costumeLayers.set(item.key, { name, layer: item.slot === "legs" ? "humanoid_leggings" : "humanoid", png: layer });
   item.equipment = `halloween:${name}`;
+}
+
+/* --- Clown: Nase und Perücke als ein Item ("Clown Wig") --- */
+{
+  const wig = selected.find((i) => i.key === "funny_pumpkin/clown_wig");
+  const nose = pieces.get("clown_nose");
+  const nosePng = nose && modFiles.funny_pumpkin.get(nose.texture);
+  const noseClass = nose && [...fpClasses.keys()].find((k) => k.endsWith(`/client/model/${nose.model}.class`));
+  if (wig?.hat?.texture && nosePng && noseClass) {
+    const noseName = nose.texture.split("/").pop().replace(".png", "");
+    const noseHat = hatModel(readModel(fpClasses.get(noseClass)), `halloween:item/hx/costume/${noseName}`);
+    wig.hat.model = mergeHats([
+      { model: noseHat, png: nosePng, texture: `halloween:item/hx/costume/${noseName}` },
+      { model: wig.hat.model, png: wig.hat.texture, texture: `halloween:item/hx/costume/${wig.hat.textureName}` },
+    ]);
+    wig.hat.extra = [{ name: noseName, png: nosePng }];
+  }
 }
 
 /* --- Kopfteile, die in der Mod 3D-Blöcke sind (z.B. Hexenhut): auf den Kopf setzen --- */

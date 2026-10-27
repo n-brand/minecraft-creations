@@ -182,6 +182,7 @@ export function buildResourcePack({ items, modFiles, vanillaFiles, hatFiles, cos
   /* --- 3D-Hüte: auf dem Kopf das Hut-Modell, sonst das Icon --- */
   for (const item of all.filter((i) => i.hat)) {
     if (item.hat.texture) out.set(`assets/halloween/textures/item/hx/costume/${item.hat.textureName}.png`, item.hat.texture);
+    for (const extra of item.hat.extra || []) out.set(`assets/halloween/textures/item/hx/costume/${extra.name}.png`, extra.png);
     out.set(`assets/halloween/models/item/hat/${item.icon}.json`, item.hat.model);
   }
   const itemModel = (item) => item.hat
