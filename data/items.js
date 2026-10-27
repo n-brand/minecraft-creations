@@ -33,7 +33,7 @@ window.ITEMS = [
     id: "server-pack-2026",
     category: "texturepacks",
     name: "Server Pack 2026",
-    description: "Halloween auf unserem Server: 204 Deko-Items, Kostüme, Süssigkeiten und eine Weihnachtsmütze zum Umbenennen – ganz ohne Mods.",
+    description: "Halloween auf unserem Server: 198 Deko-Items, Kostüme, Süssigkeiten und eine Weihnachtsmütze zum Umbenennen – ganz ohne Mods.",
     version: "26.3",
     edition: "Java",
     serverOnly: true,
@@ -93,7 +93,6 @@ window.ITEMS = [
         { id: "spruce_pressure_plate", item: "Fichtenholzdruckplatte", itemEn: "Spruce Pressure Plate · Spookify", names: [["Brain Jar", "spookify_brain_jar"], ["Broom Stick", "spookify_broom_stick"], ["Coffin", "spookify_coffin"], ["Kotel", "spookify_kotel"]] },
         { id: "lantern", item: "Laterne", itemEn: "Lantern · Funny Pumpkin", names: [["Hanged Corpse", "funny_pumpkin_hanged_corpse"], ["Hanged Torn Corpse", "funny_pumpkin_hanged_torn_corpse"]] },
         { id: "bread", item: "Brot", itemEn: "Bread · Funny Pumpkin", names: [["Berry Muffin", "funny_pumpkin_berry_muffin"], ["Black Candy", "funny_pumpkin_black_candy"], ["Blue Candy", "funny_pumpkin_blue_candy"], ["Caramel Key", "funny_pumpkin_caramel_key"], ["Cyan Candy", "funny_pumpkin_cyan_candy"], ["Gray Candy", "funny_pumpkin_gray_candy"], ["Green Candy", "funny_pumpkin_green_candy"], ["Light Blue Candy", "funny_pumpkin_light_blue_candy"], ["Light Gray Candy", "funny_pumpkin_light_gray_candy"], ["Lime Candy", "funny_pumpkin_lime_candy"], ["Magenta Candy", "funny_pumpkin_magenta_candy"], ["Nether Monster Egg", "funny_pumpkin_nether_monster_egg"], ["Nether Monster Egg Ingredient", "funny_pumpkin_nether_monster_egg_ingredient"], ["Orange Candy", "funny_pumpkin_orange_candy"], ["Pink Candy", "funny_pumpkin_pink_candy"], ["Pumpkin Lollipop", "funny_pumpkin_pumpkin_lollipop"], ["Purple Candy", "funny_pumpkin_purple_candy"], ["Red Candy", "funny_pumpkin_red_candy"], ["White Candy", "funny_pumpkin_white_candy"], ["Yellow Candy", "funny_pumpkin_yellow_candy"]] },
-        { id: "paper", item: "Papier", itemEn: "Paper · Funny Pumpkin", names: [["Dark Mummy Swathe", "funny_pumpkin_dark_mummy_swathe"], ["Demonic Cloth", "funny_pumpkin_demonic_cloth"], ["Depth Monster Tooth", "funny_pumpkin_depth_monster_tooth"], ["Ghoul Tongue", "funny_pumpkin_ghoul_tongue"], ["Living Root", "funny_pumpkin_living_root"], ["Mummy Swathe", "funny_pumpkin_mummy_swathe"]] },
         { id: "music_disc_13", item: "Schallplatte „13“", itemEn: "Music Disc 13 · Funny Pumpkin", names: [["Carnival Of Horrors", "funny_pumpkin_music_disc_3"], ["Creepy House", "funny_pumpkin_music_disc_2"], ["Ghostly Choir", "funny_pumpkin_music_disc_5"], ["Sweet Candy", "funny_pumpkin_music_disc_6"], ["This Is Halloween", "funny_pumpkin_music_disc_1"], ["Witch Dance", "funny_pumpkin_music_disc_4"]] }
       ]
     }
