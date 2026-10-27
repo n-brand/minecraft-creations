@@ -103,3 +103,13 @@ test("combineHats puts different hat models together, each with its own texture"
   assert.equal(m.elements[1].faces.north.texture, "#1");
   assert.deepEqual(m.display, hat.display);
 });
+
+test("shiftHat moves a hat by head pixels (1 head pixel = 1.6 display units)", async () => {
+  const { shiftHat } = await import("../hats.mjs");
+  const m = { display: { head: { rotation: [0, 0, 0], translation: [0, 0, 0], scale: [1.6, 1.6, 1.6] } } };
+  shiftHat(m, -1);
+  assert.ok(Math.abs(m.display.head.translation[1] + 1.6) < 1e-9);
+  const b = { display: { head: { rotation: [0, 0, 0], translation: [0, 14.4, 0], scale: [1, 1, 1] } } };
+  shiftHat(b, 2);
+  assert.ok(Math.abs(b.display.head.translation[1] - 17.6) < 1e-9);
+});

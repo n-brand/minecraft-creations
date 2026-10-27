@@ -133,3 +133,11 @@ export function combineHats(models) {
   textures.particle = models[0].textures[0];
   return { textures, elements, display: models[0].display };
 }
+
+/* --- Hut nach oben/unten verschieben (server-pack/hut-versatz.json, in Kopf-Pixeln) --- */
+// Kopf-Ebene skaliert mit 0.625 → 1 Kopf-Pixel = 1.6 Einheiten der display-Verschiebung.
+export function shiftHat(model, px) {
+  const t = model.display.head.translation;
+  t[1] = Math.round((t[1] + px * 1.6) * 1000) / 1000;
+  return model;
+}

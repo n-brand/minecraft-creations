@@ -11,7 +11,7 @@ import { renderIcon } from "./icons.mjs";
 import { entrySource, insertEntry } from "./site-entry.mjs";
 import { FACE_OVERLAYS, armorLayer, costumePieces, faceOverlayModel } from "./costumes.mjs";
 import { readModel } from "./lib/javamodel.mjs";
-import { blockHat, combineHats, hatModel, mergeHats } from "./hats.mjs";
+import { blockHat, combineHats, hatModel, mergeHats, shiftHat } from "./hats.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.dirname(here);
@@ -101,6 +101,12 @@ for (const item of selected) {
 
 /* --- Kopfteile, die in der Mod 3D-Blöcke sind (z.B. Hexenhut): auf den Kopf setzen --- */
 for (const item of selected) if (item.slot === "head" && !item.hat && !item.equipment && isModel3d(modFiles[item.mod], item.ns, item.id)) item.hat = { model: blockHat(item.model, item.headScale ?? 1), texture: null };
+
+/* --- Hüte verschieben (hut-versatz.json, in Kopf-Pixeln; minus = tiefer) --- */
+for (const [name, px] of Object.entries(JSON.parse(fs.readFileSync(path.join(here, "hut-versatz.json"), "utf8")))) {
+  const item = selected.find((i) => i.name === name && i.hat);
+  if (item) shiftHat(item.hat.model, px); else console.log(` - hut-versatz.json: unbekannter Hut: ${name}`);
+}
 
 const { files, items } = buildResourcePack({ items: selected, modFiles, vanillaFiles, hatFiles, costumeLayers });
 const problems = checkPack(files);
