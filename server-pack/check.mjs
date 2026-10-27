@@ -48,6 +48,8 @@ export function checkPack(files) {
         const v = resolve("layer0");
         if (v) used.add(v); else problems.push(`${c.when}: layer0 fehlt`);
       } else if (elements) {
+        // Minecraft lehnt Elemente ausserhalb von −16..32 ab (Modell fehlt dann ganz)
+        if (elements.some((e) => [...e.from, ...e.to].some((n) => n < -16 || n > 32))) problems.push(`${c.when}: ${id} hat Elemente ausserhalb von -16..32`);
         for (const e of elements) for (const f of Object.values(e.faces || {})) {
           const v = resolve((f.texture || "").replace(/^#/, ""));
           if (v) used.add(v); else problems.push(`${c.when}: ${f.texture} undefiniert`);

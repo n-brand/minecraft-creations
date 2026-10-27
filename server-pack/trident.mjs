@@ -20,13 +20,16 @@ export function recolorRed(png) {
 
 /* --- 3D-Modelle für Hand und Wurf --- */
 // Der Spezial-Renderer zeichnet das Entity-Modell gespiegelt in y und z: item = (x, −y, −z).
+// Der Dreizack ist 31 px lang und ragt bis y = −27; erlaubt sind nur −16..32. Darum liegen die Elemente
+// TRIDENT_SHIFT px höher, und die Item-Definition schiebt sie per transformation wieder zurück.
+export const TRIDENT_SHIFT = 16;
 // Flächen dabei: Java-Vorderseite (−z) → Süden, Rückseite → Norden, rechte Seite (−x) → Westen.
 export function tridentModels(geometry, texture) {
   const elements = [];
   for (const part of geometry.parts) {
     for (const c of part.cubes) {
       const a = c.from.map((n) => n - c.inflate), b = c.from.map((n, i) => n + c.size[i] + c.inflate);
-      const from = [a[0], -b[1], -b[2]], to = [b[0], -a[1], -a[2]];
+      const from = [a[0], -b[1] + TRIDENT_SHIFT, -b[2]], to = [b[0], -a[1] + TRIDENT_SHIFT, -a[2]];
       const f = boxFaces(c, geometry.texW, geometry.texH, "#0");
       elements.push({ from, to, faces: { up: f.up, down: f.down, south: f.north, north: f.south, west: f.east, east: f.west } });
     }
@@ -46,6 +49,7 @@ export function tridentDefinition(icon, inHand, throwing) {
       property: "minecraft:using_item",
       on_false: { type: "minecraft:model", model: inHand },
       on_true: { type: "minecraft:model", model: throwing },
+      transformation: { translation: [0, -TRIDENT_SHIFT / 16, 0], left_rotation: [0, 0, 0, 1], right_rotation: [0, 0, 0, 1], scale: [1, 1, 1] },
     },
   };
 }
