@@ -9,8 +9,5 @@
   "vanillaJar": "C:/Users/nicol/AppData/Roaming/.minecraft/versions/26.2/26.2.jar",
   "resourcepackOut": "C:/Users/nicol/AppData/Roaming/.minecraft/resourcepacks/Server Pack 2026.zip",
   "datapackOut": "C:/Source/Minecraft/Server Pack 2026 Datapack.zip",
-  "goldenTrident": {
-    "item": "C:/Source/Minecraft/Minecraft Texture Pack/Mein Pack/assets/minecraft/textures/item/trident.png",
-    "entity": "C:/Source/Minecraft/Minecraft Texture Pack/Mein Pack/assets/minecraft/textures/entity/trident.png"
-  }
+  "meinPack": "C:/Source/Minecraft/Minecraft Texture Pack/Mein Pack"
 }

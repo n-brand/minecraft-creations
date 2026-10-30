@@ -12,6 +12,7 @@ import { entrySource, insertEntry } from "./site-entry.mjs";
 import { FACE_OVERLAYS, armorLayer, costumePieces, faceOverlayModel } from "./costumes.mjs";
 import { readModel } from "./lib/javamodel.mjs";
 import { blockHat, combineHats, hatModel, mergeHats, shiftHat, transformHat } from "./hats.mjs";
+import { meinPackFood } from "./meinpack.mjs";
 import { recolorRed, tridentDefinition, tridentFlyingModel, tridentModels } from "./trident.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -136,6 +137,9 @@ if (sources.goldenTrident && fs.existsSync(sources.goldenTrident.item) && fs.exi
     ],
   });
 }
+
+/* --- Essen aus „Mein Pack“ (nur Essen, Namen wie dort) --- */
+if (sources.meinPack && fs.existsSync(sources.meinPack)) selected.push(...meinPackFood(sources.meinPack));
 
 /* --- Hüte verschieben (hut-versatz.json, in Kopf-Pixeln; minus = tiefer) --- */
 for (const [name, px] of Object.entries(hutVersatz)) {

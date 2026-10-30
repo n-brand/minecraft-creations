@@ -14,7 +14,8 @@ test("entrySource builds the server-only entry", () => {
   assert.ok(src.includes('id: "server-pack-2026"'));
   assert.ok(src.includes("serverOnly: true"));
   assert.ok(src.includes('"/give @s leather_helmet[custom_name=\\"Bride Mask\\",equippable={slot:\\"head\\",asset_id:\\"halloween:hh_bride\\"}]"'));
-  assert.ok(src.includes('["Haunted Fountain", "decoween_haunted_fountain"]'));
+  // jeder Name hat einen /give-Befehl zum Testen
+  assert.ok(src.includes('["Haunted Fountain", "decoween_haunted_fountain", "/give @s'));
   assert.ok(/Linksklick/.test(src));
 });
 

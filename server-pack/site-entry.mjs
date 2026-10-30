@@ -14,11 +14,28 @@ const BASES = {
   spruce_pressure_plate: ["Fichtenholzdruckplatte", "Spruce Pressure Plate"],
   lantern: ["Laterne", "Lantern"],
   bread: ["Brot", "Bread"],
+  apple: ["Apfel", "Apple"],
+  baked_potato: ["Ofenkartoffel", "Baked Potato"],
+  beetroot_soup: ["Rote-Bete-Suppe", "Beetroot Soup"],
+  cooked_beef: ["Steak", "Cooked Beef"],
+  cooked_chicken: ["Gebratenes Hühnchen", "Cooked Chicken"],
+  cooked_mutton: ["Gebratenes Hammelfleisch", "Cooked Mutton"],
+  cooked_porkchop: ["Gebratenes Schweinefleisch", "Cooked Porkchop"],
+  porkchop: ["Rohes Schweinefleisch", "Raw Porkchop"],
+  cooked_salmon: ["Gebratener Lachs", "Cooked Salmon"],
+  golden_carrot: ["Goldene Karotte", "Golden Carrot"],
+  sweet_berries: ["Süsse Beeren", "Sweet Berries"],
+  pumpkin_pie: ["Kürbiskuchen", "Pumpkin Pie"],
+  mushroom_stew: ["Pilzsuppe", "Mushroom Stew"],
+  suspicious_stew: ["Seltsame Suppe", "Suspicious Stew"],
+  spider_eye: ["Spinnenauge", "Spider Eye"],
+  honey_bottle: ["Honigflasche", "Honey Bottle"],
+  milk_bucket: ["Milcheimer", "Milk Bucket"],
   paper: ["Papier", "Paper"],
   music_disc_13: ["Schallplatte „13“", "Music Disc 13"],
   trident: ["Dreizack", "Trident"],
 };
-const MODS = { halloween: "Eigenes", christmas_hats: "Weihnachtsmützen", "decoween-neoforge": "Decoween", funny_pumpkin: "Funny Pumpkin", happyhallows: "Happy Hallows", spookify: "Spookify" };
+const MODS = { halloween: "Eigenes", mein_pack: "Mein Pack", christmas_hats: "Weihnachtsmützen", "decoween-neoforge": "Decoween", funny_pumpkin: "Funny Pumpkin", happyhallows: "Happy Hallows", spookify: "Spookify" };
 const q = (s) => JSON.stringify(s);
 
 /* --- Kostüm-Sets (Gruppen auf der Seite) --- */
@@ -49,7 +66,7 @@ export function entrySource(items) {
     for (const mod of Object.keys(MODS)) {
       const rows = items.filter((i) => i.base === base && i.mod === mod && !costumes.includes(i)).sort((a, b) => a.name.localeCompare(b.name));
       if (!rows.length) continue;
-      groups.push({ id: base, item: BASES[base][0], itemEn: `${BASES[base][1]} · ${MODS[mod]}`, names: rows.map((i) => (i.equipment ? [i.name, i.icon, giveCommand(i)] : [i.name, i.icon])) });
+      groups.push({ id: base, item: BASES[base][0], itemEn: `${BASES[base][1]} · ${MODS[mod]}`, names: rows.map((i) => [i.name, i.icon, giveCommand(i)]) });
     }
   }
   return `  {
@@ -71,10 +88,10 @@ export function entrySource(items) {
       "Deko in 3D: Kerzenleuchter, Totenkopf-Kerzen, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr – hinstellen und per Linksklick wieder abbauen.",
       "Kostüme: Braut, Frankenstein, Meerjungfrau, Pirat, Mumie, Vampir, Hexe, Clown und viele mehr.",
       "Echte Optik beim Anziehen: Roben, Hosen und Schuhe wie in der Mod, Hüte, Masken, Hörner und Vampiraugen als 3D-Modell auf dem Kopf.",
-      "Roter Dreizack zum Teufel-Kostüm: Dreizack „Red Trident“ nennen – rot in der Hand und auch im Flug.",
       "Kostüme gehen auch mit Diamant-, Eisen-, Netherit- und Kupfer-Rüstung: Rüstung umbenennen, dann sieht sie aus wie das Kostüm und schützt trotzdem wie vorher.",
       "Weihnachtsmütze: Geschnitzten Kürbis „Christmas Hat“ nennen und aufsetzen – mit freier Sicht.",
       "Süssigkeiten, Muffin und Lollis liegen auf dem Brot und sind essbar.",
+      "Essen aus Mein Pack: Burger, Pommes, Eis, Getränke, Beeren und mehr – auf dem passenden Essen umbenennen.",
       "Hängende Deko (Leichen am Seil) liegt auf der Laterne: an die Decke hängen, dann erscheint das Modell.",
       "Süssigkeiten-Beutel liegen auf dem Bündel – du kannst Sachen darin aufbewahren.",
       "Flügel liegen auf den Elytren – du kannst damit fliegen (angezogen sehen sie wie normale Elytren aus).",
