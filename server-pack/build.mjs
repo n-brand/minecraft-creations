@@ -28,6 +28,11 @@ const lang = Object.fromEntries(Object.keys(sources.mods).map((mod) => [mod, JSO
 
 /* --- Bauen und prüfen --- */
 const selected = buildItemList({ selection, lang, is3d: (mod, id) => isModel3d(modFiles[mod], NAMESPACE[mod], id) });
+/* --- Eigene Namen (namen.json: Mod-Name → Name im Spiel) --- */
+for (const [from, to] of Object.entries(JSON.parse(fs.readFileSync(path.join(here, "namen.json"), "utf8")))) {
+  const item = selected.find((i) => i.name === from);
+  if (item) item.name = to; else console.log(` - namen.json: unbekannter Name: ${from}`);
+}
 /* --- Musik-Discs: Länge der Lieder --- */
 for (const item of selected) if (item.song) { const ogg = modFiles[item.mod].get(item.song.file); if (ogg) item.song.seconds = oggSeconds(ogg); }
 

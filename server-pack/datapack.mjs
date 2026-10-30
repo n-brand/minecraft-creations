@@ -172,6 +172,21 @@ export function buildDatapack({ items }) {
     load.push(`data modify storage ${NS}:tmp fly set value {left_rotation:{angle:0f,axis:[0f,1f,0f]},right_rotation:{angle:0f,axis:[1f,0f,0f]},translation:[0f,-0.5f,0f],scale:[${FLY_SCALE}f,${FLY_SCALE}f,${FLY_SCALE}f]}`);
   }
 
+  /* --- Diamant oder Netheritbarren + Eichenholzknopf zusammen auf den Boden werfen → ganzer Stack (je Knopf ein Stack) --- */
+  const minusOne = '{type:"minecraft:set_count",count:-1,add:true}';
+  for (const [key, id] of [["diamonds", "diamond"], ["netherite", "netherite_ingot"]]) {
+    tick.push(`execute as @e[type=minecraft:item] if items entity @s contents minecraft:oak_button at @s if entity @e[type=minecraft:item,distance=..1.5,nbt={Item:{id:"minecraft:${id}"}}] run function ${NS}:recipe/${key}`);
+    fn(`recipe/${key}`, [
+      `execute as @e[type=minecraft:item,distance=..1.5] if items entity @s contents minecraft:${id} run tag @s add sp26.pay`,
+      `item modify entity @n[type=minecraft:item,tag=sp26.pay] contents ${minusOne}`,
+      `item modify entity @s contents ${minusOne}`,
+      "tag @e[type=minecraft:item,tag=sp26.pay] remove sp26.pay",
+      `summon minecraft:item ~ ~0.3 ~ {PickupDelay:10s,Item:{id:"minecraft:${id}",count:64}}`,
+      "particle minecraft:happy_villager ~ ~0.3 ~ 0.3 0.3 0.3 0 20",
+      "playsound minecraft:entity.player.levelup block @a[distance=..16] ~ ~ ~",
+    ]);
+  }
+
   /* --- Deko abbauen (Linksklick aufs Modell) --- */
   fn("deco/break", [
     'execute on attacker if entity @s[gamemode=!creative] at @s run tag @s add sp26.breaker',

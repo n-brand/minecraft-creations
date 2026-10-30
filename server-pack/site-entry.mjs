@@ -78,7 +78,7 @@ export function entrySource(items) {
       "Hängende Deko (Leichen am Seil) liegt auf der Laterne: an die Decke hängen, dann erscheint das Modell.",
       "Süssigkeiten-Beutel liegen auf dem Bündel – du kannst Sachen darin aufbewahren.",
       "Flügel liegen auf den Elytren – du kannst damit fliegen (angezogen sehen sie wie normale Elytren aus).",
-      "6 Musik-Discs (spielen die normale Disc-Musik)."
+      "Extra: Einen Diamanten oder Netheritbarren zusammen mit einem Eichenholzknopf auf den Boden werfen – daraus wird ein ganzer Stack."
     ],
     credits: [
       "Decoween",

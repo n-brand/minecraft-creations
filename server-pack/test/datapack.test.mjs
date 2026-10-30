@@ -196,3 +196,13 @@ test("costume check also converts diamond, iron, netherite and copper armor", ()
     assert.ok(check.includes(`execute if items entity @s armor.head minecraft:${m}_helmet[minecraft:custom_name="Bride Mask"] unless items entity @s armor.head *[minecraft:custom_data~{sp26:"Bride Mask"}] run item modify entity @s armor.head server_pack_2026:costume/happyhallows_bride_mask`), m);
   }
 });
+
+test("diamond + oak button dropped together turn into a stack of diamonds", async () => {
+  const { buildDatapack } = await import("../datapack.mjs");
+  const files = buildDatapack({ items: [] });
+  const get = (n) => files.get(`data/server_pack_2026/function/${n}.mcfunction`);
+  assert.match(get("tick"), /contents minecraft:oak_button .*function server_pack_2026:recipe\/diamonds/);
+  assert.match(get("recipe/diamonds"), /summon minecraft:item .*id:"minecraft:diamond",count:64/);
+  assert.match(get("recipe/diamonds"), /set_count",count:-1,add:true/);
+  assert.match(get("recipe/netherite"), /id:"minecraft:netherite_ingot",count:64/);
+});

@@ -78,12 +78,6 @@ funny_pumpkin/mummy_costume_boots
 funny_pumpkin/mummy_costume_chestplate
 funny_pumpkin/mummy_costume_helmet
 funny_pumpkin/mummy_costume_leggings
-funny_pumpkin/music_disc_1
-funny_pumpkin/music_disc_2
-funny_pumpkin/music_disc_3
-funny_pumpkin/music_disc_4
-funny_pumpkin/music_disc_5
-funny_pumpkin/music_disc_6
 funny_pumpkin/nether_monster_egg
 funny_pumpkin/nether_monster_egg_ingredient
 funny_pumpkin/nightmare_costume_boots
