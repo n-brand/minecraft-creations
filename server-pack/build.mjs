@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readZip, writeZip } from "./lib/zip.mjs";
-import { NAMESPACE, applySizes, buildItemList, giveCommand, oggSeconds } from "./items.mjs";
+import { DECO_BASES, NAMESPACE, applySizes, buildItemList, giveCommand, oggSeconds } from "./items.mjs";
 import { buildResourcePack, decoScale, isModel3d } from "./resourcepack.mjs";
 import { checkPack } from "./check.mjs";
 import { buildDatapack } from "./datapack.mjs";
@@ -168,7 +168,7 @@ if (W.mineCells && fs.existsSync(W.mineCells)) {
     const name = MINE_CELLS_NAMES[id] || id.split("_").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
     for (const base of ["netherite_sword", ...(MINE_CELLS_EXTRA_BASES[id] || [])]) {
       const suffix = base === "netherite_sword" ? "" : `_${base}`;
-      selected.push(weapon({ key: `mine_cells/${id}${suffix}`, mod: "mine_cells", ns: "minecells", id, name, base, model, icon: `mine_cells_${id}${suffix}`, files: [...files] }));
+      selected.push(weapon({ key: `mine_cells/${id}${suffix}`, mod: "mine_cells", ns: "minecells", id, name, base, model, icon: `mine_cells_${id}${suffix}`, files: [...files], ...(DECO_BASES.includes(base) && { kind: "deco", scale: 1 }) }));
     }
   }
 }
