@@ -85,7 +85,7 @@ export function entrySource(items) {
       "3D-Deko liegt auf der Fichtenholzdruckplatte: Stell sie einfach hin, dann erscheint das Modell. Mit einem Linksklick aufs Modell baust du es wieder ab und bekommst das Item zurück."
     ],
     features: [
-      "Deko in 3D: Kerzenleuchter, Totenkopf-Kerzen, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr – hinstellen und per Linksklick wieder abbauen.",
+      "Deko in 3D: Kerzenleuchter, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr – hinstellen und per Linksklick wieder abbauen.",
       "Kostüme: Braut, Frankenstein, Meerjungfrau, Pirat, Mumie, Vampir, Hexe, Clown und viele mehr.",
       "Echte Optik beim Anziehen: Roben, Hosen und Schuhe wie in der Mod, Hüte, Masken, Hörner und Vampiraugen als 3D-Modell auf dem Kopf.",
       "Kostüme gehen auch mit Diamant-, Eisen-, Netherit- und Kupfer-Rüstung: Rüstung umbenennen, dann sieht sie aus wie das Kostüm und schützt trotzdem wie vorher.",
