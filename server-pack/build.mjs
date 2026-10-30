@@ -126,6 +126,8 @@ const readPack = (p) => new Map([...readZip(fs.readFileSync(p))].map(([k, v]) =>
 const weapon = (o) => ({ slot: null, equipment: null, kind: "weapon", ...o });
 
 // Dreizacke: OptiFine-Modell → 3D in der Hand, Wurf über das mitfliegende Modell (wie früher beim roten Dreizack)
+// Vanilla-Dreizack als Hülle fürs fliegende Modell (verdeckt den türkisen Wurf-Dreizack ganz)
+const vanillaTrident = (W.tridents || []).length ? readModel([...readZip(fs.readFileSync(sources.vanillaJar), (n) => n.endsWith("/projectile/TridentModel.class")).values()][0]) : null;
 for (const t of W.tridents || []) {
   if (!fs.existsSync(t.zip)) { console.log(` - Dreizack fehlt: ${t.zip}`); continue; }
   const zip = readPack(t.zip);
@@ -145,7 +147,7 @@ for (const t of W.tridents || []) {
       [`assets/${ns}/models/item/${id}.json`, asJson({ parent: "minecraft:item/generated", textures: { layer0: `${ns}:item/${id}` } })],
       [`assets/${ns}/models/item/${id}_in_hand.json`, asJson(models.inHand)],
       [`assets/${ns}/models/item/${id}_throwing.json`, asJson(models.throwing)],
-      [`assets/${ns}/models/item/${id}_flying.json`, asJson(tridentFlyingModel(geometry, entityTex))],
+      [`assets/${ns}/models/item/${id}_flying.json`, asJson(tridentFlyingModel(geometry, entityTex, vanillaTrident))],
       [`assets/${ns}/items/${id}_flying.json`, asJson({ model: { type: "minecraft:model", model: `${ns}:item/${id}_flying` } })],
     ],
   }));

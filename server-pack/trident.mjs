@@ -44,18 +44,30 @@ export function tridentModels(geometry, texture) {
 // das Display skaliert mit FLY_SCALE zurück. Jeder Würfel ist etwas dicker, damit er den Vanilla-Dreizack verdeckt.
 export const FLY_SCALE = 2;
 const FLY_INFLATE = 0.3;
-export function tridentFlyingModel(geometry, texture) {
+// cover = Vanilla-Dreizack: als Hülle in der Stielfarbe dazu, damit er bei kürzeren/schmaleren Modellen nicht heraussticht.
+const COVER_INFLATE = 0.15;
+export function tridentFlyingModel(geometry, texture, cover = null) {
   const elements = [];
+  const m = (j) => 8 + j / FLY_SCALE;
+  const box = (c, grow) => {
+    const a = c.from.map((n) => n - grow), b = c.from.map((n, i) => n + c.size[i] + grow);
+    return { from: [m(a[2]), m(a[0]), m(a[1])], to: [m(b[2]), m(b[0]), m(b[1])] };
+  };
+  const facesOf = (c) => c.faces || boxFaces(c, geometry.texW, geometry.texH, "#0"); // .jem-Würfel bringen ihre Flächen mit
   for (const part of geometry.parts) {
     for (const c of part.cubes) {
-      const grow = c.inflate + FLY_INFLATE;
-      const a = c.from.map((n) => n - grow), b = c.from.map((n, i) => n + c.size[i] + grow);
-      const m = (j) => 8 + j / FLY_SCALE;
-      const from = [m(a[2]), m(a[0]), m(a[1])], to = [m(b[2]), m(b[0]), m(b[1])];
-      const f = c.faces || boxFaces(c, geometry.texW, geometry.texH, "#0"); // .jem-Würfel bringen ihre Flächen mit
+      const f = facesOf(c);
       const turned = (face) => face && { ...face, rotation: 90 };
-      elements.push({ from, to, faces: { north: turned(f.up), south: turned(f.down), west: turned(f.north), east: turned(f.south), down: f.east, up: f.west } });
+      elements.push({ ...box(c, c.inflate + FLY_INFLATE), faces: { north: turned(f.up), south: turned(f.down), west: turned(f.north), east: turned(f.south), down: f.east, up: f.west } });
     }
+  }
+  if (cover) {
+    // Stielfarbe: Seitenfläche des längsten eigenen Würfels
+    const pole = geometry.parts.flatMap((p) => p.cubes).sort((x, y) => y.size[1] - x.size[1])[0];
+    const pf = facesOf(pole);
+    const side = pf.north || pf.south || pf.east || pf.west || Object.values(pf)[0];
+    const faces = Object.fromEntries(["north", "south", "east", "west", "up", "down"].map((k) => [k, side]));
+    for (const c of cover.parts.flatMap((p) => p.cubes)) elements.push({ ...box(c, c.inflate + COVER_INFLATE), faces });
   }
   return { textures: { 0: texture, particle: texture }, elements };
 }

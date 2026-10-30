@@ -89,3 +89,16 @@ test("datapack hangs a red model on thrown red tridents and turns it with the tr
   assert.match(get("trident/turn_ground"), /Rotation\[0\] 0\.7111111/);
   assert.match(get("trident/turn"), /right_rotation\.angle float -0\.0000174533 run data get entity @s Rotation\[1\] 1000/);
 });
+
+test("flying model wraps the vanilla trident, so it never sticks out (short or thin custom tridents)", async () => {
+  const { tridentFlyingModel, FLY_SCALE } = await import("../trident.mjs");
+  const short = { texW: 32, texH: 32, parts: [{ name: "p", cubes: [{ from: [-1, -6, -1], size: [2, 29, 2], uv: [0, 0], inflate: 0, mirror: false }] }] };
+  const vanilla = { texW: 32, texH: 32, parts: [{ name: "pole", cubes: [{ from: [-0.5, 2, -0.5], size: [1, 25, 1], uv: [0, 6], inflate: 0, mirror: false }] }, { name: "spike", cubes: [{ from: [-2.5, -3, -0.5], size: [1, 4, 1], uv: [4, 3], inflate: 0, mirror: false }] }] };
+  const els = tridentFlyingModel(short, "t", vanilla).elements;
+  assert.equal(els.length, 3);
+  const back = Math.max(...els.map((e) => (e.to[2] - 8) * FLY_SCALE));
+  assert.ok(back > 27, `hinten ${back}`);
+  // Hülle nimmt die Stielfarbe des eigenen Dreizacks (gleiche UV wie dessen längste Seite)
+  assert.deepEqual(els[2].faces.north.uv, els[1].faces.north.uv);
+  for (const e of els) for (const v of [...e.from, ...e.to]) assert.ok(v >= -16 && v <= 32);
+});
