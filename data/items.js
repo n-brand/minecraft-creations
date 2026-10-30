@@ -33,7 +33,7 @@ window.ITEMS = [
     id: "server-pack-2026",
     category: "texturepacks",
     name: "Server Pack 2026",
-    description: "Halloween auf unserem Server: 227 Deko-Items, Kostüme, Süssigkeiten und eine Weihnachtsmütze zum Umbenennen – ganz ohne Mods.",
+    description: "Halloween auf unserem Server: 228 Deko-Items, Kostüme, Süssigkeiten und eine Weihnachtsmütze zum Umbenennen – ganz ohne Mods.",
     version: "26.3",
     edition: "Java",
     serverOnly: true,
@@ -122,7 +122,8 @@ window.ITEMS = [
         { id: "bow", cat: "Waffen", item: "Bogen", itemEn: "Bow · Fishy Weapons", names: [["Fishy Bow", "fishy_fishy_bow", "/give @s bow[custom_name=\"Fishy Bow\"]"]] },
         { id: "crossbow", cat: "Waffen", item: "Armbrust", itemEn: "Crossbow · Fishy Weapons", names: [["Fishy Crossbow", "fishy_fishy_crossbow", "/give @s crossbow[custom_name=\"Fishy Crossbow\"]"]] },
         { id: "mace", cat: "Waffen", item: "Streitkolben", itemEn: "Mace · Fishy Weapons", names: [["Fishy Mace", "fishy_fishy_mace", "/give @s mace[custom_name=\"Fishy Mace\"]"]] },
-        { id: "firework_rocket", cat: "Waffen", item: "Feuerwerksrakete", itemEn: "Firework Rocket · Fishy Weapons", names: [["Fishy Rocket", "fishy_fishy_rocket", "/give @s firework_rocket[custom_name=\"Fishy Rocket\"]"]] }
+        { id: "firework_rocket", cat: "Waffen", item: "Feuerwerksrakete", itemEn: "Firework Rocket · Fishy Weapons", names: [["Fishy Rocket", "fishy_fishy_rocket", "/give @s firework_rocket[custom_name=\"Fishy Rocket\"]"]] },
+        { id: "end_rod", cat: "Waffen", item: "Endstab", itemEn: "End Rod · Mine Cells 3D Weapons", names: [["Tentacle D***o", "mine_cells_tentacle_end_rod", "/give @s end_rod[custom_name=\"Tentacle D***o\"]"]] }
       ]
     }
   },

@@ -39,6 +39,7 @@ const BASES = {
   crossbow: ["Armbrust", "Crossbow"],
   mace: ["Streitkolben", "Mace"],
   firework_rocket: ["Feuerwerksrakete", "Firework Rocket"],
+  end_rod: ["Endstab", "End Rod"],
 };
 const MODS = { halloween: "Eigenes", mein_pack: "Mein Pack", tridents: "Dreizack-Packs", mine_cells: "Mine Cells 3D Weapons", fishy: "Fishy Weapons", christmas_hats: "Weihnachtsmützen", "decoween-neoforge": "Decoween", funny_pumpkin: "Funny Pumpkin", happyhallows: "Happy Hallows", spookify: "Spookify" };
 const q = (s) => JSON.stringify(s);

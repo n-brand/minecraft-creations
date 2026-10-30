@@ -298,6 +298,7 @@ const PRECACHE = [
     './images/server-pack-2026/mine_cells_phaser.png',
     './images/server-pack-2026/mine_cells_spite_sword.png',
     './images/server-pack-2026/mine_cells_tentacle.png',
+    './images/server-pack-2026/mine_cells_tentacle_end_rod.png',
     './images/server-pack-2026/spookify_bag_bone.png',
     './images/server-pack-2026/spookify_bag_ghost.png',
     './images/server-pack-2026/spookify_bag_halloween.png',

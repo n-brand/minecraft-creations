@@ -152,6 +152,8 @@ for (const t of W.tridents || []) {
 }
 
 // Mine Cells 3D Weapons: jedes Modell auf dem Netheritschwert
+// zusätzliche Grund-Items für einzelne Waffen (gleicher Name, gleiches Modell)
+const MINE_CELLS_EXTRA_BASES = { tentacle: ["end_rod"] };
 const MINE_CELLS_NAMES = { assassins_dagger: "Assassin's Dagger", hattoris_katana: "Hattori's Katana", flint: "The Flint", tentacle: "Tentacle D***o" };
 if (W.mineCells && fs.existsSync(W.mineCells)) {
   const zip = readPack(W.mineCells);
@@ -159,7 +161,10 @@ if (W.mineCells && fs.existsSync(W.mineCells)) {
     const id = path.basename(p, ".json");
     const { id: model, files } = importModel(zip, `minecells:item/${id}`, "minecells");
     const name = MINE_CELLS_NAMES[id] || id.split("_").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
-    selected.push(weapon({ key: `mine_cells/${id}`, mod: "mine_cells", ns: "minecells", id, name, base: "netherite_sword", model, icon: `mine_cells_${id}`, files: [...files] }));
+    for (const base of ["netherite_sword", ...(MINE_CELLS_EXTRA_BASES[id] || [])]) {
+      const suffix = base === "netherite_sword" ? "" : `_${base}`;
+      selected.push(weapon({ key: `mine_cells/${id}${suffix}`, mod: "mine_cells", ns: "minecells", id, name, base, model, icon: `mine_cells_${id}${suffix}`, files: [...files] }));
+    }
   }
 }
 
