@@ -936,8 +936,75 @@ code {
     color: var(--accent-color);
 }
 
-.guide-group[hidden] {
+.guide-group[hidden],
+.guide-chip[hidden] {
     display: none;
+}
+
+/* Kategorie-Filter (Alle, Kostüme, Deko, Essen …) */
+.guide-cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.guide-cat {
+    padding: 6px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 999px;
+    background-color: var(--surface);
+    color: var(--text-color);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.guide-cat:hover {
+    border-color: var(--accent-color);
+}
+
+.guide-cat[aria-pressed="true"] {
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+    color: #183153;
+}
+
+/* Breiter Dialog für lange Namenslisten: Gruppenname oben, Namen im Raster nebeneinander */
+.detail-dialog-wide {
+    width: min(1240px, calc(100% - 32px));
+}
+
+.detail-dialog-wide .guide-group {
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.detail-dialog-wide .guide-base {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 10px;
+    padding-top: 0;
+}
+
+.detail-dialog-wide .guide-names {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(270px, 100%), 1fr));
+}
+
+.detail-dialog-wide .guide-name {
+    flex: 1;
+    min-width: 0;
+    padding: 4px 10px 4px 6px;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.detail-dialog-wide .guide-name img {
+    width: 32px;
+    height: 32px;
 }
 
 /* --- Server Guide --- */

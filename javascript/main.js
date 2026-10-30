@@ -254,6 +254,27 @@ const createGuide = guide => {
     filter.appendChild(input);
     section.appendChild(filter);
 
+    // Kategorie-Filter, wenn die Gruppen eine Kategorie haben (z.B. Server Pack: Kostüme, Deko, Essen)
+    const cats = [...new Set(guide.groups.map(group => group.cat).filter(Boolean))]
+        .sort((a, b) => (a === 'Sonstiges') - (b === 'Sonstiges'));
+    let activeCat = '';
+    const catBar = el('div', 'guide-cats');
+    if (cats.length > 1) {
+        ['', ...cats].forEach(cat => {
+            const count = guide.groups.filter(group => !cat || group.cat === cat).reduce((n, group) => n + group.names.length, 0);
+            const btn = el('button', 'guide-cat', `${cat || 'Alle'} (${count})`);
+            btn.type = 'button';
+            btn.setAttribute('aria-pressed', String(cat === activeCat));
+            btn.addEventListener('click', () => {
+                activeCat = cat;
+                catBar.querySelectorAll('.guide-cat').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+                applyFilter();
+            });
+            catBar.appendChild(btn);
+        });
+        section.appendChild(catBar);
+    }
+
     const list = el('div', 'guide-groups');
     const groups = guide.groups.map(group => {
         const row = el('div', 'guide-group');
@@ -263,8 +284,10 @@ const createGuide = guide => {
         row.appendChild(base);
 
         const names = el('div', 'guide-names');
+        const chips = [];
         group.names.forEach(([name, icon, give]) => {
             const chip = el('div', 'guide-chip');
+            chips.push({ chip, text: name.toLowerCase() });
             const nameBtn = el('button', 'guide-name');
             nameBtn.type = 'button';
             nameBtn.title = 'Namen kopieren';
@@ -291,7 +314,7 @@ const createGuide = guide => {
         });
         row.appendChild(names);
         list.appendChild(row);
-        return { row, text: [group.item, group.itemEn, ...group.names.map(([name]) => name)].join(' ').toLowerCase() };
+        return { row, cat: group.cat, chips, label: `${group.item} ${group.itemEn}`.toLowerCase() };
     });
     section.appendChild(list);
 
@@ -299,15 +322,23 @@ const createGuide = guide => {
     none.hidden = true;
     section.appendChild(none);
 
-    input.addEventListener('input', () => {
+    // Suche blendet einzelne Namen aus; passt der Gruppenname, bleibt die ganze Gruppe sichtbar
+    function applyFilter() {
         const query = input.value.trim().toLowerCase();
         let shown = 0;
-        groups.forEach(({ row, text }) => {
-            row.hidden = query !== '' && !text.includes(query);
+        groups.forEach(({ row, cat, chips, label }) => {
+            const groupHit = query === '' || label.includes(query);
+            let visible = 0;
+            chips.forEach(({ chip, text }) => {
+                chip.hidden = !groupHit && !text.includes(query);
+                if (!chip.hidden) visible++;
+            });
+            row.hidden = (activeCat !== '' && cat !== activeCat) || visible === 0;
             if (!row.hidden) shown++;
         });
         none.hidden = shown > 0;
-    });
+    }
+    input.addEventListener('input', applyFilter);
 
     return section;
 };
@@ -425,6 +456,9 @@ const openDetail = item => {
     body.push(footer);
 
     dialogBody.replaceChildren(...body);
+    // lange Namenslisten: am PC breiter, damit mehrere Namen in eine Zeile passen
+    const nameCount = (item.guide?.groups || []).reduce((n, group) => n + group.names.length, 0);
+    dialog.classList.toggle('detail-dialog-wide', nameCount > 60);
     if (!dialog.open) dialog.showModal();
     dialog.scrollTop = 0;
 };

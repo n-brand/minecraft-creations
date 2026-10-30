@@ -17,6 +17,8 @@ test("entrySource builds the server-only entry", () => {
   // jeder Name hat einen /give-Befehl zum Testen
   assert.ok(src.includes('["Haunted Fountain", "decoween_haunted_fountain", "/give @s'));
   assert.ok(/Linksklick/.test(src));
+  // Kategorie für den Filter auf der Seite
+  assert.match(src, /cat: "(Kostüme|Deko|Essen|Sonstiges)"/);
 });
 
 test("insertEntry replaces an existing entry and keeps CRLF", () => {

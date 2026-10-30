@@ -50,6 +50,14 @@ export function costumeSet(item) {
   return (SETS.find(([re]) => re.test(item.id)) || [null, "Sonstiges"])[1];
 }
 
+// Filter auf der Seite: überwiegende Art der Items einer Gruppe
+const CATEGORIES = { costume: "Kostüme", deco: "Deko", food: "Essen" };
+export function categoryOf(rows) {
+  const count = {};
+  for (const r of rows) { const c = CATEGORIES[r.kind] || "Sonstiges"; count[c] = (count[c] || 0) + 1; }
+  return Object.entries(count).sort((a, b) => b[1] - a[1])[0][0];
+}
+
 export function entrySource(items) {
   const groups = [];
   // Kostüme nach Set, jedes Teil mit eigenem /give (ein Set hat verschiedene Grund-Items)
@@ -60,13 +68,13 @@ export function entrySource(items) {
     const SLOT_ORDER = { head: 0, chest: 1, legs: 2, feet: 3 }; // ohne Slot (Dreizack) zuletzt
     const rows = costumes.filter((i) => costumeSet(i) === set).sort((a, b) => (SLOT_ORDER[a.slot] ?? 4) - (SLOT_ORDER[b.slot] ?? 4) || a.name.localeCompare(b.name));
     const mods = [...new Set(rows.map((i) => MODS[i.mod]))].join(", ");
-    groups.push({ id: rows[0].base, item: set, itemEn: `Kostüm · ${mods}`, names: rows.map((i) => [i.name, i.icon, giveCommand(i)]) });
+    groups.push({ id: rows[0].base, cat: "Kostüme", item: set, itemEn: `Kostüm · ${mods}`, names: rows.map((i) => [i.name, i.icon, giveCommand(i)]) });
   }
   for (const base of Object.keys(BASES)) {
     for (const mod of Object.keys(MODS)) {
       const rows = items.filter((i) => i.base === base && i.mod === mod && !costumes.includes(i)).sort((a, b) => a.name.localeCompare(b.name));
       if (!rows.length) continue;
-      groups.push({ id: base, item: BASES[base][0], itemEn: `${BASES[base][1]} · ${MODS[mod]}`, names: rows.map((i) => [i.name, i.icon, giveCommand(i)]) });
+      groups.push({ id: base, cat: categoryOf(rows), item: BASES[base][0], itemEn: `${BASES[base][1]} · ${MODS[mod]}`, names: rows.map((i) => [i.name, i.icon, giveCommand(i)]) });
     }
   }
   return `  {
@@ -117,7 +125,7 @@ export function entrySource(items) {
       giveHint: "Mit „/give“ kopierst du den Befehl für den Chat (Cheats müssen an sein).",
       iconPath: "images/server-pack-2026/",
       groups: [
-${groups.map((g) => `        { id: ${q(g.id)}, item: ${q(g.item)}, itemEn: ${q(g.itemEn)}, names: [${g.names.map((n) => "[" + n.map(q).join(", ") + "]").join(", ")}] }`).join(",\n")}
+${groups.map((g) => `        { id: ${q(g.id)}, cat: ${q(g.cat)}, item: ${q(g.item)}, itemEn: ${q(g.itemEn)}, names: [${g.names.map((n) => "[" + n.map(q).join(", ") + "]").join(", ")}] }`).join(",\n")}
       ]
     }
   },
