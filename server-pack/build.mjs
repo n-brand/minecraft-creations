@@ -155,12 +155,15 @@ for (const t of W.tridents || []) {
 
 // Mine Cells 3D Weapons: jedes Modell auf dem Netheritschwert
 // zusätzliche Grund-Items für einzelne Waffen (gleicher Name, gleiches Modell)
+// auf Wunsch weggelassen (2026-10-30)
+const MINE_CELLS_SKIP = ["assassins_dagger", "phaser", "nutcracker", "flint"];
 const MINE_CELLS_EXTRA_BASES = { tentacle: ["end_rod"] };
 const MINE_CELLS_NAMES = { assassins_dagger: "Assassin's Dagger", hattoris_katana: "Hattori's Katana", flint: "The Flint", tentacle: "Tentacle D***o" };
 if (W.mineCells && fs.existsSync(W.mineCells)) {
   const zip = readPack(W.mineCells);
   for (const p of [...zip.keys()].filter((k) => /^assets\/minecells\/models\/item\/[^/]+\.json$/.test(k)).sort()) {
     const id = path.basename(p, ".json");
+    if (MINE_CELLS_SKIP.includes(id)) continue;
     const { id: model, files } = importModel(zip, `minecells:item/${id}`, "minecells");
     const name = MINE_CELLS_NAMES[id] || id.split("_").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
     for (const base of ["netherite_sword", ...(MINE_CELLS_EXTRA_BASES[id] || [])]) {
