@@ -13,7 +13,8 @@ import { FACE_OVERLAYS, armorLayer, costumePieces, faceOverlayModel } from "./co
 import { readModel } from "./lib/javamodel.mjs";
 import { blockHat, combineHats, hatModel, mergeHats, shiftHat, transformHat } from "./hats.mjs";
 import { meinPackFood } from "./meinpack.mjs";
-import { recolorRed, tridentDefinition, tridentFlyingModel, tridentModels } from "./trident.mjs";
+import { tridentDefinition, tridentFlyingModel, tridentModels } from "./trident.mjs";
+import { importModel, readJem, swapModels } from "./weapons.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.dirname(here);
@@ -116,26 +117,68 @@ for (const item of selected) {
 /* --- Kopfteile, die in der Mod 3D-Blöcke sind (z.B. Hexenhut): auf den Kopf setzen --- */
 for (const item of selected) if (item.slot === "head" && !item.hat && !item.equipment && isModel3d(modFiles[item.mod], item.ns, item.id)) item.hat = { model: blockHat(item.model, item.headScale ?? 1), texture: null };
 
-/* --- Roter Dreizack: Kopie des goldenen aus „Mein Pack", rot eingefärbt --- */
-if (sources.goldenTrident && fs.existsSync(sources.goldenTrident.item) && fs.existsSync(sources.goldenTrident.entity)) {
-  const tridentClass = readZip(fs.readFileSync(sources.vanillaJar), (n) => n.endsWith("/projectile/TridentModel.class"));
-  const geometry = readModel([...tridentClass.values()][0]);
-  const models = tridentModels(geometry, "halloween:item/hx/red_trident_entity");
-  selected.push({
-    key: "halloween/red_trident", mod: "halloween", ns: "halloween", id: "red_trident", name: "Red Trident", base: "trident",
-    slot: null, equipment: null, kind: "other", model: "halloween:item/red_trident", icon: "halloween_red_trident", thrown: "halloween:red_trident_flying",
-    definition: tridentDefinition("halloween:item/red_trident", "halloween:item/red_trident_in_hand", "halloween:item/red_trident_throwing"),
+/* --- Waffen aus fremden Packs (quellen.json → weapons) --- */
+const W = sources.weapons || {};
+const asJson = (o) => Buffer.from(JSON.stringify(o, null, 2));
+const slugOf = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+// Dateinamen mit Leerzeichen vor .json (z.B. "bow_pulling_0 .json") wie gemeint lesen
+const readPack = (p) => new Map([...readZip(fs.readFileSync(p))].map(([k, v]) => [k.replace(/ +.json$/, ".json"), v]));
+const weapon = (o) => ({ slot: null, equipment: null, kind: "weapon", ...o });
+
+// Dreizacke: OptiFine-Modell → 3D in der Hand, Wurf über das mitfliegende Modell (wie früher beim roten Dreizack)
+for (const t of W.tridents || []) {
+  if (!fs.existsSync(t.zip)) { console.log(` - Dreizack fehlt: ${t.zip}`); continue; }
+  const zip = readPack(t.zip);
+  const jem = JSON.parse(zip.get("assets/minecraft/optifine/cem/trident.jem"));
+  const tex = jem.models?.[0]?.texture || jem.texture;
+  const texPath = tex.startsWith("textures/") ? `assets/minecraft/${tex}` : `assets/minecraft/optifine/cem/${tex}`;
+  const geometry = readJem(jem);
+  if (geometry.skipped.length) console.log(` - ${t.name}: schräge Teile weggelassen (${geometry.skipped.join(", ")})`);
+  const id = slugOf(t.name), ns = "weapons", entityTex = `${ns}:item/hx/${id}_entity`;
+  const models = tridentModels(geometry, entityTex);
+  selected.push(weapon({
+    key: `tridents/${id}`, mod: "tridents", ns, id, name: t.name, base: "trident", model: `${ns}:item/${id}`, icon: `tridents_${id}`, thrown: `${ns}:${id}_flying`,
+    definition: tridentDefinition(`${ns}:item/${id}`, `${ns}:item/${id}_in_hand`, `${ns}:item/${id}_throwing`),
     files: [
-      ["assets/halloween/textures/item/red_trident.png", recolorRed(fs.readFileSync(sources.goldenTrident.item))],
-      ["assets/halloween/textures/item/hx/red_trident_entity.png", recolorRed(fs.readFileSync(sources.goldenTrident.entity))],
-      ["assets/halloween/models/item/red_trident.json", Buffer.from(JSON.stringify({ parent: "minecraft:item/generated", textures: { layer0: "halloween:item/red_trident" } }, null, 2))],
-      ["assets/halloween/models/item/red_trident_in_hand.json", Buffer.from(JSON.stringify(models.inHand, null, 2))],
-      ["assets/halloween/models/item/red_trident_throwing.json", Buffer.from(JSON.stringify(models.throwing, null, 2))],
-      // geworfen: Modell für das mitfliegende item_display (Datapack)
-      ["assets/halloween/models/item/red_trident_flying.json", Buffer.from(JSON.stringify(tridentFlyingModel(geometry, "halloween:item/hx/red_trident_entity"), null, 2))],
-      ["assets/halloween/items/red_trident_flying.json", Buffer.from(JSON.stringify({ model: { type: "minecraft:model", model: "halloween:item/red_trident_flying" } }, null, 2))],
+      [`assets/${ns}/textures/item/${id}.png`, zip.get("assets/minecraft/textures/item/trident.png")],
+      [`assets/${ns}/textures/item/hx/${id}_entity.png`, zip.get(texPath)],
+      [`assets/${ns}/models/item/${id}.json`, asJson({ parent: "minecraft:item/generated", textures: { layer0: `${ns}:item/${id}` } })],
+      [`assets/${ns}/models/item/${id}_in_hand.json`, asJson(models.inHand)],
+      [`assets/${ns}/models/item/${id}_throwing.json`, asJson(models.throwing)],
+      [`assets/${ns}/models/item/${id}_flying.json`, asJson(tridentFlyingModel(geometry, entityTex))],
+      [`assets/${ns}/items/${id}_flying.json`, asJson({ model: { type: "minecraft:model", model: `${ns}:item/${id}_flying` } })],
     ],
-  });
+  }));
+}
+
+// Mine Cells 3D Weapons: jedes Modell auf dem Netheritschwert
+const MINE_CELLS_NAMES = { assassins_dagger: "Assassin's Dagger", hattoris_katana: "Hattori's Katana", flint: "The Flint" };
+if (W.mineCells && fs.existsSync(W.mineCells)) {
+  const zip = readPack(W.mineCells);
+  for (const p of [...zip.keys()].filter((k) => /^assets\/minecells\/models\/item\/[^/]+\.json$/.test(k)).sort()) {
+    const id = path.basename(p, ".json");
+    const { id: model, files } = importModel(zip, `minecells:item/${id}`, "minecells");
+    const name = MINE_CELLS_NAMES[id] || id.split("_").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
+    selected.push(weapon({ key: `mine_cells/${id}`, mod: "mine_cells", ns: "minecells", id, name, base: "netherite_sword", model, icon: `mine_cells_${id}`, files: [...files] }));
+  }
+}
+
+// Fishy Weapons: Bogen, Armbrust (mit Spann-Stufen), Streitkolben, Rakete – Vanilla-Definition mit eigenen Modellen
+const FISHY = [
+  ["Fishy Bow", "bow", ["bow", "bow_pulling_0", "bow_pulling_1", "bow_pulling_2"]],
+  ["Fishy Crossbow", "crossbow", ["crossbow", "crossbow_arrow", "crossbow_firework", "crossbow_pulling_0", "crossbow_pulling_1", "crossbow_pulling_2"]],
+  ["Fishy Mace", "mace", ["mace"]],
+  ["Fishy Rocket", "firework_rocket", ["firework_rocket"]],
+];
+if (W.fishy && fs.existsSync(W.fishy)) {
+  const zip = readPack(W.fishy);
+  for (const [name, base, ids] of FISHY) {
+    const files = new Map(), map = {};
+    for (const m of ids) map[`minecraft:item/${m}`] = importModel(zip, `minecraft:item/${m}`, "fishy", files).id;
+    const vanilla = JSON.parse(vanillaFiles.get(`assets/minecraft/items/${base}.json`)).model;
+    const id = slugOf(name);
+    selected.push(weapon({ key: `fishy/${id}`, mod: "fishy", ns: "fishy", id, name, base, model: map[`minecraft:item/${base}`], icon: `fishy_${id}`, definition: swapModels(vanilla, map), files: [...files] }));
+  }
 }
 
 /* --- Essen aus „Mein Pack“ (nur Essen, Namen wie dort) --- */

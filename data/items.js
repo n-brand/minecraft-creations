@@ -33,7 +33,7 @@ window.ITEMS = [
     id: "server-pack-2026",
     category: "texturepacks",
     name: "Server Pack 2026",
-    description: "Halloween auf unserem Server: 208 Deko-Items, Kostüme, Süssigkeiten und eine Weihnachtsmütze zum Umbenennen – ganz ohne Mods.",
+    description: "Halloween auf unserem Server: 227 Deko-Items, Kostüme, Süssigkeiten und eine Weihnachtsmütze zum Umbenennen – ganz ohne Mods.",
     version: "26.3",
     edition: "Java",
     serverOnly: true,
@@ -44,25 +44,17 @@ window.ITEMS = [
       "Das Pack gibt es nur auf unserem Server, es lädt beim Beitreten automatisch. Hier findest du alle Namen und fertige /give-Befehle.",
       "3D-Deko liegt auf der Fichtenholzdruckplatte: Stell sie einfach hin, dann erscheint das Modell. Mit einem Linksklick aufs Modell baust du es wieder ab und bekommst das Item zurück."
     ],
-    features: [
-      "Deko in 3D: Kerzenleuchter, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr – hinstellen und per Linksklick wieder abbauen.",
-      "Kostüme: Braut, Frankenstein, Meerjungfrau, Pirat, Mumie, Vampir, Hexe, Clown und viele mehr.",
-      "Echte Optik beim Anziehen: Roben, Hosen und Schuhe wie in der Mod, Hüte, Masken, Hörner und Vampiraugen als 3D-Modell auf dem Kopf.",
-      "Kostüme gehen auch mit Diamant-, Eisen-, Netherit- und Kupfer-Rüstung: Rüstung umbenennen, dann sieht sie aus wie das Kostüm und schützt trotzdem wie vorher.",
-      "Weihnachtsmütze: Geschnitzten Kürbis „Christmas Hat“ nennen und aufsetzen – mit freier Sicht.",
-      "Süssigkeiten, Muffin und Lollis liegen auf dem Brot und sind essbar.",
-      "Essen aus Mein Pack: Burger, Pommes, Eis, Getränke, Beeren und mehr – auf dem passenden Essen umbenennen.",
-      "Hängende Deko (Leichen am Seil) liegt auf der Laterne: an die Decke hängen, dann erscheint das Modell.",
-      "Süssigkeiten-Beutel liegen auf dem Bündel – du kannst Sachen darin aufbewahren.",
-      "Flügel liegen auf den Elytren – du kannst damit fliegen (angezogen sehen sie wie normale Elytren aus).",
-      "Extra: Einen Diamanten oder Netheritbarren zusammen mit einem Eichenholzknopf auf den Boden werfen – daraus wird ein ganzer Stack."
-    ],
     credits: [
       "Decoween",
       "Funny Pumpkin",
       "Happy Hallows",
       "Spookify – AndroFox",
-      "Wearable Christmas Hats – Reijvi"
+      "Wearable Christmas Hats – Reijvi",
+      "Devil Trident, Breeze Trident – Torrezx",
+      "Christmas Sugarcane Trident",
+      "Rethoughted Trident – CatFromNet (CC BY-NC 4.0)",
+      "Mine Cells 3D Weapons – Mim1q",
+      "Fishy Weapons – Tofubrain_ (Bogen: Vega_Senpai, Rakete: pikachurro)"
     ],
     guide: {
       title: "Anleitung: Items umbenennen",
@@ -123,9 +115,14 @@ window.ITEMS = [
         { id: "pumpkin_pie", cat: "Essen", item: "Kürbiskuchen", itemEn: "Pumpkin Pie · Mein Pack", names: [["Pancakes", "mein_pack_pancakes", "/give @s pumpkin_pie[custom_name=\"Pancakes\"]"]] },
         { id: "mushroom_stew", cat: "Essen", item: "Pilzsuppe", itemEn: "Mushroom Stew · Mein Pack", names: [["Ramen", "mein_pack_ramen", "/give @s mushroom_stew[custom_name=\"Ramen\"]"], ["Smashed Potato", "mein_pack_smashed_potato", "/give @s mushroom_stew[custom_name=\"Smashed Potato\"]"]] },
         { id: "suspicious_stew", cat: "Essen", item: "Seltsame Suppe", itemEn: "Suspicious Stew · Mein Pack", names: [["Cereal", "mein_pack_cereal", "/give @s suspicious_stew[custom_name=\"Cereal\"]"], ["Salad", "mein_pack_salad", "/give @s suspicious_stew[custom_name=\"Salad\"]"]] },
-        { id: "spider_eye", cat: "Essen", item: "Spinnenauge", itemEn: "Spider Eye · Mein Pack", names: [["eggchan", "mein_pack_eggchan", "/give @s spider_eye[custom_name=\"eggchan\"]"], ["Eggchan", "mein_pack_eggchan", "/give @s spider_eye[custom_name=\"Eggchan\"]"]] },
         { id: "honey_bottle", cat: "Essen", item: "Honigflasche", itemEn: "Honey Bottle · Mein Pack", names: [["Coca Cola", "mein_pack_coca_cola", "/give @s honey_bottle[custom_name=\"Coca Cola\"]"], ["Fanta", "mein_pack_fanta", "/give @s honey_bottle[custom_name=\"Fanta\"]"], ["Hot Chocolate", "mein_pack_hot_chocolate", "/give @s honey_bottle[custom_name=\"Hot Chocolate\"]"], ["Lemonade", "mein_pack_lemonade", "/give @s honey_bottle[custom_name=\"Lemonade\"]"], ["Lipton Ice Tea", "mein_pack_lipton_ice_tea", "/give @s honey_bottle[custom_name=\"Lipton Ice Tea\"]"], ["Sprite", "mein_pack_sprite", "/give @s honey_bottle[custom_name=\"Sprite\"]"]] },
-        { id: "milk_bucket", cat: "Essen", item: "Milcheimer", itemEn: "Milk Bucket · Mein Pack", names: [["Apple Ice Cream", "mein_pack_apple_ice_cream", "/give @s milk_bucket[custom_name=\"Apple Ice Cream\"]"], ["Cake Ice Cream", "mein_pack_cake_ice_cream", "/give @s milk_bucket[custom_name=\"Cake Ice Cream\"]"], ["Chorus Ice Cream", "mein_pack_chorus_ice_cream", "/give @s milk_bucket[custom_name=\"Chorus Ice Cream\"]"], ["Cookie Ice Cream", "mein_pack_cookie_ice_cream", "/give @s milk_bucket[custom_name=\"Cookie Ice Cream\"]"], ["Ice Cream", "mein_pack_ice_cream", "/give @s milk_bucket[custom_name=\"Ice Cream\"]"], ["McFlurry", "mein_pack_mcflurry", "/give @s milk_bucket[custom_name=\"McFlurry\"]"], ["McFlurry Chocolate", "mein_pack_mcflurry_chocolate", "/give @s milk_bucket[custom_name=\"McFlurry Chocolate\"]"], ["Melon Popsicle", "mein_pack_melon_popsicle", "/give @s milk_bucket[custom_name=\"Melon Popsicle\"]"], ["Sweet Berries Ice Cream", "mein_pack_sweet_berries_ice_cream", "/give @s milk_bucket[custom_name=\"Sweet Berries Ice Cream\"]"], ["Water Ice Cream", "mein_pack_water_ice_cream", "/give @s milk_bucket[custom_name=\"Water Ice Cream\"]"]] }
+        { id: "milk_bucket", cat: "Essen", item: "Milcheimer", itemEn: "Milk Bucket · Mein Pack", names: [["Apple Ice Cream", "mein_pack_apple_ice_cream", "/give @s milk_bucket[custom_name=\"Apple Ice Cream\"]"], ["Cake Ice Cream", "mein_pack_cake_ice_cream", "/give @s milk_bucket[custom_name=\"Cake Ice Cream\"]"], ["Chorus Ice Cream", "mein_pack_chorus_ice_cream", "/give @s milk_bucket[custom_name=\"Chorus Ice Cream\"]"], ["Cookie Ice Cream", "mein_pack_cookie_ice_cream", "/give @s milk_bucket[custom_name=\"Cookie Ice Cream\"]"], ["Ice Cream", "mein_pack_ice_cream", "/give @s milk_bucket[custom_name=\"Ice Cream\"]"], ["McFlurry", "mein_pack_mcflurry", "/give @s milk_bucket[custom_name=\"McFlurry\"]"], ["McFlurry Chocolate", "mein_pack_mcflurry_chocolate", "/give @s milk_bucket[custom_name=\"McFlurry Chocolate\"]"], ["Melon Popsicle", "mein_pack_melon_popsicle", "/give @s milk_bucket[custom_name=\"Melon Popsicle\"]"], ["Sweet Berries Ice Cream", "mein_pack_sweet_berries_ice_cream", "/give @s milk_bucket[custom_name=\"Sweet Berries Ice Cream\"]"], ["Water Ice Cream", "mein_pack_water_ice_cream", "/give @s milk_bucket[custom_name=\"Water Ice Cream\"]"]] },
+        { id: "trident", cat: "Waffen", item: "Dreizack", itemEn: "Trident · Dreizack-Packs", names: [["Breeze Trident", "tridents_breeze_trident", "/give @s trident[custom_name=\"Breeze Trident\"]"], ["Devil Trident", "tridents_devil_trident", "/give @s trident[custom_name=\"Devil Trident\"]"], ["Rethoughted Trident", "tridents_rethoughted_trident", "/give @s trident[custom_name=\"Rethoughted Trident\"]"], ["Sugarcane Trident", "tridents_sugarcane_trident", "/give @s trident[custom_name=\"Sugarcane Trident\"]"]] },
+        { id: "netherite_sword", cat: "Waffen", item: "Netheritschwert", itemEn: "Netherite Sword · Mine Cells 3D Weapons", names: [["Assassin's Dagger", "mine_cells_assassins_dagger", "/give @s netherite_sword[custom_name=\"Assassin's Dagger\"]"], ["Balanced Blade", "mine_cells_balanced_blade", "/give @s netherite_sword[custom_name=\"Balanced Blade\"]"], ["Blood Sword", "mine_cells_blood_sword", "/give @s netherite_sword[custom_name=\"Blood Sword\"]"], ["Broadsword", "mine_cells_broadsword", "/give @s netherite_sword[custom_name=\"Broadsword\"]"], ["Crowbar", "mine_cells_crowbar", "/give @s netherite_sword[custom_name=\"Crowbar\"]"], ["Cursed Sword", "mine_cells_cursed_sword", "/give @s netherite_sword[custom_name=\"Cursed Sword\"]"], ["Frost Blast", "mine_cells_frost_blast", "/give @s netherite_sword[custom_name=\"Frost Blast\"]"], ["Hattori's Katana", "mine_cells_hattoris_katana", "/give @s netherite_sword[custom_name=\"Hattori's Katana\"]"], ["Nutcracker", "mine_cells_nutcracker", "/give @s netherite_sword[custom_name=\"Nutcracker\"]"], ["Phaser", "mine_cells_phaser", "/give @s netherite_sword[custom_name=\"Phaser\"]"], ["Spite Sword", "mine_cells_spite_sword", "/give @s netherite_sword[custom_name=\"Spite Sword\"]"], ["Tentacle", "mine_cells_tentacle", "/give @s netherite_sword[custom_name=\"Tentacle\"]"], ["The Flint", "mine_cells_flint", "/give @s netherite_sword[custom_name=\"The Flint\"]"]] },
+        { id: "bow", cat: "Waffen", item: "Bogen", itemEn: "Bow · Fishy Weapons", names: [["Fishy Bow", "fishy_fishy_bow", "/give @s bow[custom_name=\"Fishy Bow\"]"]] },
+        { id: "crossbow", cat: "Waffen", item: "Armbrust", itemEn: "Crossbow · Fishy Weapons", names: [["Fishy Crossbow", "fishy_fishy_crossbow", "/give @s crossbow[custom_name=\"Fishy Crossbow\"]"]] },
+        { id: "mace", cat: "Waffen", item: "Streitkolben", itemEn: "Mace · Fishy Weapons", names: [["Fishy Mace", "fishy_fishy_mace", "/give @s mace[custom_name=\"Fishy Mace\"]"]] },
+        { id: "firework_rocket", cat: "Waffen", item: "Feuerwerksrakete", itemEn: "Firework Rocket · Fishy Weapons", names: [["Fishy Rocket", "fishy_fishy_rocket", "/give @s firework_rocket[custom_name=\"Fishy Rocket\"]"]] }
       ]
     }
   },

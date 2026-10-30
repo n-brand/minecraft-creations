@@ -34,8 +34,13 @@ const BASES = {
   paper: ["Papier", "Paper"],
   music_disc_13: ["Schallplatte „13“", "Music Disc 13"],
   trident: ["Dreizack", "Trident"],
+  netherite_sword: ["Netheritschwert", "Netherite Sword"],
+  bow: ["Bogen", "Bow"],
+  crossbow: ["Armbrust", "Crossbow"],
+  mace: ["Streitkolben", "Mace"],
+  firework_rocket: ["Feuerwerksrakete", "Firework Rocket"],
 };
-const MODS = { halloween: "Eigenes", mein_pack: "Mein Pack", christmas_hats: "Weihnachtsmützen", "decoween-neoforge": "Decoween", funny_pumpkin: "Funny Pumpkin", happyhallows: "Happy Hallows", spookify: "Spookify" };
+const MODS = { halloween: "Eigenes", mein_pack: "Mein Pack", tridents: "Dreizack-Packs", mine_cells: "Mine Cells 3D Weapons", fishy: "Fishy Weapons", christmas_hats: "Weihnachtsmützen", "decoween-neoforge": "Decoween", funny_pumpkin: "Funny Pumpkin", happyhallows: "Happy Hallows", spookify: "Spookify" };
 const q = (s) => JSON.stringify(s);
 
 /* --- Kostüm-Sets (Gruppen auf der Seite) --- */
@@ -51,7 +56,7 @@ export function costumeSet(item) {
 }
 
 // Filter auf der Seite: überwiegende Art der Items einer Gruppe
-const CATEGORIES = { costume: "Kostüme", deco: "Deko", food: "Essen" };
+const CATEGORIES = { costume: "Kostüme", deco: "Deko", food: "Essen", weapon: "Waffen" };
 export function categoryOf(rows) {
   const count = {};
   for (const r of rows) { const c = CATEGORIES[r.kind] || "Sonstiges"; count[c] = (count[c] || 0) + 1; }
@@ -92,25 +97,17 @@ export function entrySource(items) {
       "Das Pack gibt es nur auf unserem Server, es lädt beim Beitreten automatisch. Hier findest du alle Namen und fertige /give-Befehle.",
       "3D-Deko liegt auf der Fichtenholzdruckplatte: Stell sie einfach hin, dann erscheint das Modell. Mit einem Linksklick aufs Modell baust du es wieder ab und bekommst das Item zurück."
     ],
-    features: [
-      "Deko in 3D: Kerzenleuchter, Statuen, Leichen, Hexenkessel, Kristallkugel, Thron und mehr – hinstellen und per Linksklick wieder abbauen.",
-      "Kostüme: Braut, Frankenstein, Meerjungfrau, Pirat, Mumie, Vampir, Hexe, Clown und viele mehr.",
-      "Echte Optik beim Anziehen: Roben, Hosen und Schuhe wie in der Mod, Hüte, Masken, Hörner und Vampiraugen als 3D-Modell auf dem Kopf.",
-      "Kostüme gehen auch mit Diamant-, Eisen-, Netherit- und Kupfer-Rüstung: Rüstung umbenennen, dann sieht sie aus wie das Kostüm und schützt trotzdem wie vorher.",
-      "Weihnachtsmütze: Geschnitzten Kürbis „Christmas Hat“ nennen und aufsetzen – mit freier Sicht.",
-      "Süssigkeiten, Muffin und Lollis liegen auf dem Brot und sind essbar.",
-      "Essen aus Mein Pack: Burger, Pommes, Eis, Getränke, Beeren und mehr – auf dem passenden Essen umbenennen.",
-      "Hängende Deko (Leichen am Seil) liegt auf der Laterne: an die Decke hängen, dann erscheint das Modell.",
-      "Süssigkeiten-Beutel liegen auf dem Bündel – du kannst Sachen darin aufbewahren.",
-      "Flügel liegen auf den Elytren – du kannst damit fliegen (angezogen sehen sie wie normale Elytren aus).",
-      "Extra: Einen Diamanten oder Netheritbarren zusammen mit einem Eichenholzknopf auf den Boden werfen – daraus wird ein ganzer Stack."
-    ],
     credits: [
       "Decoween",
       "Funny Pumpkin",
       "Happy Hallows",
       "Spookify – AndroFox",
-      "Wearable Christmas Hats – Reijvi"
+      "Wearable Christmas Hats – Reijvi",
+      "Devil Trident, Breeze Trident – Torrezx",
+      "Christmas Sugarcane Trident",
+      "Rethoughted Trident – CatFromNet (CC BY-NC 4.0)",
+      "Mine Cells 3D Weapons – Mim1q",
+      "Fishy Weapons – Tofubrain_ (Bogen: Vega_Senpai, Rakete: pikachurro)"
     ],
     guide: {
       title: "Anleitung: Items umbenennen",

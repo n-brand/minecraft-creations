@@ -30,7 +30,7 @@ export function tridentModels(geometry, texture) {
     for (const c of part.cubes) {
       const a = c.from.map((n) => n - c.inflate), b = c.from.map((n, i) => n + c.size[i] + c.inflate);
       const from = [a[0], -b[1] + TRIDENT_SHIFT, -b[2]], to = [b[0], -a[1] + TRIDENT_SHIFT, -a[2]];
-      const f = boxFaces(c, geometry.texW, geometry.texH, "#0");
+      const f = c.faces || boxFaces(c, geometry.texW, geometry.texH, "#0"); // .jem-Würfel bringen ihre Flächen mit
       elements.push({ from, to, faces: { up: f.up, down: f.down, south: f.north, north: f.south, west: f.east, east: f.west } });
     }
   }
@@ -52,8 +52,8 @@ export function tridentFlyingModel(geometry, texture) {
       const a = c.from.map((n) => n - grow), b = c.from.map((n, i) => n + c.size[i] + grow);
       const m = (j) => 8 + j / FLY_SCALE;
       const from = [m(a[2]), m(a[0]), m(a[1])], to = [m(b[2]), m(b[0]), m(b[1])];
-      const f = boxFaces(c, geometry.texW, geometry.texH, "#0");
-      const turned = (face) => ({ ...face, rotation: 90 });
+      const f = c.faces || boxFaces(c, geometry.texW, geometry.texH, "#0"); // .jem-Würfel bringen ihre Flächen mit
+      const turned = (face) => face && { ...face, rotation: 90 };
       elements.push({ from, to, faces: { north: turned(f.up), south: turned(f.down), west: turned(f.north), east: turned(f.south), down: f.east, up: f.west } });
     }
   }

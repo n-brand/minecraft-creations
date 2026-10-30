@@ -56,7 +56,6 @@ test("costumes are grouped by set (vampire, devil, …) with their own give comm
   const src = entrySource(list);
   assert.ok(src.includes('item: "Vampir"'));
   assert.ok(src.includes('["Vampire Hat", "fp_vh", "/give @s leather_helmet[custom_name=\\"Vampire Hat\\"]"]'));
-  assert.ok(src.includes("Diamant"));
 });
 
 test("pieces inside a set are ordered helmet, chestplate, pants, shoes", () => {

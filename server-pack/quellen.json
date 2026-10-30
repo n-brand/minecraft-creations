@@ -9,5 +9,27 @@
   "vanillaJar": "C:/Users/nicol/AppData/Roaming/.minecraft/versions/26.2/26.2.jar",
   "resourcepackOut": "C:/Users/nicol/AppData/Roaming/.minecraft/resourcepacks/Server Pack 2026.zip",
   "datapackOut": "C:/Source/Minecraft/Server Pack 2026 Datapack.zip",
-  "meinPack": "C:/Source/Minecraft/Minecraft Texture Pack/Mein Pack"
+  "meinPack": "C:/Source/Minecraft/Minecraft Texture Pack/Mein Pack",
+  "weapons": {
+    "mineCells": "C:/Users/nicol/Downloads/§cMine_Cells§6_3D_Weapons§8_1.0.1.zip",
+    "fishy": "C:/Users/nicol/Downloads/fishy weapons.zip",
+    "tridents": [
+      {
+        "name": "Devil Trident",
+        "zip": "C:/Users/nicol/Downloads/Torrezx-Devil_trident.zip"
+      },
+      {
+        "name": "Breeze Trident",
+        "zip": "C:/Users/nicol/Downloads/Torrezx-Brezee_trident.zip"
+      },
+      {
+        "name": "Sugarcane Trident",
+        "zip": "C:/Users/nicol/Downloads/Christmas_Sugarcane_Trident_v0.2.zip"
+      },
+      {
+        "name": "Rethoughted Trident",
+        "zip": "C:/Users/nicol/Downloads/Rethoughted Trident.zip"
+      }
+    ]
+  }
 }

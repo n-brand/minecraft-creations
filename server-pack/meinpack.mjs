@@ -2,8 +2,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
-// keine Essens-Sachen: Münzen, Happy-Meal-Bündel; die Pille ist kein Essen
-export const MEIN_PACK_SKIP = { files: ["gold_nugget", "iron_nugget", "red_bundle"], names: ["Pill"] };
+// keine Essens-Sachen: Münzen, Happy-Meal-Bündel; die Pille ist kein Essen; Eggchan auf Wunsch raus (2026-10-30)
+export const MEIN_PACK_SKIP = { files: ["gold_nugget", "iron_nugget", "red_bundle", "spider_eye"], names: ["Pill"] };
 
 const split = (id) => (id.includes(":") ? id.split(":") : ["minecraft", id]);
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
