@@ -168,12 +168,11 @@ if (W.mineCells && fs.existsSync(W.mineCells)) {
   }
 }
 
-// Fishy Weapons: Bogen, Armbrust (mit Spann-Stufen), Streitkolben, Rakete – Vanilla-Definition mit eigenen Modellen
+// Fishy Weapons: Bogen, Armbrust (mit Spann-Stufen), Streitkolben (Rakete auf Wunsch raus) – Vanilla-Definition mit eigenen Modellen
 const FISHY = [
   ["Fishy Bow", "bow", ["bow", "bow_pulling_0", "bow_pulling_1", "bow_pulling_2"]],
   ["Fishy Crossbow", "crossbow", ["crossbow", "crossbow_arrow", "crossbow_firework", "crossbow_pulling_0", "crossbow_pulling_1", "crossbow_pulling_2"]],
   ["Fishy Mace", "mace", ["mace"]],
-  ["Fishy Rocket", "firework_rocket", ["firework_rocket"]],
 ];
 if (W.fishy && fs.existsSync(W.fishy)) {
   const zip = readPack(W.fishy);

@@ -100,7 +100,6 @@ const PRECACHE = [
     './images/server-pack-2026/fishy_fishy_bow.png',
     './images/server-pack-2026/fishy_fishy_crossbow.png',
     './images/server-pack-2026/fishy_fishy_mace.png',
-    './images/server-pack-2026/fishy_fishy_rocket.png',
     './images/server-pack-2026/funny_pumpkin_ancient_skeleton.png',
     './images/server-pack-2026/funny_pumpkin_angel_costume_chestplate.png',
     './images/server-pack-2026/funny_pumpkin_angel_costume_helmet.png',

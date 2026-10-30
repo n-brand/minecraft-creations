@@ -31,7 +31,7 @@ export function equipmentFor(key) {
 
 /* --- Grund-Items (Entscheidungen von Nicolas) --- */
 // Deko, die das Datapack beim Platzieren zum 3D-Modell macht
-export const DECO_BASES = ["spruce_pressure_plate", "lantern"];
+export const DECO_BASES = ["spruce_pressure_plate", "lantern", "end_rod"];
 const isWings = (name) => /Wings$/.test(name);
 const isFood = (id) => /_candy$|^berry_muffin$|^pumpkin_lollipop$|^caramel_key$/.test(id);
 

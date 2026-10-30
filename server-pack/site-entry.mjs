@@ -108,7 +108,7 @@ export function entrySource(items) {
       "Christmas Sugarcane Trident",
       "Rethoughted Trident – CatFromNet (CC BY-NC 4.0)",
       "Mine Cells 3D Weapons – Mim1q",
-      "Fishy Weapons – Tofubrain_ (Bogen: Vega_Senpai, Rakete: pikachurro)"
+      "Fishy Weapons – Tofubrain_ (Bogen: Vega_Senpai)"
     ],
     guide: {
       title: "Anleitung: Items umbenennen",
