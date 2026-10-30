@@ -642,8 +642,8 @@ code {
 }
 
 .detail-dialog::backdrop {
-    background-color: rgba(13, 26, 45, 0.7);
-    backdrop-filter: blur(4px);
+    /* ohne Unschärfe: blur hinter einem langen, scrollbaren Dialog ruckelt */
+    background-color: rgba(13, 26, 45, 0.82);
 }
 
 #detail-body {
@@ -833,6 +833,9 @@ code {
 }
 
 .guide-group {
+    /* Gruppen ausserhalb des sichtbaren Bereichs nicht zeichnen (lange Listen wie beim Server Pack) */
+    content-visibility: auto;
+    contain-intrinsic-size: auto 160px;
     display: grid;
     grid-template-columns: 190px minmax(0, 1fr);
     gap: 14px;

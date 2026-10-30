@@ -272,6 +272,8 @@ const createGuide = guide => {
             img.src = `${guide.iconPath}${icon}.png`;
             img.alt = '';
             img.loading = 'lazy';
+            img.decoding = 'async';
+            img.width = img.height = 32;
             nameBtn.appendChild(img);
             nameBtn.appendChild(el('span', '', name));
             nameBtn.addEventListener('click', () => copyText(name, `„${name}“ kopiert`));
