@@ -152,7 +152,7 @@ for (const t of W.tridents || []) {
 }
 
 // Mine Cells 3D Weapons: jedes Modell auf dem Netheritschwert
-const MINE_CELLS_NAMES = { assassins_dagger: "Assassin's Dagger", hattoris_katana: "Hattori's Katana", flint: "The Flint" };
+const MINE_CELLS_NAMES = { assassins_dagger: "Assassin's Dagger", hattoris_katana: "Hattori's Katana", flint: "The Flint", tentacle: "Tentacle D***o" };
 if (W.mineCells && fs.existsSync(W.mineCells)) {
   const zip = readPack(W.mineCells);
   for (const p of [...zip.keys()].filter((k) => /^assets\/minecells\/models\/item\/[^/]+\.json$/.test(k)).sort()) {
